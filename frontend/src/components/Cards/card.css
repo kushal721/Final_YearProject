@@ -1,0 +1,203 @@
+.card {
+  /* border-radius: 12px; */
+  overflow: hidden;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  /* min-width: 200px; */
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* .card-img {
+    width: 70%;
+    height: auto;
+    
+  } */
+
+/* .card-content {
+    padding: 1.5rem;
+  } */
+
+/* .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  } */
+
+/* .title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333;
+  } */
+
+.rating {
+  font-size: 1rem;
+  color: #f6ad55;
+}
+
+/* .short-description {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #666;
+  } */
+
+.designer {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  color: #999;
+}
+
+.fav-btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-details-btn:hover {
+  background-color: #4299e1;
+}
+
+.profe-img-container {
+  width: 100%;
+
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+}
+
+.profe-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.message-now {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #4a5568;
+}
+
+.btn-book-appoint {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #1f3649;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-book-appoint:hover {
+  background-color: #3182ce;
+}
+
+/* descripton card */
+.desc-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-top: 50px;
+  padding: 3%;
+  gap: 5rem;
+}
+
+
+.left-side {
+  
+  flex: 1; 
+  width: 100%;
+  margin-left: 5%;
+}
+
+.right-side {
+  flex: 1; 
+  width: 80%;
+  margin-right: 5%;
+}
+
+.design-image {
+  width: 100%;
+  height: auto;
+}
+
+.right-side h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.right-side p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.right-side p.rating {
+  color: #ff9800; /* Change color based on rating */
+}
+
+.review-section {
+  margin-top: 50px;
+  padding: 1%;
+  margin-left: 5%;
+}
+
+.review-section h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.review {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.review h4 {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.review p {
+  font-size: 1rem;
+  color: #777;
+  line-height: 1.4;
+}
+
+/* Media Queries for responsiveness */
+@media only screen and (max-width: 768px) {
+  .desc-container {
+    flex-direction: column; /* Change to column layout on smaller screens */
+  }
+
+  .left-side,
+  .right-side {
+    width: 100%; /* Set full width for both sides on smaller screens */
+    margin-left: 0; /* Reset margin for smaller screens */
+    margin-right: 0; /* Reset margin for smaller screens */
+  }
+}

@@ -1,0 +1,105 @@
+AddDesigns.css
+
+.my-designs-container {
+    display: flex;
+    gap: 3%;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-right: 3%;
+  }
+  
+  .page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .add-design-form {
+    max-width: 800px;
+    position: relative; /* Position relative for absolute positioning */
+    margin-top: 50px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .left-column,
+  .right-column {
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+  .left-column {
+    width: 48%;
+    margin-right: 2%;
+  }
+  
+  .right-column {
+    width: 48%;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="file"],
+  .form-group textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .design-details-title ,.upload-img-title{
+    font-size: 120%;
+    margin-bottom: 15px;
+    font-weight: bold;
+    
+
+  }
+
+  
+  
+  .form-group textarea {
+    resize: vertical;
+  }
+  
+  .btn-upload {
+    position: absolute;
+    margin-right: 0px;
+  }
+  
+  .upload-button {
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .remove-button {
+  
+  color: #1a0606;
+  border: none;
+  padding: 8px 12px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+
+
+
+.selected-file span {
+  margin-right: 8px;
+}
