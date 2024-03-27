@@ -1,3 +1,50 @@
+// import express from "express";
+// import {
+//   addDesigns,
+//   getDesigns,
+//   getDesign,
+//   getMyDesigns,
+//   getMyDesign,
+//   deleteMyDesign,
+//   updateMyDesign,
+//   productReview,
+// } from "../controllers/designController.js"; // Import named export
+// import requireAuth from "../middlewares/requireAuth.js";
+
+// const router = express.Router();
+
+// // //public routes
+
+// //GET all designs
+// router.get("/", getDesigns);
+
+// //GET single designs
+// router.get("/:id", getDesign);
+
+// //review product
+
+// router.patch("/:id/review", productReview);
+
+// //private routes
+// //require auth for design routes
+// router.use(requireAuth);
+
+// // POST a new design
+// router.post("/adddesign", addDesigns);
+
+// //GET all designs
+// router.get("/mydesigns", getMyDesigns);
+
+// //GET single designs
+// router.get("/:id", getMyDesign);
+
+// //DELETE a  workout
+// router.delete("/:id", deleteMyDesign);
+
+// //UPDATE a  workout
+// router.patch("/:id", updateMyDesign);
+
+// export default router; // Export the router as default
 import express from "express";
 import {
   addDesigns,
@@ -8,40 +55,38 @@ import {
   deleteMyDesign,
   updateMyDesign,
   productReview,
-} from "../controllers/designController.js"; // Import named export
+} from "../controllers/designController.js";
 import requireAuth from "../middlewares/requireAuth.js";
 
 const router = express.Router();
 
-// //public routes
+// Public routes
 
-//GET all designs
+// GET all designs
 router.get("/", getDesigns);
 
-//GET single designs
-router.get("/:id", getDesign);
+// GET single design
+router.get("/design/:id", getDesign);
 
-//review product
+// Review product
+router.patch("/design/:id/review", productReview);
 
-router.patch("/:id/review", productReview);
-
-//private routes
-//require auth for design routes
+// Private routes (require authentication)
 router.use(requireAuth);
 
 // POST a new design
 router.post("/adddesign", addDesigns);
 
-//GET all designs
-router.get("/", getMyDesigns);
+// GET all designs uploaded by the logged-in user
+router.get("/mydesigns", getMyDesigns);
 
-//GET single designs
-router.get("/:id", getMyDesign);
+// GET a single design uploaded by the logged-in user
+router.get("/mydesigns/:id", getMyDesign);
 
-//DELETE a  workout
-router.delete("/:id", deleteMyDesign);
+// DELETE a design uploaded by the logged-in user
+router.delete("/mydesigns/:id", deleteMyDesign);
 
-//UPDATE a  workout
-router.patch("/:id", updateMyDesign);
+// UPDATE a design uploaded by the logged-in user
+router.patch("/mydesigns/:id", updateMyDesign);
 
-export default router; // Export the router as default
+export default router;

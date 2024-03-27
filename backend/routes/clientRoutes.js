@@ -5,6 +5,8 @@ import checkUserAuth from "../middlewares/auth-middleware.js";
 
 import UserModel from "../models/User.js";
 
+import { getProfessionals } from "../controllers/professionalController.js";
+
 // Protected Routes
 // router.get("/protected-route", checkUserAuth, (req, res) => {
 //   // Access user data attached to the req object
@@ -21,7 +23,9 @@ router.post("/protected-route", checkUserAuth, async (req, res) => {
 
     // Check if the user exists
     if (!user) {
-      return res.status(404).send({ message: "User does not exist", success: false });
+      return res
+        .status(404)
+        .send({ message: "User does not exist", success: false });
     }
 
     // If user exists, send user data in the response
@@ -40,7 +44,6 @@ router.post("/protected-route", checkUserAuth, async (req, res) => {
   }
 });
 
-
 router.use("/loggedUser", checkUserAuth);
 router.use("/user-changePassword", checkUserAuth);
 
@@ -55,6 +58,9 @@ router.post(
   "/user-reset-password/:id/:token",
   UserController.userPasswordReset
 );
+
+//get all professionals
+router.get("/professionals", getProfessionals);
 
 // Protected Routes
 router.post("/user-changePassword", UserController.changeUserPassword);
