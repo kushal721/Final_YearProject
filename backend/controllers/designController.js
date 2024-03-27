@@ -1,187 +1,181 @@
-import Design from "../models/Design.js"; // Import Design model using ES module syntax
+import Design from "../models/Design.js"; // Ensure correct path for Design model
 import mongoose from "mongoose";
-
-//public view
 
 // Get all designs
 const getDesigns = async (req, res) => {
-  const designs = await Design.find({}).sort({ createdAt: -1 });
-
-  res.status(200).json(designs);
+  try {
+    const designs = await Design.find({}).sort({ createdAt: -1 });
+    res.status(200).json(designs);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-//get a single design
+// Get a single design
 const getDesign = async (req, res) => {
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such design" });
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    const design = await Design.findById(id);
+    if (!design) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    res.status(200).json(design);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const design = await Design.findById(id);
-  if (!design) {
-    return res.status(404).json({ error: "No such design" });
-  }
-
-  res.status(200).json(design);
 };
 
-//delete a workout
+// Delete a design
 const deleteDesign = async (req, res) => {
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such design" });
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    const design = await Design.findOneAndDelete({ _id: id });
+    if (!design) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    res.status(200).json(design);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const design = await Design.findOneAndDelete({ _id: id });
-
-  if (!design) {
-    return res.status(404).json({ error: "No such design" });
-  }
-
-  res.status(200).json(design);
 };
-
-// Professional side
 
 // Add new designs
 const addDesigns = async (req, res) => {
-  const { designName, area, estimateCost, designDescription } = req.body;
-  console.log(req.body);
-
-  let emptyFields = [];
-
-  if (!designName) {
-    emptyFields.push("designName");
-  }
-  if (!area) {
-    emptyFields.push("area");
-  }
-  if (!estimateCost) {
-    emptyFields.push("estimateCost");
-  }
-  if (!designDescription) {
-    emptyFields.push("designDescription");
-  }
-
-  if (emptyFields.length > 0) {
-    return res
-      .status(400)
-      .json({ error: "Please fill in all the fields", emptyFields });
-  }
-
-  // Add document to the database
   try {
+    // Check if user is authenticated
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    const { designName, area, estimateCost, designDescription } = req.body;
+
+    if (!designName || !area || !estimateCost || !designDescription) {
+      return res.status(400).json({ error: "Please fill in all the fields" });
+    }
+
     const design = await Design.create({
       designName,
       area,
       estimateCost,
       designDescription,
+      user_id: req.user._id,
     });
     res.status(200).json(design);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Get all designs
+// Get all designs (for the logged-in user)
 const getMyDesigns = async (req, res) => {
-  const designs = await Design.find({}).sort({ createdAt: -1 });
-
-  res.status(200).json(designs);
+  try {
+    const designs = await Design.find({ user_id: req.user._id }).sort({
+      createdAt: -1,
+    });
+    res.status(200).json(designs);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-//get a single design
+// Get a single design (for the logged-in user)
 const getMyDesign = async (req, res) => {
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such design" });
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    const design = await Design.findOne({ _id: id, user_id: req.user._id });
+    if (!design) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    res.status(200).json(design);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const design = await Design.findById(id);
-  if (!design) {
-    return res.status(404).json({ error: "No such design" });
-  }
-
-  res.status(200).json(design);
 };
 
-//delete a workout
+// Delete a design (for the logged-in user)
 const deleteMyDesign = async (req, res) => {
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such design" });
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    const design = await Design.findOneAndDelete({
+      _id: id,
+      user_id: req.user._id,
+    });
+    if (!design) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    res.status(200).json(design);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const design = await Design.findOneAndDelete({ _id: id });
-
-  if (!design) {
-    return res.status(404).json({ error: "No such design" });
-  }
-
-  res.status(200).json(design);
 };
 
-//update a design
+// Update a design (for the logged-in user)
 const updateMyDesign = async (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such design" });
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    const design = await Design.findOneAndUpdate(
+      { _id: id, user_id: req.user._id },
+      req.body,
+      { new: true }
+    );
+    if (!design) {
+      return res.status(404).json({ error: "No such design" });
+    }
+    res.status(200).json(design);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const design = await Design.findOneAndUpdate({ _id: id }, { ...req.body });
-
-  if (!design) {
-    return res.status(404).json({ error: "No such design" });
-  }
-
-  res.status(200).json(design);
 };
+
+// Add product review
 const productReview = async (req, res) => {
   try {
     const { comment, rating } = req.body;
 
-    // Check if user is authenticated
     if (!req.user) {
       return res
         .status(401)
         .json({ success: false, message: "User is not authenticated" });
     }
 
-    // Find design
     const design = await Design.findById(req.params.id);
-
     if (!design) {
       return res
         .status(404)
         .json({ success: false, message: "Design not found" });
     }
 
-    // Create review object
     const review = {
-      name: req.user.userName, // Assuming userName is the correct property for the user's name
+      name: req.user.userName,
       rating: Number(rating),
       comment: comment,
       user: req.user._id,
     };
 
-    // Add review to design's reviews array
     design.reviews.push(review);
-
-    // Update number of reviews
     design.numReviews = design.reviews.length;
 
-    // Calculate average rating
     const totalRating = design.reviews.reduce(
       (acc, item) => acc + item.rating,
       0
     );
     design.rating = totalRating / design.reviews.length;
 
-    // Save design
     await design.save();
 
     res

@@ -13,24 +13,24 @@ import requireAuth from "../middlewares/requireAuth.js";
 
 const router = express.Router();
 
-//public routes
+// //public routes
 
 //GET all designs
 router.get("/", getDesigns);
 
 //GET single designs
 router.get("/:id", getDesign);
-// POST a new design
-router.post("/", addDesigns);
 
 //review product
 
 router.patch("/:id/review", productReview);
 
 //private routes
-
 //require auth for design routes
 router.use(requireAuth);
+
+// POST a new design
+router.post("/adddesign", addDesigns);
 
 //GET all designs
 router.get("/", getMyDesigns);

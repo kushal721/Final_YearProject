@@ -21,6 +21,7 @@ import DesignCard from "./components/Cards/DesignCard";
 import ProfessionalCard from "./components/Cards/ProfessionalCard";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Description from "./components/Cards/Description";
+import { AuthContextProvider } from "./context/AuthContext";
 
 function App() {
   return (

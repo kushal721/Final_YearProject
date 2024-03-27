@@ -40,12 +40,12 @@ const MyDesigns = () => {
           <h1 className="page-title">My Designs</h1>
         </div>
         <div className="designs">
-        {my_designs.map((my_design) => (
-                <div key={my_design._id}>
-                  <MyDesignCard my_design={my_design} />
-                  {/* <Description design={design} /> */}
-                </div>
-              ))}
+          {my_designs.map((my_design) => (
+            <div key={my_design._id}>
+              <MyDesignCard my_design={my_design} />
+              {/* <Description design={design} /> */}
+            </div>
+          ))}
           {/* <div className="design">
             <img src="/r1.png" alt="Design photo" />
             <span className="design-name">Design Name</span> <br />

@@ -35,6 +35,7 @@ export const useLogin = () => {
 
       // Update the auth context
       dispatch({ type: "LOGIN", payload: res });
+      console.log("Payload:", res);
 
       // Check user role and navigate accordingly
       if (res.role === "professional") {

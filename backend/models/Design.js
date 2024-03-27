@@ -45,15 +45,20 @@ const designSchema = new Schema(
       type: String,
       require: true,
     },
-    reviews: [reviewSchema],
-    rating: {
-      type: Number,
-      default: 0,
+    user_id: {
+      type: String,
+      required: true,
     },
-    numReviews: {
-      type: Number,
-      default: 0,
-    },
+
+    // reviews: [reviewSchema],
+    // rating: {
+    //   type: Number,
+    //   default: 0,
+    // },
+    // numReviews: {
+    //   type: Number,
+    //   default: 0,
+    // },
   },
   { timestamps: true }
 );

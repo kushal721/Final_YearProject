@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import "./AddDesigns.css";
 import toast from "react-hot-toast";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import { Navigate } from "react-router-dom";
+
 const AddDesigns = () => {
+  const { user } = useAuthContext(); // Access the user authentication state
   const [designData, setDesignData] = useState({
     designName: "",
-    designDescription: "",
     area: "",
     estimateCost: "",
+    designDescription: "",
   });
 
   const [error, setError] = useState(""); // State variable to hold error message
@@ -42,13 +46,21 @@ const AddDesigns = () => {
     try {
       const formData = { ...designData };
 
-      const response = await fetch("http://localhost:4000/api/designs", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/designs/adddesign",
+        {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`, // Include the authentication token in the request headers
+          },
+        }
+      );
+      // Check if the user is authenticated before rendering the component
+      if (!user) {
+        return <Navigate to="/login" />; // Redirect to login page if user is not authenticated
+      }
 
       if (response.ok) {
         alert("Designs uploaded successfully!");
