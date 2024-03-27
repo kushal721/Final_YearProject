@@ -1,6 +1,6 @@
 import React from "react";
 import "./card.css";
-const ProfessionalCard = () => {
+const ProfessionalCard = ({ professional }) => {
   return (
     <div>
       <div className="card">
@@ -9,7 +9,7 @@ const ProfessionalCard = () => {
         </div>
         <div className="card-content">
           <div className="header">
-            <h5 className="title">Professional Name</h5>
+            <h5 className="title">{professional.username}</h5>
             <p className="rating">★ 5.0</p>
           </div>
           {/* <p className="short-description">
