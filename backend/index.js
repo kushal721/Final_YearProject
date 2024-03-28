@@ -5,7 +5,8 @@ import cors from "cors";
 import connectDb from "./config/connectdb.js";
 import clientRoutes from "./routes/clientRoutes.js";
 
-import designRoutes from "./routes/designRoutes.js"
+import designRoutes from "./routes/designRoutes.js";
+import appointmentRoutes from "./routes/appointmentRoutes.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -41,7 +42,9 @@ app.use((req, res, next) => {
 
 //Load Routes
 app.use("/api/user", clientRoutes);
-app.use("/api/designs", designRoutes );
+app.use("/api/designs", designRoutes);
+
+app.use("/api/appointments", appointmentRoutes);
 
 app.listen(port, () => {
   console.log(`Server listenning at port ${port}`);

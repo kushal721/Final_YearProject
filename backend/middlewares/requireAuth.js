@@ -59,7 +59,6 @@
 
 // export default requireAuth;
 
-
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import UserModel from "../models/User.js";
@@ -84,6 +83,7 @@ const requireAuth = async (req, res, next) => {
 
     // Convert userId to ObjectId type
     const userIdObject = new mongoose.Types.ObjectId(userId);
+    console.log("usere id object:", userIdObject);
 
     // Fetch user from database
     req.user = await UserModel.findOne({ _id: userIdObject }).select("_id");

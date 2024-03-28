@@ -27,7 +27,8 @@ userSchema.methods.generateToken = async function () {
     return jwt.sign(
       {
         //payload
-        userId: this._id.toString(),
+        // userId: this._id.toString(),
+        userId: this._id,
         email: this.email,
         role: this.role,
       },

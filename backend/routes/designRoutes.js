@@ -57,6 +57,7 @@ import {
   productReview,
 } from "../controllers/designController.js";
 import requireAuth from "../middlewares/requireAuth.js";
+import checkUserAuth from "../middlewares/auth-middleware.js";
 
 const router = express.Router();
 
@@ -73,6 +74,7 @@ router.patch("/design/:id/review", productReview);
 
 // Private routes (require authentication)
 router.use(requireAuth);
+// router.use(checkUserAuth);
 
 // POST a new design
 router.post("/adddesign", addDesigns);
