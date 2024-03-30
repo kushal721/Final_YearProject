@@ -1,0 +1,21 @@
+.booking-container {
+  padding: 20px;
+}
+
+.appointment-card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+
+h1,
+h2,
+p {
+  color: #333;
+}
+
+h1 {
+  margin-bottom: 20px;
+}

@@ -1,0 +1,88 @@
+/* descripton card */
+.desc-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-top: 50px;
+  padding: 3%;
+  gap: 5rem;
+}
+
+.left-side {
+  flex: 1;
+  width: 100%;
+  margin-left: 5%;
+}
+
+.right-side {
+  flex: 1;
+  width: 80%;
+  margin-right: 5%;
+}
+
+.design-image {
+  width: 100%;
+  height: auto;
+}
+
+.right-side h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.right-side p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.right-side p.rating {
+  color: #ff9800; /* Change color based on rating */
+}
+
+.review-section {
+  margin-top: 50px;
+  padding: 1%;
+  margin-left: 5%;
+}
+
+.review-section h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.review {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.review h4 {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.review p {
+  font-size: 1rem;
+  color: #777;
+  line-height: 1.4;
+}
+
+/* Media Queries for responsiveness */
+@media only screen and (max-width: 768px) {
+  .desc-container {
+    flex-direction: column; /* Change to column layout on smaller screens */
+  }
+
+  .left-side,
+  .right-side {
+    padding: 10px;
+    width: 100%; /* Set full width for both sides on smaller screens */
+    margin-left: 0; /* Reset margin for smaller screens */
+    margin-right: 0; /* Reset margin for smaller screens */
+  }
+}

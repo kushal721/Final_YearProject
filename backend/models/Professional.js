@@ -3,20 +3,23 @@
 import mongoose from "mongoose";
 
 const professionalSchema = new mongoose.Schema({
-  user: {
+  professionalName: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-    unique: true
+    unique: true,
   },
   specialization: {
     type: String,
-    required: true
+    required: true,
   },
   experience: {
     type: Number,
-    required: true
+    required: true,
   },
+
+  
+
   // Add more fields specific to professionals
 });
 

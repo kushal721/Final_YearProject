@@ -20,8 +20,11 @@ import ProfeProfile from "./pages/ProfessionalSide/ProfeProfile/ProfeProfile";
 import DesignCard from "./components/Cards/DesignCard";
 import ProfessionalCard from "./components/Cards/ProfessionalCard";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
-import Description from "./components/Cards/Description";
+import Description from "./pages/Designs/Description";
+
 import { AuthContextProvider } from "./context/AuthContext";
+import ProfessionalDesc from "./pages/Professionals/ProfessionalDesc";
+import Booking from "./pages/Booking/Booking";
 
 function App() {
   return (
@@ -32,6 +35,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/professionals" element={<Professionals />} />
           <Route path="/designs" element={<Designs />} />
+          <Route path="/design-desc/:id" element={<Description />} />
+
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
@@ -42,7 +47,9 @@ function App() {
 
           <Route path="/design-card" element={<DesignCard />}></Route>
           <Route path="/card" element={<ProfessionalCard />}></Route>
-          <Route path="/design-desc" element={<Description />}></Route>
+          <Route path="/professional-desc/:id" element={<ProfessionalDesc />} />
+
+          <Route path="/:id/booking" element={<Booking />} />
 
           {/* Professional Side */}
           <Route path="/my-designs" element={<MyDesigns />} />

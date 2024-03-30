@@ -1,8 +1,7 @@
 import express from "express";
 import {
   createAppointment,
-  getAppointments,
-  getAppointmentById,
+  getAppointmentsByProfessional,
   updateAppointment,
   deleteAppointment,
   bookAppointment,
@@ -14,11 +13,8 @@ const router = express.Router();
 // Route to create a new appointment
 router.post("/add-appointment", createAppointment);
 
-// Route to retrieve all appointments
-router.get("/", getAppointments);
-
 // Route to retrieve a specific appointment by ID
-router.get("/:id", getAppointmentById);
+router.get("/:professional", getAppointmentsByProfessional);
 
 // Route to update an existing appointment
 router.put("/:id", updateAppointment);

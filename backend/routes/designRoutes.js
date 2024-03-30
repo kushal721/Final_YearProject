@@ -67,7 +67,7 @@ const router = express.Router();
 router.get("/", getDesigns);
 
 // GET single design
-router.get("/design/:id", getDesign);
+router.get("/:id", getDesign);
 
 // Review product
 router.patch("/design/:id/review", productReview);
@@ -83,7 +83,7 @@ router.post("/adddesign", addDesigns);
 router.get("/mydesigns", getMyDesigns);
 
 // GET a single design uploaded by the logged-in user
-router.get("/mydesigns/:id", getMyDesign);
+router.get("/mydesign/:id", getMyDesign);
 
 // DELETE a design uploaded by the logged-in user
 router.delete("/mydesigns/:id", deleteMyDesign);

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import NavbarComp from "../../components/Navbar/Navbar";
 import FooterComp from "../../components/Footer/Footer";
 import DesignCard from "../../components/Cards/DesignCard";
-import Description from "../../components/Cards/Description";
 
 const Designs = () => {
   const [designs, setDesigns] = useState([]);

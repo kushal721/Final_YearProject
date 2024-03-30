@@ -5,7 +5,10 @@ import checkUserAuth from "../middlewares/auth-middleware.js";
 
 import UserModel from "../models/User.js";
 
-import { getProfessionals } from "../controllers/professionalController.js";
+import {
+  getProfessionals,
+  getProfessionalById,
+} from "../controllers/professionalController.js";
 
 // Protected Routes
 // router.get("/protected-route", checkUserAuth, (req, res) => {
@@ -61,6 +64,7 @@ router.post(
 
 //get all professionals
 router.get("/professionals", getProfessionals);
+router.get("/professional/:id", getProfessionalById);
 
 // Protected Routes
 router.post("/user-changePassword", UserController.changeUserPassword);
