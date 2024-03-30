@@ -59,8 +59,9 @@ const bookingSchema = new Schema(
       enum: ["pending", "confirmed", "cancelled"],
       default: "pending",
     },
+
     appointmentTime: {
-      type: Date,
+      type: String,
       required: true,
     },
     remark: {

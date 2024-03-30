@@ -1,5 +1,6 @@
 // const Appointment = require("../models/appointment");
 import { Appointment } from "../models/Appointment.js";
+import { Booking } from "../models/Appointment.js";
 import User from "../models/User.js";
 
 import mongoose from "mongoose";
@@ -71,8 +72,10 @@ const getAppointmentsByProfessional = async (req, res) => {
 
 // Controller to retrieve a specific appointment by ID
 const getAppointmentById = async (req, res) => {
+  const { id } = req.params;
+  console.log("id:sdfa: ", id);
   try {
-    const appointment = await Appointment.findById(req.params.id);
+    const appointment = await Appointment.findById(id);
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
@@ -81,6 +84,96 @@ const getAppointmentById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+//get booking requests by professional
+// const getBookingRequestsByProfessional = async (req, res) => {
+//   const { professionalId } = req.params;
+//   try {
+//     // Find booking requests where the professional field matches the provided professional ID
+//     // and the status is 'pending', and populate the 'client' field to get client details
+//     const bookingRequests = await Booking.find({
+//       professional: professionalId,
+//       status: "pending",
+//     }).populate("client", "username email"); // Include specific client fields
+//     res.status(200).json(bookingRequests);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+const getBookingRequestsByProfessional = async (req, res) => {
+  try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+    const professional = req.user;
+    console.log("Professional ID:", professional); // Log professional ID
+
+    // Get booking requests for the professional
+    const bookingRequests = await Booking.find({ professional });
+
+    // Retrieve client details for each booking request
+    const bookingRequestsDetails = await Promise.all(
+      bookingRequests.map(async (request) => {
+        // Assuming client ID is stored in the booking request
+        const client = await User.findById(request.client).select(
+          "username email"
+        );
+        return {
+          bookingRequest: request,
+          clientDetails: client,
+        };
+      })
+    );
+
+    console.log("Booking Requests:", bookingRequests); // Log booking requests
+
+    res.json({
+      bookingRequests: bookingRequestsDetails,
+    });
+  } catch (error) {
+    console.error("Error:", error); // Log any errors
+    res.status(500).json({ message: error.message });
+  }
+};
+const updateAppointmentStatus = async (req, res) => {
+  try {
+    const { id, action } = req.params;
+    console.log("pid", id, action);
+
+    // Check if the action is either 'confirm' or 'cancel'
+    if (action !== "confirm" && action !== "cancel") {
+      return res.status(400).json({ error: "Invalid action" });
+    }
+
+    let updatedAppointment;
+
+    if (action === "confirm") {
+      // Update appointment status to 'confirmed'
+      updatedAppointment = await Booking.findByIdAndUpdate(
+        id,
+        { status: "confirmed" },
+        { new: true }
+      );
+    } else if (action === "cancel") {
+      // Remove appointment when rejected
+      updatedAppointment = await Booking.findByIdAndDelete(id);
+    }
+
+    console.log("Updated appointment:", updatedAppointment);
+
+    if (!updatedAppointment) {
+      return res.status(404).json({ error: "Appointment not found" });
+    }
+
+    res.status(200).json(updatedAppointment);
+  } catch (error) {
+    console.error("Error updating appointment status:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// http://localhost:4000/api/appointments/status-update/6608489fc3af40a4c3cfdc86/cancel
 
 // Controller to update an existing appointment
 const updateAppointment = async (req, res) => {
@@ -199,7 +292,10 @@ const getClientAppointments = async (req, res) => {
 
 export {
   createAppointment,
+  getAppointmentById,
   getAppointmentsByProfessional,
+  getBookingRequestsByProfessional,
+  updateAppointmentStatus,
   updateAppointment,
   deleteAppointment,
   bookAppointment,

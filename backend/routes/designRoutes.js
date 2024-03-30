@@ -66,8 +66,8 @@ const router = express.Router();
 // GET all designs
 router.get("/", getDesigns);
 
-// GET single design
-router.get("/:id", getDesign);
+// // GET single design
+// router.get("/:id", getDesign);
 
 // Review product
 router.patch("/design/:id/review", productReview);
@@ -79,16 +79,16 @@ router.use(requireAuth);
 // POST a new design
 router.post("/adddesign", addDesigns);
 
-// GET all designs uploaded by the logged-in user
-router.get("/mydesigns", getMyDesigns);
+// // GET all designs uploaded by the logged-in user
+router.get("/my-designs", getMyDesigns);
 
-// GET a single design uploaded by the logged-in user
+// // GET a single design uploaded by the logged-in user
 router.get("/mydesign/:id", getMyDesign);
 
-// DELETE a design uploaded by the logged-in user
-router.delete("/mydesigns/:id", deleteMyDesign);
+// // DELETE a design uploaded by the logged-in user
+// router.delete("/mydesigns/:id", deleteMyDesign);
 
-// UPDATE a design uploaded by the logged-in user
-router.patch("/mydesigns/:id", updateMyDesign);
+// // UPDATE a design uploaded by the logged-in user
+// router.patch("/mydesigns/:id", updateMyDesign);
 
 export default router;

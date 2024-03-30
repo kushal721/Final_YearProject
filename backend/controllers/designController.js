@@ -234,6 +234,7 @@ const getMyDesigns = async (req, res) => {
     }
 
     const user_id = req.user._id;
+    console.log("user id", user_id);
 
     console.log(user_id);
     const designs = await Design.find({ user_id }).sort({ createdAt: -1 });
@@ -241,6 +242,7 @@ const getMyDesigns = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+ 
 };
 
 // Get a single design

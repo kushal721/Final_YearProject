@@ -21,7 +21,7 @@ const MyDesigns = () => {
         // }
 
         const response = await fetch(
-          "http://localhost:4000/api/designs/mydesigns",
+          "http://localhost:4000/api/designs/my-designs",
           {
             headers: {
               Authorization: `Bearer ${user.token}`, // Include the token in the Authorization header
@@ -36,7 +36,7 @@ const MyDesigns = () => {
           console.error("Failed to fetch designs");
         }
       } catch (error) {
-        console.error("Error fetching desafasigns:", error);
+        console.error("Error fetching desagns:", error);
       }
     };
     fetchDesigns();

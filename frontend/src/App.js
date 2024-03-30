@@ -25,6 +25,7 @@ import Description from "./pages/Designs/Description";
 import { AuthContextProvider } from "./context/AuthContext";
 import ProfessionalDesc from "./pages/Professionals/ProfessionalDesc";
 import Booking from "./pages/Booking/Booking";
+import BookingForm from "./pages/Booking/BookingForm";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path="/professional-desc/:id" element={<ProfessionalDesc />} />
 
           <Route path="/:id/booking" element={<Booking />} />
+          <Route path="/bookingform/:id" element={<BookingForm />} />
 
           {/* Professional Side */}
           <Route path="/my-designs" element={<MyDesigns />} />
