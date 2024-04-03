@@ -55,6 +55,7 @@ import {
   deleteMyDesign,
   updateMyDesign,
   productReview,
+  getProfessionalDesigns,
 } from "../controllers/designController.js";
 import requireAuth from "../middlewares/requireAuth.js";
 import checkUserAuth from "../middlewares/auth-middleware.js";
@@ -66,8 +67,11 @@ const router = express.Router();
 // GET all designs
 router.get("/", getDesigns);
 
-// // GET single design
-// router.get("/:id", getDesign);
+// GET single design
+router.get("/:id", getDesign);
+
+// Route to fetch professional designs
+router.get("/:id/designs", getProfessionalDesigns);
 
 // Review product
 router.patch("/design/:id/review", productReview);
@@ -78,12 +82,11 @@ router.use(requireAuth);
 
 // POST a new design
 router.post("/adddesign", addDesigns);
-
 // // GET all designs uploaded by the logged-in user
-router.get("/my-designs", getMyDesigns);
+router.get("/profe/getDesigns", getMyDesigns);
 
-// // GET a single design uploaded by the logged-in user
-router.get("/mydesign/:id", getMyDesign);
+// // // GET a single design uploaded by the logged-in user
+// router.get("/mydesign/:id", getMyDesign);
 
 // // DELETE a design uploaded by the logged-in user
 // router.delete("/mydesigns/:id", deleteMyDesign);

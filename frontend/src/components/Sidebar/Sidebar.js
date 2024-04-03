@@ -46,6 +46,14 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
+            <Link to="/addAppointment" className="sidebar-link">
+              <span className="sidebar-icon">
+                <i className="bx bx-music"></i>
+              </span>
+              <span className="sidebar-text">Add Appointment</span>
+            </Link>
+          </li>
+          <li>
             <Link to="/profe-profile" className="sidebar-link">
               <span className="sidebar-icon">
                 <i className="bx bx-music"></i>

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import NavbarComp from "../../components/Navbar/Navbar";
 import { Link, useParams } from "react-router-dom";
+import NavbarComp from "../../components/Navbar/Navbar";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import "./ProfessionalDesc.css";
 
 const ProfessionalDesc = () => {
   const { id } = useParams(); // Get the professional ID from the route parameters
-  console.log("id: ", id);
+  const { user } = useAuthContext(); // Access the user authentication state
 
   const [professionalDesc, setProfessionalDesc] = useState(null); // Set initial state to null
+  const [designs, setDesigns] = useState([]); // Initialize designs state as an empty array
 
   useEffect(() => {
     const fetchProfessional = async () => {
@@ -29,8 +32,29 @@ const ProfessionalDesc = () => {
     fetchProfessional();
   }, [id]); // Fetch professional details when ID changes
 
+  useEffect(() => {
+    const fetchDesigns = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/api/designs/${id}/designs`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setDesigns(data); // Set the designs state with fetched data
+          console.log("designs", data);
+        } else {
+          console.error("Failed to fetch professional designs");
+        }
+      } catch (error) {
+        console.error("Error fetching professional designs:", error);
+      }
+    };
+
+    fetchDesigns();
+  }, [id]); // Fetch designs when ID changes
+
   // Render loading state while waiting for data to be fetched
-  if (!professionalDesc) {
+  if (!professionalDesc || designs.length === 0) {
     return (
       <div>
         <NavbarComp />
@@ -41,7 +65,7 @@ const ProfessionalDesc = () => {
     );
   }
 
-  // Once data is fetched, render the professional description
+  // Render the professional description and designs once data is fetched
   return (
     <div>
       <NavbarComp />
@@ -49,9 +73,28 @@ const ProfessionalDesc = () => {
         <div className="title">
           <h2>{professionalDesc.username}</h2>
           <h3>{professionalDesc.email}</h3>
-          <Link to={`/${id}/booking`} className="btn-book-appoint">
-            Book Appointment
-          </Link>
+          {/* Conditionally render the booking link */}
+          {user ? (
+            <Link to={`/${id}/booking`} className="btn-book-appoint">
+              Book Appointment
+            </Link>
+          ) : (
+            <p>Please log in to book an appointment</p>
+          )}
+        </div>
+        {/* Display professional designs */}
+        <div className="designs-container">
+          <h2>Professional Designs</h2>
+          <ul>
+            {designs.map((design) => (
+              <li key={design.id}>
+                <h3>Design Name: {design.designName}</h3>
+                <p>Area: {design.area}</p>
+                <p>Estimate Cost: {design.estimateCost}</p>
+                <p>Description: {design.designDescription}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

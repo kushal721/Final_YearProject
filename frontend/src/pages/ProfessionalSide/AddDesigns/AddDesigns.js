@@ -13,6 +13,7 @@ const AddDesigns = () => {
     estimateCost: "",
     designDescription: "",
   });
+  console.log("des", designData);
 
   const [error, setError] = useState(""); // State variable to hold error message
 

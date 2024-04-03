@@ -3,28 +3,28 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 // review model
 
-const reviewSchema = new Schema(
-  {
-    userName: {
-      type: String,
-      required: true,
-    },
-    rating: {
-      type: Number,
-      default: 0,
-    },
-    comment: {
-      type: String,
-    },
+// const reviewSchema = new Schema(
+//   {
+//     userName: {
+//       type: String,
+//       required: true,
+//     },
+//     rating: {
+//       type: Number,
+//       default: 0,
+//     },
+//     comment: {
+//       type: String,
+//     },
 
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-      required: [true, "user required"],
-    },
-  },
-  { timestamps: true }
-);
+//     user: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "user",
+//       required: [true, "user required"],
+//     },
+//   },
+//   { timestamps: true }
+// );
 
 //design model
 const designSchema = new Schema(

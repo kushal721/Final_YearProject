@@ -7,6 +7,7 @@ import "./Description.css";
 const Description = ({ match }) => {
   const { id } = useParams(); // Get the design ID from the route parameters
 
+  console.log(id);
   const [designDesc, setDesignDesc] = useState();
 
   useEffect(() => {

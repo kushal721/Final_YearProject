@@ -226,29 +226,10 @@ const getDesigns = async (req, res) => {
   }
 };
 
-// Get all designs (for the logged-in user)
-const getMyDesigns = async (req, res) => {
-  try {
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({ error: "User not authenticated" });
-    }
-
-    const user_id = req.user._id;
-    console.log("user id", user_id);
-
-    console.log(user_id);
-    const designs = await Design.find({ user_id }).sort({ createdAt: -1 });
-    res.status(200).json(designs);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
- 
-};
-
 // Get a single design
 const getDesign = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  console.log("idd", id);
   try {
     const design = await Design.findById(id);
     if (!design) {
@@ -260,15 +241,63 @@ const getDesign = async (req, res) => {
   }
 };
 
+// Import the Professional model
+
+// Controller function to fetch professional designs
+const getProfessionalDesigns = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user_id = id;
+    console.log("idp", user_id);
+    // Fetch the professional by ID
+    // const professional = await Design.findById(id);
+    // if (!professional) {
+    //   // If professional not found, return a 404 response
+    //   return res.status(404).json({ message: "Professional not found" });
+    // }
+    // // If professional found, send the designs as JSON response
+    // res.json(professional.designs);
+
+    const designs = await Design.find({ user_id }).sort({ createdAt: -1 });
+    res.status(200).json(designs);
+    console.log(designs);
+  } catch (error) {
+    console.error("Error fetching professional designs:", error);
+    // If an error occurs, return a 500 response with an error message
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 // Delete a design
 const deleteDesign = async (req, res) => {
   const { id } = req.params;
+
   try {
     const design = await Design.findOneAndDelete({ _id: id });
     if (!design) {
       return res.status(404).json({ error: "Design not found" });
     }
     res.status(200).json(design);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get all designs (for the logged-in user)
+const getMyDesigns = async (req, res) => {
+  try {
+    console.log("user", req.user);
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    const user_id = req.user._id;
+    console.log("user id", user_id);
+
+    console.log(user_id);
+    const designs = await Design.find({ user_id }).sort({ createdAt: -1 });
+    res.status(200).json(designs);
+    console.log(designs);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -298,17 +327,17 @@ const addDesigns = async (req, res) => {
 
 // Get a single design by the logged-in user
 const getMyDesign = async (req, res) => {
-  const { id } = req.params;
-  console.log(id);
-  try {
-    const design = await Design.findOne({ _id: id, user_id: req.user._id });
-    if (!design) {
-      return res.status(404).json({ error: "Design not found" });
-    }
-    res.status(200).json(design);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  // const { id } = req.params;
+  // console.log(id);
+  // try {
+  //   const design = await Design.findOne({ _id: id, user_id: req.user._id });
+  //   if (!design) {
+  //     return res.status(404).json({ error: "Design not found" });
+  //   }
+  //   res.status(200).json(design);
+  // } catch (error) {
+  //   res.status(500).json({ error: error.message });
+  // }
 };
 
 // Delete a design by the logged-in user
@@ -400,4 +429,5 @@ export {
   deleteMyDesign,
   updateMyDesign,
   productReview,
+  getProfessionalDesigns,
 };

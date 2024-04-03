@@ -21,7 +21,7 @@ const MyDesigns = () => {
         // }
 
         const response = await fetch(
-          "http://localhost:4000/api/designs/my-designs",
+          "http://localhost:4000/api/designs/profe/getDesigns",
           {
             headers: {
               Authorization: `Bearer ${user.token}`, // Include the token in the Authorization header
