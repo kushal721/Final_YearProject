@@ -34,7 +34,7 @@ const createAppointment = async (req, res) => {
 const getAppointmentsByProfessional = async (req, res) => {
   try {
     const { professional } = req.params;
-    console.log("Professional ID:", professional); // Log professional ID
+    console.log("Professional IdfaD:", professional); // Log professional ID
 
     // Assuming the professional data is stored within the User model
     const user = await User.findById(professional).select("username email");
@@ -280,12 +280,54 @@ const bookAppointment = async (req, res) => {
 // Controller to retrieve appointments booked by a client
 const getClientAppointments = async (req, res) => {
   try {
+    console.log("user", req.user);
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
     const clientId = req.user._id; // Assuming the authenticated user is the client
-    const appointments = await Appointment.find({
-      "bookings.client": clientId,
-    });
+    console.log("Client ID:", clientId);
+
+    const appointments = await Booking.find({ client: clientId });
     res.status(200).json(appointments);
+    console.log("Appointments:", appointments);
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+//get confirmed appointments
+const getConfirmedBookings = async (req, res) => {
+  try {
+    console.log("user", req.user);
+
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+    console.log("req user role", req.user.role);
+
+    let confirmedBookings;
+
+    if (req.user.role === "professional") {
+      // Query the database for confirmed bookings associated with the professional's ID
+      confirmedBookings = await Booking.find({
+        professional: req.user._id,
+        status: "confirmed",
+      });
+    } else if (req.user.role === "client") {
+      // Query the database for confirmed bookings associated with the client's ID
+      confirmedBookings = await Booking.find({
+        client: req.user._id,
+        status: "confirmed",
+      });
+    } else {
+      return res.status(403).json({ error: "Invalid user role" });
+    }
+
+    // Send the confirmed bookings as a response
+    res.status(200).json(confirmedBookings);
+  } catch (error) {
+    // Handle errors
     res.status(500).json({ error: error.message });
   }
 };
@@ -300,4 +342,5 @@ export {
   deleteAppointment,
   bookAppointment,
   getClientAppointments,
+  getConfirmedBookings,
 };

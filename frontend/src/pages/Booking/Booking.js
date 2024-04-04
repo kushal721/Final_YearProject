@@ -76,6 +76,8 @@
 // };
 
 // export default Booking;
+
+//find appointments 
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import NavbarComp from "../../components/Navbar/Navbar";
@@ -93,7 +95,7 @@ const Booking = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/appointments/${id}`
+          `http://localhost:4000/api/appointments/check-appo/${id}`
         );
         if (response.ok) {
           const data = await response.json();
