@@ -58,9 +58,12 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import connectDb from "./config/connectdb.js";
+import userRoutes from "./routes/userRoutes.js";
 import clientRoutes from "./routes/clientRoutes.js";
 import designRoutes from "./routes/designRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 import { updateAppointmentStatus } from "./controllers/appointmentController.js";
 
 const app = express();
@@ -86,8 +89,11 @@ app.use((req, res, next) => {
 
 // Load Routes
 app.use("/api/user", clientRoutes);
+app.use("/api/userr", userRoutes);
 app.use("/api/designs", designRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 
 // Route to update appointment status
 // app.put("/api/appointments/:id/:action", updateAppointmentStatus);

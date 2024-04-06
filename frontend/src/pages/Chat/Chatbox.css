@@ -1,0 +1,88 @@
+/* Chatbox.css */
+
+.ChatBox-container {
+  padding: 1px;
+  height: 100vh;
+  background: #f2f2f2;
+  border-radius: 1rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.chat-header {
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.cb-user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 10px;
+}
+
+.cb-username {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.chat-body {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.message {
+  background-color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.own .message {
+  background-color: #b8e6ff;
+}
+
+.message span {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.chat-sender {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.chat-sender > div {
+  cursor: pointer;
+}
+
+.chat-sender > div:first-child {
+  font-size: 1.5rem;
+}
+
+.chat-sender > div:last-child {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.chat-sender > input[type="file"] {
+  display: none;
+}
