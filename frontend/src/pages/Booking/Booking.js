@@ -77,7 +77,7 @@
 
 // export default Booking;
 
-//find appointments 
+//find appointments
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import NavbarComp from "../../components/Navbar/Navbar";

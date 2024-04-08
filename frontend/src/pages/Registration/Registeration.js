@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import "./../mix.css";
 import NavbarComp from "../../components/Navbar/Navbar";
 import { useSignup } from "../../hooks/useSignup";
 
@@ -29,73 +28,19 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await signup(
-      inpval.username,
-      inpval.email,
-      inpval.password,
-      inpval.confirm_password,
-      inpval.role
-    );
+    try {
+      await signup(
+        inpval.username,
+        inpval.email,
+        inpval.password,
+        inpval.confirm_password,
+        inpval.role
+      );
+    } catch (error) {
+      // If signup fails, display error message
+      console.error("Signup Error:", error.message);
+    }
   };
-
-  // const addUserdata = async (e) => {
-  //   e.preventDefault();
-  //   const { username, email, password, confirm_password, role } = inpval;
-
-  //   if (!username || !email || !password || !confirm_password) {
-  //     alert("All fields are required");
-  //     return;
-  //   }
-
-  //   if (!email.includes("@")) {
-  //     alert("Enter valid email");
-  //     return;
-  //   }
-
-  //   if (password.length < 6 || confirm_password.length < 6) {
-  //     alert("Password must be at least 6 characters");
-  //     return;
-  //   }
-
-  //   if (password !== confirm_password) {
-  //     alert("Password and confirm password do not match");
-  //     return;
-  //   }
-
-  //   try {
-  //     const data = await fetch(`http://localhost:4000/api/user/user-register`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         username,
-  //         email,
-  //         password,
-  //         confirm_password,
-  //         role,
-  //       }),
-  //     });
-
-  //     if (!data.ok) {
-  //       const errorResponse = await data.json();
-  //       throw new Error(errorResponse.msg);
-  //     }
-
-  //     alert("User registration done");
-  //     setInpval({
-  //       username: "",
-  //       email: "",
-  //       password: "",
-  //       confirm_password: "",
-  //     });
-
-  //     navigate("/login");
-  //   } catch (error) {
-  //     alert("Error: " + error.message);
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
 
   return (
     <>

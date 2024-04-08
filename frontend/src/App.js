@@ -28,6 +28,8 @@ import Booking from "./pages/Booking/Booking";
 import BookingForm from "./pages/Booking/BookingForm";
 import AddAppointment from "./pages/ProfessionalSide/Profe-Appointments/AddAppointment";
 import Chat from "./pages/Chat/Chat";
+import ClientAppointments from "./pages/Appointments/ClientAppointments";
+import AllAppointments from "./pages/ProfessionalSide/Profe-Appointments/AllAppointments";
 
 function App() {
   return (
@@ -39,7 +41,7 @@ function App() {
           <Route path="/professionals" element={<Professionals />} />
           <Route path="/designs" element={<Designs />} />
           <Route path="/design-desc/:id" element={<Description />} />
-
+          <Route path="/appointment" element={<ClientAppointments />} />
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
@@ -53,6 +55,8 @@ function App() {
           <Route path="/professional-desc/:id" element={<ProfessionalDesc />} />
 
           <Route path="/addAppointment" element={<AddAppointment />} />
+          <Route path="/allappointments" element={<AllAppointments />} />
+          
           <Route path="/:id/booking" element={<Booking />} />
           <Route path="/bookingform/:id" element={<BookingForm />} />
 
@@ -61,7 +65,6 @@ function App() {
           <Route path="/add-designs" element={<AddDesigns />} />
           <Route path="/profe-appointments" element={<ProfeAppointments />} />
           <Route path="/profe-profile" element={<ProfeProfile />} />
-
 
           {/* routes for chat */}
           <Route path="/chat" element={<Chat />} />

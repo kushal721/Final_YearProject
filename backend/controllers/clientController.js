@@ -89,7 +89,7 @@ class UserController {
             //   { expiresIn: "5d" }
             // );
             // res.status(201).json({ status: 201, saved_user, token: token });
-            res.status(201).json({
+            res.status(200).json({
               msg: "registration successful",
               userId: userCreated._id.toString(),
               token: await userCreated.generateToken(),
@@ -97,13 +97,13 @@ class UserController {
           } else {
             res.status(400).json({
               status: "failed",
-              message: "Password and confirm password doesnot match",
+              msg: "Password and confirm password doesnot match",
             });
           }
         } else {
           res
             .status(400)
-            .json({ status: "failed", message: "All fields are required" });
+            .json({ status: "failed", msg: "All fields are required" });
         }
       }
     } catch (error) {

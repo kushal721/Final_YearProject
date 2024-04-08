@@ -64,7 +64,7 @@
 
 // export default NavbarComp;
 
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { Button, Navbar } from "flowbite-react";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
@@ -74,9 +74,10 @@ import { IoChatbubbleEllipsesOutline } from "react-icons/io5"; // Import chat ic
 function NavbarComp() {
   const { logout } = useLogout();
   const { user } = useAuthContext();
-
+  const Navigate = useNavigate();
   const handleClick = () => {
     logout();
+    Navigate("/");
   };
 
   return (
@@ -123,6 +124,9 @@ function NavbarComp() {
           <>
             <Navbar.Link as={NavLink} to="/favorite">
               <span className="text-lg">Favorite</span>
+            </Navbar.Link>
+            <Navbar.Link as={NavLink} to="/appointment">
+              <span className="text-lg">Appointments</span>
             </Navbar.Link>
             <NavLink to="/chat">
               {/* Use IoChatbubbleEllipsesOutline icon with custom styling */}

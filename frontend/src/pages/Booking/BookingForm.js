@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Booking from "./Booking";
 import "./BookingForm.css"; // Import CSS file
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
@@ -8,9 +7,6 @@ const BookingForm = ({ appointmentId }) => {
   const { id } = useParams();
   const { user } = useAuthContext();
 
-  console.log();
-
-  //   const authenticatedUser = useSelector((state) => state.auth.user); // Get authenticated user from Redux state
   const [formData, setFormData] = useState({
     appointment: appointmentId,
     professional: id,
@@ -35,6 +31,7 @@ const BookingForm = ({ appointmentId }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
           },
           body: JSON.stringify(formData),
         }
@@ -42,7 +39,6 @@ const BookingForm = ({ appointmentId }) => {
 
       if (response.ok) {
         alert("Appointment booked successfully!");
-        console.log(response.body);
         // Reset form data after successful booking
         setFormData({
           appointment: appointmentId,
@@ -52,10 +48,12 @@ const BookingForm = ({ appointmentId }) => {
           remark: "",
         });
       } else {
-        alert("Failed to book appointment");
+        const errorMessage = await response.text();
+        alert(`Failed to book appointment: ${errorMessage}`);
       }
     } catch (error) {
       console.error("Error booking appointment:", error);
+      alert("An error occurred while booking the appointment");
     }
   };
 
@@ -65,7 +63,7 @@ const BookingForm = ({ appointmentId }) => {
       <form onSubmit={handleSubmit}>
         <label htmlFor="appointmentTime">Appointment Time:</label>
         <input
-          type="text"
+          type="time"
           id="appointmentTime"
           name="appointmentTime"
           value={formData.appointmentTime}
