@@ -11,6 +11,43 @@ const ProfessionalDesc = () => {
   const [professionalDesc, setProfessionalDesc] = useState(null); // Set initial state to null
   const [designs, setDesigns] = useState([]); // Initialize designs state as an empty array
 
+  // Function to handle the message request
+  const handleMessageRequest = async () => {
+    if (!user) {
+      console.error("User object is null.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:4000/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          senderId: user.userId,
+          receiverId: id,
+        }),
+      });
+      if (response.ok) {
+        // Handle success
+        console.log("Message sent successfully");
+        // You can update the UI or show a success message here if needed
+      } else {
+        console.error("Failed to send message");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  // Check if user object exists before logging userId
+  useEffect(() => {
+    if (user) {
+      console.log(user.userId, "suid");
+    }
+  }, [user]);
+
   useEffect(() => {
     const fetchProfessional = async () => {
       try {
@@ -54,48 +91,63 @@ const ProfessionalDesc = () => {
   }, [id]); // Fetch designs when ID changes
 
   // Render loading state while waiting for data to be fetched
-  if (!professionalDesc || designs.length === 0) {
-    return (
-      <div>
-        <NavbarComp />
-        <div className="container">
-          <h2>Loading...</h2>
-        </div>
-      </div>
-    );
-  }
+  // if (!professionalDesc || designs.length === 0) {
+  //   return (
+  //     <div>
+  //       <NavbarComp />
+  //       <div className="container">
+  //         <h2>Loading...</h2>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
+  // Render the professional description and designs once data is fetched
   // Render the professional description and designs once data is fetched
   return (
     <div>
       <NavbarComp />
       <div className="container">
-        <div className="title">
-          <h2>{professionalDesc.username}</h2>
-          <h3>{professionalDesc.email}</h3>
-          {/* Conditionally render the booking link */}
-          {user ? (
-            <Link to={`/${id}/booking`} className="btn-book-appoint">
-              Book Appointment
-            </Link>
-          ) : (
-            <p>Please log in to book an appointment</p>
-          )}
-        </div>
-        {/* Display professional designs */}
-        <div className="designs-container">
-          <h2>Professional Designs</h2>
-          <ul>
-            {designs.map((design) => (
-              <li key={design.id}>
-                <h3>Design Name: {design.designName}</h3>
-                <p>Area: {design.area}</p>
-                <p>Estimate Cost: {design.estimateCost}</p>
-                <p>Description: {design.designDescription}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {professionalDesc && ( // Check if professionalDesc is not null
+          <div className="title">
+            <h2>{professionalDesc.username}</h2>
+            <h3>{professionalDesc.email}</h3>
+            {/* Conditionally render the booking link */}
+            {user ? (
+              <>
+                <Link
+                  to={`/chat`}
+                  onClick={handleMessageRequest}
+                  className="btn-book-appoint"
+                >
+                  Message Now
+                </Link>
+                <Link to={`/${id}/booking`} className="btn-book-appoint">
+                  Book Appointment
+                </Link>
+              </>
+            ) : (
+              <p>Please log in to book an appointment</p>
+            )}
+          </div>
+        )}
+
+        {/* Display professional designs if available */}
+        {designs.length > 0 && (
+          <div className="designs-container">
+            <h2>Professional Designs</h2>
+            <ul>
+              {designs.map((design) => (
+                <li key={design.id}>
+                  <h3>Design Name: {design.designName}</h3>
+                  <p>Area: {design.area}</p>
+                  <p>Estimate Cost: {design.estimateCost}</p>
+                  <p>Description: {design.designDescription}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

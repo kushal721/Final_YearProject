@@ -3,6 +3,7 @@ import { BiFontSize } from "react-icons/bi";
 // import "./Chat.css";
 const Conversation = ({ data, currentUserId }) => {
   const [userData, setUserData] = useState(null);
+  console.log(currentUserId, "currenuser");
 
   useEffect(() => {
     const otherUserId = data.members.find((id) => id !== currentUserId);

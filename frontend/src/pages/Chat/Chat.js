@@ -114,6 +114,8 @@ const Chat = () => {
   const [receiveMessage, setReceiveMessage] = useState(null);
   const socket = useRef();
 
+  console.log("auth user", user);
+
   // Send message to socket server
   useEffect(() => {
     if (sendMessage !== null) {
@@ -133,10 +135,40 @@ const Chat = () => {
     });
   }, [user]);
 
+  // // Fetch user chats
+  // useEffect(() => {
+  //   const fetchChats = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `http://localhost:4000/api/chat/${user.userId}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${user.token}`,
+  //           },
+  //         }
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch chats");
+  //       }
+  //       const data = await response.json();
+  //       setChats(data);
+  //     } catch (error) {
+  //       console.error("Error fetching chats:", error);
+  //     }
+  //   };
+
+  //   fetchChats();
+  // }, [user]);
+
   // Fetch user chats
   useEffect(() => {
     const fetchChats = async () => {
       try {
+        if (!user) {
+          console.error("User object is null.");
+          return;
+        }
+
         const response = await fetch(
           `http://localhost:4000/api/chat/${user.userId}`,
           {

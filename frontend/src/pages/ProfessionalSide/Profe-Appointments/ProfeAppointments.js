@@ -6,6 +6,7 @@ import { useAuthContext } from "../../../hooks/useAuthContext";
 const ProfeAppointments = () => {
   const [appointmentRequests, setAppointmentRequests] = useState([]);
   const { user } = useAuthContext();
+  console.log("appointmetreq", appointmentRequests);
 
   useEffect(() => {
     const fetchAppointmentRequests = async () => {
@@ -80,7 +81,54 @@ const ProfeAppointments = () => {
       <Sidebar />
       <div className="content">
         <div className="page-name">
-          <h1 className="page-title">Appointments</h1>
+          <h1 className="page-title">Confirmed Appointments</h1>
+          <table className="appointment-table">
+            <thead>
+              <tr>
+                <th className="table-heading">Client Name</th>
+                <th className="table-heading">Time</th>
+                <th className="table-heading">Location</th>
+
+                <th className="table-heading">Remark</th>
+                <th className="table-heading">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointmentRequests
+                .filter(
+                  (appointment) =>
+                    appointment.bookingRequest.status !== "cancelled"
+                )
+                .map((appointment) => (
+                  <tr
+                    key={appointment.bookingRequest._id}
+                    className="table-row"
+                  >
+                    <td className="table-data">
+                      {appointment.clientDetails.username}
+                    </td>
+                    <td className="table-data">
+                      {appointment.bookingRequest.appointmentTime}
+                    </td>
+                    <td className="table-data">Kathmandu</td>
+
+                    <td className="table-data">
+                      {appointment.bookingRequest.remark}
+                    </td>
+                    <td className="table-data">
+                      <button
+                        className="reject-button"
+                        onClick={() =>
+                          handleAction(appointment.bookingRequest._id, "cancel")
+                        }
+                      >
+                        Cancel
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
 
         <div className="appointment-requests">
@@ -150,355 +198,5 @@ const ProfeAppointments = () => {
     </div>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default ProfeAppointments;
