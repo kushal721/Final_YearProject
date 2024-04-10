@@ -47,6 +47,7 @@
 // export default router; // Export the router as default
 import express from "express";
 import {
+  addRatingToDesign,
   addDesigns,
   getDesigns,
   getDesign,
@@ -56,6 +57,7 @@ import {
   updateMyDesign,
   productReview,
   getProfessionalDesigns,
+  addRating,
 } from "../controllers/designController.js";
 import requireAuth from "../middlewares/requireAuth.js";
 import checkUserAuth from "../middlewares/auth-middleware.js";
@@ -76,6 +78,11 @@ router.get("/:id/designs", getProfessionalDesigns);
 // Review product
 router.patch("/design/:id/review", productReview);
 
+// POST a new design
+router.post("/addrating", requireAuth, addRatingToDesign);
+//  UPDATE a design uploaded by the logged-in user
+router.patch("/mydesigns/:designId", updateMyDesign);
+
 // Private routes (require authentication)
 router.use(requireAuth);
 // router.use(checkUserAuth);
@@ -90,8 +97,5 @@ router.get("/profe/getDesigns", getMyDesigns);
 
 // // DELETE a design uploaded by the logged-in user
 // router.delete("/mydesigns/:id", deleteMyDesign);
-
-// // UPDATE a design uploaded by the logged-in user
-// router.patch("/mydesigns/:id", updateMyDesign);
 
 export default router;

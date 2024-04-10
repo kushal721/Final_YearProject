@@ -44,22 +44,28 @@ const addToFavorites = async (req, res) => {
 //   }
 // };
 
-// Controller to get all favorites for a user
 const getAllFavorites = async (req, res) => {
   try {
     const userId = req.user._id; // Retrieve user ID from the authenticated user
-    console.log("User ID:", userId);
+    console.log("Userrrr ID:", userId);
 
     const favorites = await Favorite.find({ userId }).populate("designId");
 
     // Map over favorites and populate design details
     const favoritesWithDesigns = await Promise.all(
       favorites.map(async (favorite) => {
-        const design = await Design.findById(favorite.designId);
-        return {
-          ...favorite.toObject(),
-          design: design.toObject(), // Add design details to the favorite object
-        };
+        if (favorite.designId) {
+          const design = await Design.findById(favorite.designId);
+          return {
+            ...favorite.toObject(),
+            design: design ? design.toObject() : null, // Add design details if found, otherwise null
+          };
+        } else {
+          return {
+            ...favorite.toObject(),
+            design: null, // No design found, so set it to null
+          };
+        }
       })
     );
 

@@ -1,26 +1,41 @@
-// Professional.js (Model)
-
 import mongoose from "mongoose";
 
 const professionalSchema = new mongoose.Schema({
-  professionalName: {
+  professionalId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-    unique: true,
   },
   specialization: {
     type: String,
     required: true,
   },
   experience: {
-    type: Number,
+    type: String, // Storing experience as a string
     required: true,
   },
 
-  
+  description: {
+    type: String, // Professional description
+    required: true,
+  },
+  skills: {
+    type: String,
+    required: true,
+  },
+  education: {
+    type: String, // Education details
+    required: true,
+  },
 
-  // Add more fields specific to professionals
+  contact: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
 });
 
 const ProfessionalModel = mongoose.model("Professional", professionalSchema);

@@ -30,6 +30,8 @@ import AddAppointment from "./pages/ProfessionalSide/Profe-Appointments/AddAppoi
 import Chat from "./pages/Chat/Chat";
 import ClientAppointments from "./pages/Appointments/ClientAppointments";
 import AllAppointments from "./pages/ProfessionalSide/Profe-Appointments/AllAppointments";
+import RatingComp from "./components/Rating/RatingComp";
+import EditDesign from "./components/Edit/EditDesign";
 
 function App() {
   return (
@@ -41,6 +43,7 @@ function App() {
           <Route path="/professionals" element={<Professionals />} />
           <Route path="/designs" element={<Designs />} />
           <Route path="/design-desc/:id" element={<Description />} />
+          <Route path="/rating" element={<RatingComp />} />
           <Route path="/appointment" element={<ClientAppointments />} />
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/contact" element={<Contact />} />
@@ -53,10 +56,11 @@ function App() {
           <Route path="/design-card" element={<DesignCard />}></Route>
           <Route path="/card" element={<ProfessionalCard />}></Route>
           <Route path="/professional-desc/:id" element={<ProfessionalDesc />} />
+          <Route path="/my-designs/:designId" element={<EditDesign />} />
 
           <Route path="/addAppointment" element={<AddAppointment />} />
           <Route path="/allappointments" element={<AllAppointments />} />
-          
+
           <Route path="/:id/booking" element={<Booking />} />
           <Route path="/bookingform/:id" element={<BookingForm />} />
 

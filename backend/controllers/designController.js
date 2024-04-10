@@ -359,13 +359,12 @@ const deleteMyDesign = async (req, res) => {
 
 // Update a design by the logged-in user
 const updateMyDesign = async (req, res) => {
-  const { id } = req.params;
+  const { designId } = req.params;
+  console.log(designId, "design ididid");
   try {
-    const design = await Design.findOneAndUpdate(
-      { _id: id, user_id: req.user._id },
-      req.body,
-      { new: true }
-    );
+    const design = await Design.findOneAndUpdate({ _id: designId }, req.body, {
+      new: true,
+    });
     if (!design) {
       return res.status(404).json({ error: "Design not found" });
     }
@@ -374,6 +373,127 @@ const updateMyDesign = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// // Controller to add a rating to a design
+// const addRating = async (req, res) => {
+//   try {
+//     // const { designId, star, client_id } = req.body;
+//     const { _id } = req.user;
+//     const { star, designId } = req.body;
+//     console.log("designId: ", designId);
+
+//     // const design = await
+
+//     // Find the design by ID
+//     const design = await Design.findById(designId);
+
+//     let alreadyRated = design.rating.find(
+//       (userId) => userId.postedby.toString() === _id.toString()
+//     );
+
+//     if (alreadyRated) {
+//       const updateRating = await Design.updateOne(
+//         {
+//           ratings: { $elemMatch: alreadyRated },
+//         },
+//         { $set: { "ratings.$.star": star } },
+//         { new: true }
+//       );
+
+//       res.json(updateRating);
+//     } else {
+//       const rateDesign = await Design.findOneAndUpdate(
+//         designId,
+//         {
+//           $push: {
+//             ratings: {
+//               star: star,
+//               postedby: _id,
+//             },
+//           },
+//         },
+//         {
+//           new: true,
+//         }
+//       );
+//       res.json(rateDesign);
+//     }
+
+// };
+
+// Controller to add a rating to a design
+const addRating = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { star, designId } = req.body;
+
+    // Find the design by ID
+    const design = await Design.findById(designId);
+
+    // Check if the user has already rated this design
+    let alreadyRatedIndex = design.ratings.findIndex(
+      (rating) => rating.postedby.toString() === _id.toString()
+    );
+
+    if (alreadyRatedIndex !== -1) {
+      // If the user has already rated, update the rating
+      design.ratings[alreadyRatedIndex].star = star;
+      await design.save();
+      res.json({ message: "Rating updated successfully", design });
+    } else {
+      // If the user has not rated yet, add a new rating
+      design.ratings.push({ star, postedby: _id });
+      await design.save();
+      res.json({ message: "Rating added successfully", design });
+    }
+  } catch (error) {
+    console.error("Error adding rating:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// // Controller to add a rating to a design
+// const addRating = async (req, res) => {
+//   try {
+//     const { designId, rating, client_id } = req.body;
+
+//     // Find the design by ID
+//     const design = await Design.findById(designId);
+
+//     if (!design) {
+//       return res.status(404).json({ message: "Design not found" });
+//     }
+
+//     // Check if the client has already rated the design
+//     const existingRating = design.rating.find((r) => r.client_id === client_id);
+//     if (existingRating) {
+//       return res
+//         .status(400)
+//         .json({ message: "You have already rated this design" });
+//     }
+
+//     // Add the rating to the design
+//     design.rating.push({ rating, client_id });
+//     design.totalRatingCount += 1;
+
+//     // Calculate the average rating
+//     const totalRating = design.rating.reduce(
+//       (sum, curr) => sum + curr.rating,
+//       0
+//     );
+//     const averageRating = totalRating / design.totalRatingCount;
+//     design.ratingValue = averageRating;
+
+//     // Save the updated design
+//     await design.save();
+
+//     res
+//       .status(201)
+//       .json({ message: "Rating added successfully", averageRating });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 // Add product review
 const productReview = async (req, res) => {
@@ -420,7 +540,58 @@ const productReview = async (req, res) => {
   }
 };
 
+const addRatingToDesign = async (req, res) => {
+  const { designId, userId, ratingValue } = req.body;
+
+  try {
+    // Check if the user has already rated the design
+    const existingRating = await Design.findOne({
+      _id: designId,
+      "ratings.ratedBy": userId,
+    });
+
+    if (existingRating) {
+      return res
+        .status(400)
+        .json({ message: "User has already rated this design" });
+    }
+
+    const updatedDesign = await Design.findByIdAndUpdate(
+      designId,
+      { $push: { ratings: { value: ratingValue, ratedBy: userId } } },
+      { new: true }
+    );
+
+    if (!updatedDesign) {
+      return res.status(404).json({ message: "Design not found" });
+    }
+
+    // Calculate total rating count and sum of all rating values
+    const ratings = updatedDesign.ratings;
+    const totalRatings = ratings.length;
+    const totalRatingValues = ratings.reduce(
+      (acc, rating) => acc + rating.value,
+      0
+    );
+
+    // Calculate average rating
+    const averageRating = (totalRatingValues / totalRatings).toFixed(2);
+
+    // Update the design object with total rating count and average rating
+    updatedDesign.totalRatings = totalRatings;
+    updatedDesign.averageRating = averageRating;
+
+    await updatedDesign.save(); // Save the updated design document
+
+    res.status(200).json(updatedDesign);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export {
+  addRatingToDesign,
   addDesigns,
   getDesigns,
   getDesign,
@@ -430,4 +601,5 @@ export {
   updateMyDesign,
   productReview,
   getProfessionalDesigns,
+  addRating,
 };

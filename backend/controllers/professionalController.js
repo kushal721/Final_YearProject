@@ -1,5 +1,9 @@
 import User from "../models/User.js";
 
+import ProfessionalModel from "../models/Professional.js";
+
+//client side
+
 // Get all professionals
 const getProfessionals = async (req, res) => {
   try {
@@ -31,8 +35,6 @@ const getProfessionalById = async (req, res) => {
   }
 };
 
-export { getProfessionals, getProfessionalById };
-
 //update professionals profile
 const updateProfileController = async (req, res) => {
   try {
@@ -53,4 +55,91 @@ const updateProfileController = async (req, res) => {
       error,
     });
   }
+};
+
+//for professional only
+
+// Controller to create a new professional
+const createProfessional = async (req, res) => {
+  try {
+    // Get the user ID from the authenticated user object or token
+    const userId = req.user._id; // Adjust this according to your authentication setup
+    console.log("user user", userId);
+
+    const {
+      specialization,
+      experience,
+      description,
+      skills,
+      education,
+      contact,
+      address,
+    } = req.body;
+
+    // Create a new professional instance
+    const newProfessional = new ProfessionalModel({
+      professionalId: userId,
+      specialization,
+      experience,
+      description,
+      skills,
+      education,
+      contact,
+      address,
+    });
+
+    // Save the professional to the database
+    const savedProfessional = await newProfessional.save();
+
+    res.status(201).json(savedProfessional); // Respond with the saved professional
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateProfessionalInfo = async (req, res) => {
+  const { professionalId } = req.params;
+  const {
+    specialization,
+    experience,
+    description,
+    skills,
+    education,
+    contact,
+    address,
+  } = req.body;
+
+  try {
+    // Find the professional by professionalId and update their information
+    const updatedProfessional = await ProfessionalModel.findOneAndUpdate(
+      { professionalId: professionalId }, // Search by professionalId
+      {
+        specialization,
+        experience,
+        description,
+        skills,
+        education,
+        contact,
+        address,
+      },
+      { new: true }
+    );
+
+    if (!updatedProfessional) {
+      return res.status(404).json({ message: "Professional not found" });
+    }
+
+    res.status(200).json(updatedProfessional);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export {
+  getProfessionals,
+  getProfessionalById,
+  createProfessional,
+  updateProfessionalInfo,
 };

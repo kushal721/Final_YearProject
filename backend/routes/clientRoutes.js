@@ -62,6 +62,8 @@ router.post(
   UserController.userPasswordReset
 );
 
+// for professionals
+
 //get all professionals
 router.get("/professionals", getProfessionals);
 router.get("/professional/:id", getProfessionalById);

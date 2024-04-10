@@ -73,7 +73,7 @@ const DesignCard = ({ design }) => {
         <div className="card-content">
           <div className="header">
             <h5 className="title">{design.designName}</h5>
-            <p className="rating">★ {design.rating}</p>
+            <p className="rating">★ {design.averageRating}</p>
           </div>
           <p className="short-description">{design.designDescription}</p>
           <p className="designer">Designed by {design._id}</p>

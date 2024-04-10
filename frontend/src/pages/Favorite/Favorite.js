@@ -17,13 +17,14 @@ const Favorite = () => {
           "http://localhost:4000/api/favorites/getAllFavorites",
           {
             headers: {
-              Authorization: `Bearer ${user.token}`,
+              Authorization: `Bearer ${user?.token}`,
             },
           }
         );
 
         if (response.ok) {
           const data = await response.json();
+          console.log(data, "Favorites");
           setFavorites(data);
         } else {
           console.error("Failed to fetch favorites");
@@ -35,6 +36,45 @@ const Favorite = () => {
 
     fetchFavorites();
   }, [user]); // Fetch favorites when user object changes
+
+  // useEffect(() => {
+  //   const fetchFavorites = async () => {
+  //     try {
+  //       if (!user?.token) {
+  //         console.error("User token is missing.");
+  //         return;
+  //       }
+
+  //       const response = await fetch(
+  //         "http://localhost:4000/api/favorites/getAllFavorites",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${user.token}`,
+  //           },
+  //         }
+  //       );
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         console.log("Favorites data:", data);
+  //         setFavorites(data);
+  //       } else {
+  //         console.error(
+  //           "Failed to fetch favorites:",
+  //           response.status,
+  //           response.statusText
+  //         );
+  //         // Optionally, you can handle specific error cases here
+  //         // For example, if response.status === 401, user might be unauthorized
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching favorites:", error);
+  //       // You can handle errors here, such as setting a state variable to display an error message
+  //     }
+  //   };
+
+  //   fetchFavorites();
+  // }, [user]);
 
   const removeFromFavorites = async (userId, designId) => {
     try {
@@ -86,8 +126,8 @@ const Favorite = () => {
                 <p className="design-detail">
                   Estimate Cost: {favorite.design?.estimateCost}
                 </p>
-                <p className="design-detail">
-                  Rating: ★ {favorite.design?.rating}
+                <p className="design-detail ">
+                  Rating: ★ {favorite.design?.averageRating}
                 </p>
               </div>
               <button

@@ -54,7 +54,7 @@ const AddDesigns = () => {
           body: JSON.stringify(formData),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`, // Include the authentication token in the request headers
+            Authorization: `Bearer ${user?.token}`, // Include the authentication token in the request headers
           },
         }
       );
