@@ -1,13 +1,13 @@
 import express from "express";
 import {
-  deleteUser,
   getAllUsers,
-  getUser,
+  getUserById,
   updateUser,
+  deleteUser,
 } from "../controllers/userController.js";
 import {
   updateProfessionalInfo,
-  createProfessional,
+  addProfessionalInfo,
 } from "../controllers/professionalController.js";
 import requireAuth from "../middlewares/requireAuth.js";
 
@@ -15,15 +15,15 @@ import requireAuth from "../middlewares/requireAuth.js";
 
 const router = express.Router();
 
-router.get("/:id", getUser);
+router.get("/:userId", getUserById);
 router.get("/", getAllUsers);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
+router.put("/:userId", updateUser);
+router.delete("/:userId", deleteUser);
 
 //for professional only
 
 //Route to add professional details
-router.post("/addProfessionalDetails", requireAuth, createProfessional);
+router.post("/addProfessionalDetails", requireAuth, addProfessionalInfo);
 
 // Route to update professional information
 router.put("/professionals/:professionalId", updateProfessionalInfo);

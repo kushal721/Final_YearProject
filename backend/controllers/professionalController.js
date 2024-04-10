@@ -60,7 +60,7 @@ const updateProfileController = async (req, res) => {
 //for professional only
 
 // Controller to create a new professional
-const createProfessional = async (req, res) => {
+const addProfessionalInfo = async (req, res) => {
   try {
     // Get the user ID from the authenticated user object or token
     const userId = req.user._id; // Adjust this according to your authentication setup
@@ -73,7 +73,6 @@ const createProfessional = async (req, res) => {
       skills,
       education,
       contact,
-      address,
     } = req.body;
 
     // Create a new professional instance
@@ -85,7 +84,6 @@ const createProfessional = async (req, res) => {
       skills,
       education,
       contact,
-      address,
     });
 
     // Save the professional to the database
@@ -107,7 +105,6 @@ const updateProfessionalInfo = async (req, res) => {
     skills,
     education,
     contact,
-    address,
   } = req.body;
 
   try {
@@ -121,7 +118,6 @@ const updateProfessionalInfo = async (req, res) => {
         skills,
         education,
         contact,
-        address,
       },
       { new: true }
     );
@@ -140,6 +136,6 @@ const updateProfessionalInfo = async (req, res) => {
 export {
   getProfessionals,
   getProfessionalById,
-  createProfessional,
+  addProfessionalInfo,
   updateProfessionalInfo,
 };

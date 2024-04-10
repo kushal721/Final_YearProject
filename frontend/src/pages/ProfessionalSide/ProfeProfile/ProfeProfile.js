@@ -9,6 +9,11 @@ const ProfeProfile = () => {
       <div className="content">
         <div className="page-name">
           <h1 className="page-title">Profile</h1>
+          <div className="action-buttons">
+            <button className="action-button">Add Information</button>
+            <button className="action-button">Edit Information</button>
+            <button className="action-button">Change Password</button>
+          </div>
         </div>
 
         {/* Personal Information */}

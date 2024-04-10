@@ -1,106 +1,126 @@
 /* ProfeProfile.css */
 .my-designs-container {
-    display: flex;
-  }
-  
-  .content {
-    flex-grow: 1;
-    padding: 20px;
-  }
-  
-  .page-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .profile-section {
-    margin-bottom: 30px;
-  }
-  
-  .section-title {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .profile-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .profile-picture {
-    margin-right: 20px;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: #ddd; /* Light gray background color */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
-  
-  .profile-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .upload-text {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .info {
-    margin-bottom: 10px;
-  }
-  
-  .label {
-    font-weight: bold;
-    margin-right: 5px;
-  }
-  
-  .value {
-    color: #333;
-  }
-  
-  .experience-item {
-    margin-bottom: 20px;
-  }
-  
-  .experience-title {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  .experience-details {
-    margin-bottom: 5px;
-  }
-  
-  .skill-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .skill-item {
-    margin-bottom: 5px;
-  }
-  
-  .education-item {
-    margin-bottom: 20px;
-  }
-  
-  .education-title {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  .education-details {
-    margin-bottom: 5px;
-  }
-  
+  display: flex;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.profile-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  margin-right: 20px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #ddd; /* Light gray background color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.upload-text {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #666;
+}
+
+.info {
+  margin-bottom: 10px;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.value {
+  color: #333;
+}
+
+.experience-item {
+  margin-bottom: 20px;
+}
+
+.experience-title {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.experience-details {
+  margin-bottom: 5px;
+}
+
+.skill-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.skill-item {
+  margin-bottom: 5px;
+}
+
+.education-item {
+  margin-bottom: 20px;
+}
+
+.education-title {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.education-details {
+  margin-bottom: 5px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.action-button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}

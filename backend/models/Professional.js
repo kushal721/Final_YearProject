@@ -32,10 +32,6 @@ const professionalSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  address: {
-    type: String,
-    required: true,
-  },
 });
 
 const ProfessionalModel = mongoose.model("Professional", professionalSchema);

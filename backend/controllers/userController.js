@@ -1,88 +1,81 @@
 import UserModel from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-// Get a User
-export const getUser = async (req, res) => {
-  const id = req.params.id;
 
+// Controller function to get all users
+const getAllUsers = async (req, res) => {
   try {
-    const user = await UserModel.findById(id);
-    if (user) {
-      const { password, ...otherDetails } = user._doc;
-
-      res.status(200).json(otherDetails);
-    } else {
-      res.status(404).json("No such User");
-    }
+    const users = await UserModel.find(); // Find all users
+    res.status(200).json(users); // Respond with the list of users
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// Get all users
-export const getAllUsers = async (req, res) => {
+// Controller function to get a specific user by ID
+const getUserById = async (req, res) => {
   try {
-    let users = await UserModel.find();
-    users = users.map((user) => {
-      const { password, ...otherDetails } = user._doc;
-      return otherDetails;
-    });
-    res.status(200).json(users);
+    const { userId } = req.params; // Extract userId from request parameters
+    const user = await UserModel.findById(userId); // Find user by ID
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user); // Respond with the user
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// udpate a user
+// Controller function to update user details
+const updateUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { username, email, password, role } = req.body;
 
-export const updateUser = async (req, res) => {
-  const id = req.params.id;
-  // console.log("Data Received", req.body)
-  const { _id, currentUserAdmin, password } = req.body;
-
-  if (id === _id) {
-    try {
-      // if we also have to update password then password will be bcrypted again
-      if (password) {
-        const salt = await bcrypt.genSalt(10);
-        req.body.password = await bcrypt.hash(password, salt);
-      }
-      // have to change this
-      const user = await UserModel.findByIdAndUpdate(id, req.body, {
-        new: true,
-      });
-      const token = jwt.sign(
-        { username: user.username, id: user._id },
-        process.env.JWTKEY,
-        { expiresIn: "1h" }
-      );
-      console.log({ user, token });
-      res.status(200).json({ user, token });
-    } catch (error) {
-      console.log("Error agya hy");
-      res.status(500).json(error);
+    // Find the user by ID
+    let user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  } else {
-    res
-      .status(403)
-      .json("Access Denied! You can update only your own Account.");
-  }
-};
 
-// Delete a user
-export const deleteUser = async (req, res) => {
-  const id = req.params.id;
+    // Update user details
+    user.username = username || user.username; // Keep existing username if not provided
+    user.email = email || user.email; // Keep existing email if not provided
+    user.role = role || user.role; // Keep existing role if not provided
 
-  const { currentUserId, currentUserAdmin } = req.body;
-
-  if (currentUserId == id || currentUserAdmin) {
-    try {
-      await UserModel.findByIdAndDelete(id);
-      res.status(200).json("User Deleted Successfully!");
-    } catch (error) {
-      res.status(500).json(err);
+    // Hash the new password if provided
+    if (password) {
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      user.password = hashedPassword;
     }
-  } else {
-    res.status(403).json("Access Denied!");
+
+    // Save the updated user
+    user = await user.save();
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// Controller function to delete a user by ID
+const deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params; // Extract userId from request parameters
+    const deletedUser = await UserModel.findByIdAndDelete(userId); // Find user by ID and delete
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Export the controller functions
+export { getAllUsers, getUserById, updateUser, deleteUser };

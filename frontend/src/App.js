@@ -32,6 +32,7 @@ import ClientAppointments from "./pages/Appointments/ClientAppointments";
 import AllAppointments from "./pages/ProfessionalSide/Profe-Appointments/AllAppointments";
 import RatingComp from "./components/Rating/RatingComp";
 import EditDesign from "./components/Edit/EditDesign";
+import AddInformation from "./pages/ProfessionalSide/ProfeProfile/AddInformation";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
           <Route path="/add-designs" element={<AddDesigns />} />
           <Route path="/profe-appointments" element={<ProfeAppointments />} />
           <Route path="/profe-profile" element={<ProfeProfile />} />
+          <Route path="/add-information" element={<AddInformation />} />
 
           {/* routes for chat */}
           <Route path="/chat" element={<Chat />} />
