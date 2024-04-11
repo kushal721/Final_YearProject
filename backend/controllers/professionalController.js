@@ -1,20 +1,81 @@
-import User from "../models/User.js";
+import UserModel from "../models/User.js";
 
 import ProfessionalModel from "../models/Professional.js";
 
 //client side
 
-// Get all professionals
-const getProfessionals = async (req, res) => {
+// const getAllProfessionals = async (req, res) => {
+//   try {
+//     // Find all users with the role "professional" and populate their professional details
+//     const professionals = await User.find({
+//       role: "professional",
+//     }).populate("professionalId");
+
+//     // Send the professionals as a response
+//     res.status(200).json({ professionals });
+//   } catch (error) {
+//     // If an error occurs, send an error response
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+// Controller function to get all users
+const getAllProfessionals = async (req, res) => {
   try {
-    const professionals = await User.find({ role: "professional" }).sort({
-      createdAt: -1,
-    });
+    // Find users with role "professional"
+    const professionals = await UserModel.find({ role: "professional" });
+
+    if (!professionals || professionals.length === 0) {
+      return res.status(404).json({ message: "No professionals found" });
+    }
+
     res.status(200).json(professionals);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error fetching professionals:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// Controller to get a professional by ID
+const getProfessionalById = async (req, res) => {
+  try {
+    // Extract the professional ID from the request parameters
+    const { professionalId } = req.params;
+
+    // Query the database to find the professional by ID
+    const professional = await UserModel.findById(professionalId);
+
+    // If the professional is not found, return a 404 error
+    if (!professional) {
+      return res.status(404).json({ message: "Professional not found" });
+    }
+
+    // If the professional is found, return it in the response
+    res.status(200).json(professional);
+  } catch (error) {
+    // If an error occurs, return a 500 error with the error message
+    console.error("Error fetching professional:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+// // Controller function to get a professional by professionalId
+// const getProfessionalById = async (req, res) => {
+//   const { professionalId } = req.params; // Get the professionalId from the request parameters
+
+//   try {
+//     const professional = await UserModel.findOne({
+//       professionalId,
+//     });
+
+//     if (!professional) {
+//       return res.status(404).json({ message: "Professional not found" });
+//     }
+
+//     res.status(200).json(professional); // Send the professional data if found
+//   } catch (error) {
+//     console.error("Error getting professional by professionalId:", error);
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };
 
 //update professionals profile
 const updateProfileController = async (req, res) => {
@@ -76,6 +137,32 @@ const addProfessionalInfo = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+// Controller to get a professional by ID
+// const getProfessionalByProfessionalId = async (req, res) => {
+//   try {
+//     // Extract the professional ID from the request parameters
+//     const { professionalId } = req.params;
+
+//     // Query the ProfessionalModel to find the professional by ID
+//     const professional = await UserModel.findById(professionalId)
+//       // Populate the 'user' field to get the personal details from the user model
+//       .populate("specialization", "experience");
+
+//     // If the professional is not found, return a 404 error
+//     if (!professional) {
+//       return res.status(404).json({ message: "Professional not found" });
+//     }
+
+//     // If the professional is found, return it in the response
+//     res.status(200).json(professional);
+//   } catch (error) {
+//     // If an error occurs, return a 500 error with the error message
+//     console.error("Error fetching professional:", error.message);
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
+
 
 // Controller function to get a professional by professionalId
 const getProfessionalByProfessionalId = async (req, res) => {
@@ -135,7 +222,8 @@ const updateProfessionalInfo = async (req, res) => {
 };
 
 export {
-  getProfessionals,
+  getAllProfessionals,
+  getProfessionalById,
   getProfessionalByProfessionalId,
   addProfessionalInfo,
   updateProfessionalInfo,

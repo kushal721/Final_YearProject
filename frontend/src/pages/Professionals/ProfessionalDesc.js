@@ -52,7 +52,7 @@ const ProfessionalDesc = () => {
     const fetchProfessional = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/user/professional/${id}`
+          `http://localhost:4000/api/userr/professionals/personal/${id}`
         );
         if (response.ok) {
           const data = await response.json();

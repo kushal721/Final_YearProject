@@ -46,6 +46,7 @@ const MyDesigns = () => {
 
   return (
     <div className="my-designs-container">
+    
       <Sidebar />
       <div className="content">
         <div className="search-box">

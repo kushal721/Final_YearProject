@@ -140,7 +140,7 @@ const ChangePassword = () => {
   return (
     <div>
       <h2 className="change-password-title">Change Password</h2>
-      <div className="container">
+      <div className="change-password-container">
         <form onSubmit={handleSubmit} className="change-pass-form">
           <div className="form-group">
             <label htmlFor="currentPassword" className="label">

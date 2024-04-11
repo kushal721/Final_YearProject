@@ -6,6 +6,8 @@ import {
   deleteUser,
 } from "../controllers/userController.js";
 import {
+  getAllProfessionals,
+  getProfessionalById,
   updateProfessionalInfo,
   addProfessionalInfo,
   getProfessionalByProfessionalId,
@@ -16,8 +18,14 @@ import requireAuth from "../middlewares/requireAuth.js";
 
 const router = express.Router();
 
-router.get("/:userId", getUserById);
+// public routes
+//Route to get specific professional details
+router.get("/professionals", getAllProfessionals);
+
+router.get("/professionals/personal/:professionalId", getProfessionalById);
+
 router.get("/", getAllUsers);
+router.get("/:userId", getUserById);
 router.put("/:userId", updateUser);
 router.delete("/:userId", deleteUser);
 
