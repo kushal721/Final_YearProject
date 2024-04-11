@@ -1,14 +1,11 @@
 import express, { request } from "express";
 const router = express.Router();
-import UserController from "../controllers/clientController.js";
+import UserController from "../controllers/authController.js";
 import checkUserAuth from "../middlewares/auth-middleware.js";
 
 import UserModel from "../models/User.js";
 
-import {
-  getProfessionals,
-  getProfessionalById,
-} from "../controllers/professionalController.js";
+import {} from "../controllers/professionalController.js";
 
 // Protected Routes
 // router.get("/protected-route", checkUserAuth, (req, res) => {
@@ -62,14 +59,8 @@ router.post(
   UserController.userPasswordReset
 );
 
-// for professionals
-
-//get all professionals
-router.get("/professionals", getProfessionals);
-router.get("/professional/:id", getProfessionalById);
-
 // Protected Routes
-router.post("/user-changePassword", UserController.changeUserPassword);
+router.put("/user-changePassword", UserController.changePassword);
 router.get("/loggedUser", UserController.loggedUser);
 
 export default router;

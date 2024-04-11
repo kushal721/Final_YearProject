@@ -77,5 +77,8 @@ const deleteUser = async (req, res) => {
   }
 };
 
+
+
+
 // Export the controller functions
 export { getAllUsers, getUserById, updateUser, deleteUser };

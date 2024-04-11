@@ -18,7 +18,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  role: { type: String, enum: ["client", "professional"], required: true },
+  role: {
+    type: String,
+    enum: ["client", "professional", "admin"],
+    required: true,
+  },
 });
 
 //json web token

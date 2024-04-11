@@ -59,12 +59,12 @@ import express from "express";
 import cors from "cors";
 import connectDb from "./config/connectdb.js";
 import userRoutes from "./routes/userRoutes.js";
-import clientRoutes from "./routes/clientRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import designRoutes from "./routes/designRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
-import favoriteRoutes from "./routes/favoriteRoutes.js"
+import favoriteRoutes from "./routes/favoriteRoutes.js";
 import { updateAppointmentStatus } from "./controllers/appointmentController.js";
 
 const app = express();
@@ -89,7 +89,7 @@ app.use((req, res, next) => {
 });
 
 // Load Routes
-app.use("/api/user", clientRoutes);
+app.use("/api/user", authRoutes);
 app.use("/api/userr", userRoutes);
 app.use("/api/designs", designRoutes);
 app.use("/api/appointments", appointmentRoutes);

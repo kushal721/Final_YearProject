@@ -8,6 +8,7 @@ import {
 import {
   updateProfessionalInfo,
   addProfessionalInfo,
+  getProfessionalByProfessionalId,
 } from "../controllers/professionalController.js";
 import requireAuth from "../middlewares/requireAuth.js";
 
@@ -24,6 +25,9 @@ router.delete("/:userId", deleteUser);
 
 //Route to add professional details
 router.post("/addProfessionalDetails", requireAuth, addProfessionalInfo);
+
+//Route to get specific professional details
+router.get("/professionals/:professionalId", getProfessionalByProfessionalId);
 
 // Route to update professional information
 router.put("/professionals/:professionalId", updateProfessionalInfo);

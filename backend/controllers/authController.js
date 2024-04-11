@@ -192,32 +192,41 @@ class UserController {
     }
   };
 
-  static changeUserPassword = async (req, res) => {
-    const { password, confirm_password } = req.body;
-    if (password && confirm_password) {
-      if (password !== confirm_password) {
-        res.status(400).json({
-          status: "failed",
-          message: "New Password and confirm password not mactched ",
-        });
-      } else {
-        const salt = await bcrypt.genSalt(10);
-        const newHashPassword = await bcrypt.hash(password, salt);
-        await UserModel.findByIdAndUpdate(req.user._id, {
-          $set: {
-            password: newHashPassword,
-          },
-        });
-        // console.log(req.user._id);
-        res.status(201).json({
-          status: "success",
-          message: "Password chanaged successfully",
-        });
+  // Controller function to change user password
+  static changePassword = async (req, res) => {
+    const { userId, currentPassword, newPassword } = req.body; // Get userId, currentPassword, and newPassword from request body
+
+    try {
+      // Find the user by their ID
+      const user = await UserModel.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
       }
-    } else {
-      res
-        .status(400)
-        .json({ status: "failed", message: "All fields are required" });
+
+      // Verify the current password
+      const isPasswordValid = await bcrypt.compare(
+        currentPassword,
+        user.password
+      );
+
+      if (!isPasswordValid) {
+        return res
+          .status(400)
+          .json({ message: "Current password is incorrect" });
+      }
+
+      // Hash the new password
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update the user's password with the new hashed password
+      user.password = hashedNewPassword;
+      await user.save();
+
+      res.status(200).json({ message: "Password changed successfully" });
+    } catch (error) {
+      console.error("Error changing password:", error);
+      res.status(500).json({ message: "Server Error" });
     }
   };
 

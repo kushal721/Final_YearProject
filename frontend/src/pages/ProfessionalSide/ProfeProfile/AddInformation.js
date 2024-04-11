@@ -144,7 +144,11 @@ const AddInformation = () => {
           </div>
         </div>
 
-        <button type="submit" className="submit-btn" onClick={handleSubmit}>
+        <button
+          type="submit"
+          className="btn btn-primary submit-btn"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       </form>

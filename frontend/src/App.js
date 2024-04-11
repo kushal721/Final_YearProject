@@ -33,6 +33,8 @@ import AllAppointments from "./pages/ProfessionalSide/Profe-Appointments/AllAppo
 import RatingComp from "./components/Rating/RatingComp";
 import EditDesign from "./components/Edit/EditDesign";
 import AddInformation from "./pages/ProfessionalSide/ProfeProfile/AddInformation";
+import EditProfile from "./pages/ProfessionalSide/ProfeProfile/EditProfile";
+import ChangePassword from "./components/ChangePassword/ChangePassword";
 
 function App() {
   return (
@@ -53,6 +55,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registeration />} />
           <Route path="/reset-password" element={<ForgotPassword />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
 
           <Route path="/design-card" element={<DesignCard />}></Route>
           <Route path="/card" element={<ProfessionalCard />}></Route>
@@ -71,6 +74,7 @@ function App() {
           <Route path="/profe-appointments" element={<ProfeAppointments />} />
           <Route path="/profe-profile" element={<ProfeProfile />} />
           <Route path="/add-information" element={<AddInformation />} />
+          <Route path="/editprofile" element={<EditProfile />} />
 
           {/* routes for chat */}
           <Route path="/chat" element={<Chat />} />

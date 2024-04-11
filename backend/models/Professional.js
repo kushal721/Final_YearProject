@@ -8,29 +8,23 @@ const professionalSchema = new mongoose.Schema({
   },
   specialization: {
     type: String,
-    required: true,
   },
   experience: {
     type: String, // Storing experience as a string
-    required: true,
   },
 
   description: {
     type: String, // Professional description
-    required: true,
   },
   skills: {
     type: String,
-    required: true,
   },
   education: {
     type: String, // Education details
-    required: true,
   },
 
   contact: {
     type: String,
-    required: true,
   },
 });
 

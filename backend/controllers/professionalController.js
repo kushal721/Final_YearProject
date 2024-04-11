@@ -16,25 +16,6 @@ const getProfessionals = async (req, res) => {
   }
 };
 
-// Get professional by ID
-const getProfessionalById = async (req, res) => {
-  try {
-    const { id } = req.params; // Assuming the professional ID is passed in the URL params
-    const professional = await User.findOne({
-      _id: id,
-      role: "professional",
-    }).select("-password");
-
-    if (!professional) {
-      return res.status(404).json({ message: "Professional not found" });
-    }
-
-    res.status(200).json(professional);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
 //update professionals profile
 const updateProfileController = async (req, res) => {
   try {
@@ -96,6 +77,26 @@ const addProfessionalInfo = async (req, res) => {
   }
 };
 
+// Controller function to get a professional by professionalId
+const getProfessionalByProfessionalId = async (req, res) => {
+  const { professionalId } = req.params; // Get the professionalId from the request parameters
+
+  try {
+    const professional = await ProfessionalModel.findOne({
+      professionalId,
+    });
+
+    if (!professional) {
+      return res.status(404).json({ message: "Professional not found" });
+    }
+
+    res.status(200).json(professional); // Send the professional data if found
+  } catch (error) {
+    console.error("Error getting professional by professionalId:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 const updateProfessionalInfo = async (req, res) => {
   const { professionalId } = req.params;
   const {
@@ -135,7 +136,7 @@ const updateProfessionalInfo = async (req, res) => {
 
 export {
   getProfessionals,
-  getProfessionalById,
+  getProfessionalByProfessionalId,
   addProfessionalInfo,
   updateProfessionalInfo,
 };
