@@ -3,13 +3,19 @@ import { Link, useParams } from "react-router-dom";
 import NavbarComp from "../../components/Navbar/Navbar";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import "./ProfessionalDesc.css";
+import DesignCard from "../../components/Cards/DesignCard";
 
 const ProfessionalDesc = () => {
   const { id } = useParams(); // Get the professional ID from the route parameters
   const { user } = useAuthContext(); // Access the user authentication state
 
-  const [professionalDesc, setProfessionalDesc] = useState(null); // Set initial state to null
+  const [professionalPersonalDesc, setProfessionalPersonalDesc] =
+    useState(null); // Set initial state to null
+  const [professionalDesc, setProfessionalDesc] = useState(null);
   const [designs, setDesigns] = useState([]); // Initialize designs state as an empty array
+  console.log("professional personal", professionalPersonalDesc);
+  console.log("professional desc", professionalDesc);
+  console.log("designs", designs);
 
   // Function to handle the message request
   const handleMessageRequest = async () => {
@@ -56,7 +62,7 @@ const ProfessionalDesc = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          setProfessionalDesc(data); // Set the professionalDesc state with fetched data
+          setProfessionalPersonalDesc(data); // Set the professionalDesc state with fetched data
           console.log("data", data);
         } else {
           console.error("Failed to fetch professional details");
@@ -68,6 +74,27 @@ const ProfessionalDesc = () => {
 
     fetchProfessional();
   }, [id]); // Fetch professional details when ID changes
+
+  useEffect(() => {
+    const fetchProfessional = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/api/userr/professionals/${id}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setProfessionalDesc(data); // Set the professionalDesc state with fetched data
+          console.log("data", data);
+        } else {
+          console.error("Failed to fetch professional details");
+        }
+      } catch (error) {
+        console.error("Error fetching professional details:", error);
+      }
+    };
+
+    fetchProfessional();
+  }, [id]);
 
   useEffect(() => {
     const fetchDesigns = async () => {
@@ -107,47 +134,75 @@ const ProfessionalDesc = () => {
   return (
     <div>
       <NavbarComp />
-      <div className="container">
-        {professionalDesc && ( // Check if professionalDesc is not null
-          <div className="title">
-            <h2>{professionalDesc.username}</h2>
-            <h3>{professionalDesc.email}</h3>
-            {/* Conditionally render the booking link */}
-            {user ? (
-              <>
-                <Link
-                  to={`/chat`}
-                  onClick={handleMessageRequest}
-                  className="btn-book-appoint"
-                >
-                  Message Now
-                </Link>
-                <Link to={`/${id}/booking`} className="btn-book-appoint">
-                  Book Appointment
-                </Link>
-              </>
-            ) : (
-              <p>Please log in to book an appointment</p>
-            )}
-          </div>
-        )}
-
-        {/* Display professional designs if available */}
-        {designs.length > 0 && (
-          <div className="designs-container">
-            <h2>Professional Designs</h2>
-            <ul>
-              {designs.map((design) => (
-                <li key={design.id}>
-                  <h3>Design Name: {design.designName}</h3>
-                  <p>Area: {design.area}</p>
-                  <p>Estimate Cost: {design.estimateCost}</p>
-                  <p>Description: {design.designDescription}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+      <div className="profedesc-container">
+        <div className="professional-details">
+          {professionalPersonalDesc && (
+            <div className="personal-info">
+              <h1>{professionalPersonalDesc.username}</h1>
+            </div>
+          )}
+          {professionalDesc && (
+            <div className="professional-info">
+              <h1>Professional Details</h1>
+              <div>
+                <h2>{professionalPersonalDesc.email}</h2>
+                <h2>Specialization: {professionalDesc.specialization}</h2>
+                <h3>Experience: {professionalDesc.experience}</h3>
+                <p>Skills: {professionalDesc.skills}</p>
+                <p>Education: {professionalDesc.education}</p>
+                <p>Contact: {professionalDesc.contact}</p>
+              </div>
+            </div>
+          )}
+          {user ? (
+            <div className="booking-links">
+              <Link
+                to={`/chat`}
+                onClick={handleMessageRequest}
+                className="btn-book-appoint"
+              >
+                Message Now
+              </Link>
+              <Link to={`/${id}/booking`} className="btn-book-appoint BookAppo">
+                Book Appointment
+              </Link>
+            </div>
+          ) : (
+            <p>Please log in to book an appointment</p>
+          )}
+        </div>
+        <div className="professional-designs">
+          {designs.length > 0 && (
+            <div className="designs-container">
+              <h1>Professional Designs</h1>
+              <div className="designs-grid">
+                {designs.map((design) => (
+                  <div key={design._id} className="design-card">
+                    <Link to={`/design-desc/${design._id}`} className="card">
+                      <div className="img-container">
+                        <img
+                          src="/r1.png"
+                          alt="Design photo"
+                          className="card-img"
+                        />
+                      </div>
+                      <div className="card-content">
+                        <div className="header">
+                          <h5 className="title">{design.designName}</h5>
+                          <p className="rating">★ {design.averageRating}</p>
+                        </div>
+                        <p className="short-description">
+                          {design.designDescription}
+                        </p>
+                        <p className="designer">Designed by {design._id}</p>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

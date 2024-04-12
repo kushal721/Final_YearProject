@@ -7,10 +7,19 @@ const ClientAppointments = () => {
   const [confirmedAppointments, setConfirmedAppointments] = useState([]);
   const [pendingAppointments, setPendingAppointments] = useState([]);
   const { user } = useAuthContext();
+  console.log(confirmedAppointments, "confirmedAppointments");
+  console.log(pendingAppointments, "pendingAppointments");
 
   useEffect(() => {
     const fetchClientAppointments = async () => {
       try {
+        // Check if the user object or its token property is null
+        if (!user || !user.token) {
+          console.error("User object or token is null.");
+          // You can display an error message or redirect the user to the login page
+          return;
+        }
+
         const response = await fetch(
           `http://localhost:4000/api/appointments/client-appointments`,
           {
@@ -65,7 +74,8 @@ const ClientAppointments = () => {
               {confirmedAppointments.map((appointment) => (
                 <tr key={appointment.appointment._id} className="table-row">
                   <td className="table-data">
-                    {appointment.professionalDetails.username}
+                    {appointment.professionalDetails &&
+                      appointment.professionalDetails.username}
                   </td>
                   <td className="table-data">
                     {
@@ -104,7 +114,8 @@ const ClientAppointments = () => {
               {pendingAppointments.map((appointment) => (
                 <tr key={appointment.appointment._id} className="table-row">
                   <td className="table-data">
-                    {appointment.professionalDetails.username}
+                    {appointment.professionalDetails &&
+                      appointment.professionalDetails.username}
                   </td>
                   <td className="table-data">
                     {

@@ -35,6 +35,7 @@ import EditDesign from "./components/Edit/EditDesign";
 import AddInformation from "./pages/ProfessionalSide/ProfeProfile/AddInformation";
 import EditProfile from "./pages/ProfessionalSide/ProfeProfile/EditProfile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
+import MyDesignDesc from "./pages/ProfessionalSide/MyDesigns/MyDesignsDesc";
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
           <Route path="/profe-profile" element={<ProfeProfile />} />
           <Route path="/add-information" element={<AddInformation />} />
           <Route path="/editprofile" element={<EditProfile />} />
+          <Route path="/mydesign-desc" element={<MyDesignDesc />} />
 
           {/* routes for chat */}
           <Route path="/chat" element={<Chat />} />
