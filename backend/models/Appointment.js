@@ -115,12 +115,12 @@ const bookingSchema = new Schema(
     },
     professional: {
       type: Schema.Types.ObjectId,
-      ref: "Professional",
+      ref: "User",
       required: true,
     },
     client: {
       type: Schema.Types.ObjectId,
-      ref: "Client",
+      ref: "User",
       required: true,
     },
     status: {

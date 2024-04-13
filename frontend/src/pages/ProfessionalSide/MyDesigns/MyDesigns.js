@@ -45,25 +45,29 @@ const MyDesigns = () => {
   console.log("my designs: ", my_designs);
 
   return (
-    <div className="my-designs-container">
-    
-      <Sidebar />
-      <div className="content">
-        <div className="search-box">
-          <input type="text" placeholder="Search designs..." />
-          <button>Search</button>
+    <>
+      <div className="maindiv">
+        <div className="sidebar">
+          <Sidebar />
         </div>
-        <div className="page-name">
-          <h1 className="page-title">My Designs</h1>
-        </div>
-        <div className="designs">
-          {my_designs.map((my_design) => (
-            <div key={my_design._id}>
-              <MyDesignCard my_design={my_design} />
-              {/* <Description design={design} /> */}
+
+        <div className="my-designs-container">
+          <div className="content">
+            <div className="search-box">
+              <input type="text" placeholder="Search designs..." />
+              <button>Search</button>
             </div>
-          ))}
-          {/* <div className="design">
+            <div className="page-name">
+              <h1 className="page-title">My Designs</h1>
+            </div>
+            <div className="designs">
+              {my_designs.map((my_design) => (
+                <div key={my_design._id}>
+                  <MyDesignCard my_design={my_design} />
+                  {/* <Description design={design} /> */}
+                </div>
+              ))}
+              {/* <div className="design">
             <img src="/r1.png" alt="Design photo" />
             <span className="design-name">Design Name</span> <br />
             <span className="design-actions">
@@ -71,9 +75,11 @@ const MyDesigns = () => {
               <button className="delete-button">Delete</button>
             </span>
           </div> */}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

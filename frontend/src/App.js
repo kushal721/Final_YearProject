@@ -76,7 +76,8 @@ function App() {
           <Route path="/profe-profile" element={<ProfeProfile />} />
           <Route path="/add-information" element={<AddInformation />} />
           <Route path="/editprofile" element={<EditProfile />} />
-          <Route path="/mydesign-desc" element={<MyDesignDesc />} />
+          <Route path="/mydesign-desc/:id" element={<MyDesignDesc />} />
+          <Route path="/editdesign" element={<EditDesign />} />
 
           {/* routes for chat */}
           <Route path="/chat" element={<Chat />} />

@@ -249,14 +249,7 @@ const getProfessionalDesigns = async (req, res) => {
     const { id } = req.params;
     const user_id = id;
     console.log("idp", user_id);
-    // Fetch the professional by ID
-    // const professional = await Design.findById(id);
-    // if (!professional) {
-    //   // If professional not found, return a 404 response
-    //   return res.status(404).json({ message: "Professional not found" });
-    // }
-    // // If professional found, send the designs as JSON response
-    // res.json(professional.designs);
+   
 
     const designs = await Design.find({ user_id }).sort({ createdAt: -1 });
     res.status(200).json(designs);
@@ -359,8 +352,10 @@ const deleteMyDesign = async (req, res) => {
 
 // Update a design by the logged-in user
 const updateMyDesign = async (req, res) => {
+  const { designName, area, estimateCost, designDescription } = req.body;
   const { designId } = req.params;
   console.log(designId, "design ididid");
+  console.log(req.body, "request body");
   try {
     const design = await Design.findOneAndUpdate({ _id: designId }, req.body, {
       new: true,
@@ -374,52 +369,6 @@ const updateMyDesign = async (req, res) => {
   }
 };
 
-// // Controller to add a rating to a design
-// const addRating = async (req, res) => {
-//   try {
-//     // const { designId, star, client_id } = req.body;
-//     const { _id } = req.user;
-//     const { star, designId } = req.body;
-//     console.log("designId: ", designId);
-
-//     // const design = await
-
-//     // Find the design by ID
-//     const design = await Design.findById(designId);
-
-//     let alreadyRated = design.rating.find(
-//       (userId) => userId.postedby.toString() === _id.toString()
-//     );
-
-//     if (alreadyRated) {
-//       const updateRating = await Design.updateOne(
-//         {
-//           ratings: { $elemMatch: alreadyRated },
-//         },
-//         { $set: { "ratings.$.star": star } },
-//         { new: true }
-//       );
-
-//       res.json(updateRating);
-//     } else {
-//       const rateDesign = await Design.findOneAndUpdate(
-//         designId,
-//         {
-//           $push: {
-//             ratings: {
-//               star: star,
-//               postedby: _id,
-//             },
-//           },
-//         },
-//         {
-//           new: true,
-//         }
-//       );
-//       res.json(rateDesign);
-//     }
-
-// };
 
 // Controller to add a rating to a design
 const addRating = async (req, res) => {

@@ -112,7 +112,6 @@ const getAppointmentById = async (req, res) => {
   }
 };
 
-
 //get booking requests by professional
 // const getBookingRequestsByProfessional = async (req, res) => {
 //   const { professionalId } = req.params;
@@ -303,26 +302,31 @@ const updateAppointmentStatus = async (req, res) => {
   }
 };
 
-// http://localhost:4000/api/appointments/status-update/6608489fc3af40a4c3cfdc86/cancel
+
 
 // Controller to update an existing appointment
 const updateAppointment = async (req, res) => {
+  const { appointmentId } = req.params;
+  const { date, startTime, endTime, location } = req.body;
+
+  console.log("appointmentid", appointmentId);
+  console.log(req.body, "reques body");
   try {
-    const { startTime, endTime, location, details } = req.body;
-    const appointment = await Appointment.findById(req.params.id);
-    if (!appointment) {
+    // Find the appointment by appointmentId and update its information
+    const updatedAppointment = await Appointment.findOneAndUpdate(
+      { _id: appointmentId }, // Search by appointmentId
+      { date, startTime, endTime, location },
+      { new: true }
+    );
+
+    if (!updatedAppointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
-    appointment.startTime = startTime;
-    appointment.endTime = endTime;
-    appointment.location = location;
-    appointment.details = details;
-    await appointment.save();
-    res
-      .status(200)
-      .json({ message: "Appointment updated successfully", appointment });
+
+    res.status(200).json(updatedAppointment);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error updating appointment:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

@@ -1,60 +1,83 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
-const EditDesign = () => {
+import "./EditDesign.css";
+
+const EditDesign = ({ designId }) => {
   const { user } = useAuthContext();
-  const { designId } = useParams(); // Get the design ID from the URL params
-  const [design, setDesign] = useState({});
+
+  const [designData, setDesignData] = useState({});
   const [formData, setFormData] = useState({
     designName: "",
     area: "",
     estimateCost: "",
     designDescription: "",
-    // Add other fields as needed
+    photos: [],
   });
-  console.log("design Idd", designId);
 
-  // Fetch the design data by its ID
   useEffect(() => {
-    const fetchDesign = async () => {
+    const fetchDesignData = async () => {
       try {
         const response = await fetch(
           `http://localhost:4000/api/designs/${designId}`
         );
         if (response.ok) {
           const data = await response.json();
-          setDesign(data);
+          setDesignData(data);
           setFormData({
-            designName: data.designName,
-            area: data.area,
-            estimateCost: data.estimateCost,
-            designDescription: data.designDescription,
-            // Update other fields as needed
+            designName: data.designName || "",
+            area: data.area || "",
+            estimateCost: data.estimateCost || "",
+            designDescription: data.designDescription || "",
+            photos: data.photos || [],
           });
         } else {
-          console.error("Failed to fetch design");
+          console.error("Failed to fetch design data");
         }
       } catch (error) {
-        console.error("Error fetching design:", error);
+        console.error("Error fetching design data:", error);
       }
     };
 
-    fetchDesign();
+    fetchDesignData();
   }, [designId]);
 
-  // Handle form field changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const handleInputChange = useCallback((e) => {
+    const { name, value, files } = e.target;
+    if (name === "photos") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: [...prevFormData.photos, ...Array.from(files)],
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
+  }, []);
 
-  // Handle form submission to update the design
+  const handleRemovePhoto = useCallback((index) => {
+    setFormData((prevFormData) => {
+      const updatedPhotos = [...prevFormData.photos];
+      updatedPhotos.splice(index, 1);
+      return {
+        ...prevFormData,
+        photos: updatedPhotos,
+      };
+    });
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const formDataToSend = {
+        designName: formData.designName,
+        area: formData.area,
+        estimateCost: formData.estimateCost,
+        designDescription: formData.designDescription,
+        // photos: formData.photos.map((photo) => photo.name), // Assuming you only need filenames
+      };
+
       const response = await fetch(
         `http://localhost:4000/api/designs/mydesigns/${designId}`,
         {
@@ -63,7 +86,7 @@ const EditDesign = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user?.token}`,
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formDataToSend),
         }
       );
       if (response.ok) {
@@ -79,46 +102,80 @@ const EditDesign = () => {
   };
 
   return (
-    <div>
-      <h2>Edit Design</h2>
+    <div className="ed-container">
+      <h1 className="h1">Edit Design</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Design Name:</label>
+        <div className="input-group">
+          <div className="form-group">
+            <label>Design Name:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="designName"
+              value={formData.designName}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label>Area:</label>
+            <input
+              type="number"
+              className="form-control"
+              name="area"
+              value={formData.area}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+        <div className="input-group">
+          <div className="form-group">
+            <label>Design Description:</label>
+            <textarea
+              className="form-control"
+              name="designDescription"
+              value={formData.designDescription}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label>Estimate Cost:</label>
+            <input
+              type="number"
+              className="form-control"
+              name="estimateCost"
+              value={formData.estimateCost}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+        <div className="form-group">
+          <label>Upload Photos:</label>
           <input
-            type="text"
-            name="designName"
-            value={formData.designName}
+            type="file"
+            className="form-control-file"
+            name="photos"
+            multiple
             onChange={handleInputChange}
           />
         </div>
-        <div>
-          <label>Area:</label>
-          <input
-            type="number"
-            name="area"
-            value={formData.area}
-            onChange={handleInputChange}
-          />
+        <div className="uploaded-photos">
+          {formData.photos &&
+            formData.photos.map((photo, index) => (
+              <div key={index} className="uploaded-photo">
+                <img src={URL.createObjectURL(photo)} alt={`Photo ${index}`} />
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={() => handleRemovePhoto(index)}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
         </div>
-        <div>
-          <label>Estimate Cost:</label>
-          <input
-            type="number"
-            name="estimateCost"
-            value={formData.estimateCost}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label>Design Description:</label>
-          <textarea
-            name="designDescription"
-            value={formData.designDescription}
-            onChange={handleInputChange}
-          />
-        </div>
-        {/* Add other form fields as needed */}
-        <button type="submit">Save Changes</button>
+        <button type="submit" className="btn btn-primary">
+          Save Changes
+        </button>
       </form>
     </div>
   );

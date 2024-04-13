@@ -96,6 +96,6 @@ router.get("/profe/getDesigns", getMyDesigns);
 // router.get("/mydesign/:id", getMyDesign);
 
 // // DELETE a design uploaded by the logged-in user
-// router.delete("/mydesigns/:id", deleteMyDesign);
+router.delete("/mydesigns/:id", deleteMyDesign);
 
 export default router;

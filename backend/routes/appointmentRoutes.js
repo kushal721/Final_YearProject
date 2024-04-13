@@ -23,7 +23,7 @@ router.post("/add-appointment", createAppointment);
 router.get("/check-appo/:professional", getAppointmentsByProfessional);
 
 // Route to update an existing appointment
-router.put("/:id", updateAppointment);
+router.patch("/:appointmentId", updateAppointment);
 
 // Route to delete an appointment
 router.delete("/:id", deleteAppointment);
