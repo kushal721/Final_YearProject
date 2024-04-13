@@ -215,6 +215,51 @@
 
 import Design from "../models/Design.js"; // Ensure correct path for Design model
 import mongoose from "mongoose";
+import cloudinary from "../utills/cloudinary.js";
+
+const addDesigns = async (req, res) => {
+  try {
+    const { designName, area, estimateCost, designDescription, designImages } =
+      req.body;
+
+    console.log("reques body", req.body);
+
+    if (
+      !designName ||
+      !area ||
+      !estimateCost ||
+      !designDescription ||
+      !designImages ||
+      !Array.isArray(designImages)
+    ) {
+      return res.status(400).json({
+        error: "Please fill in all the fields and provide images as an array",
+      });
+    }
+
+    // Upload images to Cloudinary
+    const uploadedImages = await Promise.all(
+      designImages.map(async (image) => {
+        const result = await cloudinary.uploader.upload(image.path);
+        return result.secure_url;
+      })
+    );
+
+    // Save design data to the database
+    const design = await Design.create({
+      designName,
+      area,
+      estimateCost,
+      designDescription,
+      user_id: req.user._id,
+      designImages: uploadedImages, // Save the URLs of the uploaded images
+    });
+
+    res.status(200).json(design);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // Get all designs
 const getDesigns = async (req, res) => {
@@ -249,7 +294,6 @@ const getProfessionalDesigns = async (req, res) => {
     const { id } = req.params;
     const user_id = id;
     console.log("idp", user_id);
-   
 
     const designs = await Design.find({ user_id }).sort({ createdAt: -1 });
     res.status(200).json(designs);
@@ -296,27 +340,27 @@ const getMyDesigns = async (req, res) => {
   }
 };
 
-// Add new designs
-const addDesigns = async (req, res) => {
-  try {
-    const { designName, area, estimateCost, designDescription } = req.body;
+// // Add new designs
+// const addDesigns = async (req, res) => {
+//   try {
+//     const { designName, area, estimateCost, designDescription,  } = req.body;
 
-    if (!designName || !area || !estimateCost || !designDescription) {
-      return res.status(400).json({ error: "Please fill in all the fields" });
-    }
+//     if (!designName || !area || !estimateCost || !designDescription) {
+//       return res.status(400).json({ error: "Please fill in all the fields" });
+//     }
 
-    const design = await Design.create({
-      designName,
-      area,
-      estimateCost,
-      designDescription,
-      user_id: req.user._id,
-    });
-    res.status(200).json(design);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+//     const design = await Design.create({
+//       designName,
+//       area,
+//       estimateCost,
+//       designDescription,
+//       user_id: req.user._id,
+//     });
+//     res.status(200).json(design);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 // Get a single design by the logged-in user
 const getMyDesign = async (req, res) => {
@@ -368,7 +412,6 @@ const updateMyDesign = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 // Controller to add a rating to a design
 const addRating = async (req, res) => {

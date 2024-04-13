@@ -190,6 +190,11 @@ const Chat = () => {
     fetchChats();
   }, [user]);
 
+  const checkOnlineStatus = (chat) => {
+    const chatMember = chat.members.find((member) => member !== user.userID);
+    const online = onlineUsers.find((user) => user.userId === chatMember);
+    return online ? true : false;
+  };
   return (
     <div className="Chat">
       {/* Left Side */}
@@ -200,7 +205,11 @@ const Chat = () => {
           <div className="Chat-list">
             {chats.map((chat) => (
               <div key={chat._id} onClick={() => setCurrentChat(chat)}>
-                <Conversation data={chat} currentUserId={user.userId} />
+                <Conversation
+                  data={chat}
+                  currentUserId={user.userId}
+                  online={checkOnlineStatus(chat)}
+                />
               </div>
             ))}
           </div>

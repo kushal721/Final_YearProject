@@ -106,6 +106,10 @@ const designSchema = new Schema(
       type: Number,
       default: 0,
     },
+    designImages: {
+      type: [String], // Array of image URLs
+      required: true,
+    },
   },
   { timestamps: true }
 );

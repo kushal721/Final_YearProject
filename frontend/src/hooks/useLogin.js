@@ -43,6 +43,7 @@ export const useLogin = () => {
       } else if (res.role === "client") {
         navigate("/");
       }
+      alert("login successful "); 
 
       // Update loading state
       setIsLoading(false);

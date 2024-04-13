@@ -190,15 +190,21 @@ const getBookingRequestsByProfessional = async (req, res) => {
         ).select("date location");
 
         // Format date to "YYYY-MM-DD"
-        const formattedDate = appointmentDetails.date
-          .toISOString()
-          .slice(0, 10);
+        const formattedDate =
+          appointmentDetails && appointmentDetails.date
+            ? appointmentDetails.date.toISOString().slice(0, 10)
+            : null;
+
+        const location =
+          appointmentDetails && appointmentDetails.location
+            ? appointmentDetails.location
+            : null;
 
         return {
           bookingRequest: request,
           appointmentDetails: {
             date: formattedDate,
-            location: appointmentDetails.location,
+            location: location,
           },
           clientDetails: client,
         };
@@ -222,7 +228,7 @@ const getAppointmentsOfClient = async (req, res) => {
       return res.status(401).json({ error: "User not authenticated" });
     }
     const client = req.user;
-    console.log("Professional ID:", client); // Log professional ID
+    console.log("Client ID:", client); // Log client ID
 
     // Get appointments for the client
     const appointments = await Booking.find({ client });
@@ -238,10 +244,15 @@ const getAppointmentsOfClient = async (req, res) => {
           request.appointment
         ).select("date location");
 
+        // Check if appointmentDetails is null
+        if (!appointmentDetails) {
+          return null; // Return null if appointment details are not found
+        }
+
         // Format date to "YYYY-MM-DD"
         const formattedDate = appointmentDetails.date
-          .toISOString()
-          .slice(0, 10);
+          ? appointmentDetails.date.toISOString().slice(0, 10)
+          : null;
 
         return {
           appointment: request,
@@ -254,10 +265,15 @@ const getAppointmentsOfClient = async (req, res) => {
       })
     );
 
-    console.log("Appointments:", appointmentsDetails); // Log formatted appointments
+    // Filter out null values
+    const validAppointments = appointmentsDetails.filter(
+      (appointment) => appointment !== null
+    );
+
+    console.log("Appointments:", validAppointments); // Log formatted appointments
 
     res.json({
-      appointments: appointmentsDetails,
+      appointments: validAppointments,
     });
   } catch (error) {
     console.error("Error:", error); // Log any errors
@@ -301,8 +317,6 @@ const updateAppointmentStatus = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 // Controller to update an existing appointment
 const updateAppointment = async (req, res) => {

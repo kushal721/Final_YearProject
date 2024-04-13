@@ -165,12 +165,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { format } from "timeago.js";
 import InputEmoji from "react-input-emoji";
+import "./Chatbox.css";
 
 const Chatbox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const scrollRef = useRef();
+  const scroll = useRef();
 
   useEffect(() => {
     if (receiveMessage !== null && chat && receiveMessage.chatId === chat._id) {
@@ -222,6 +223,13 @@ const Chatbox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
 
   const handleSend = async (e) => {
     e.preventDefault();
+
+    // Check if chat exists before accessing its properties
+    if (!chat) {
+      console.error("Chat is not initialized");
+      return;
+    }
+
     const message = {
       senderId: currentUser,
       text: newMessage,
@@ -250,37 +258,40 @@ const Chatbox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     setSendMessage({ ...message, receiverId });
   };
 
+  //always scorll to last message
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
     <div className="ChatBox-container">
-      {chat ? (
-        <>
-          <div className="chat-header">
-            {userData && (
-              <div className="cb-user-info">
-                <div className="user-icon"></div>
-                <div className="cb-username">
-                  <span>{userData.username}</span>
+      <div>
+        {chat ? (
+          <>
+            <div className="chat-header">
+              {userData && (
+                <div className="cb-user-info">
+                  <div className="user-icon"></div>
+                  <div className="cb-username">
+                    <span className="headertitle">{userData.username}</span>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-          <hr />
-        </>
-      ) : (
-        <span className="chatbox-empty-message">
-          Tap on a Chat to start Conversation...
-        </span>
-      )}
+              )}
+            </div>
+            <hr />
+          </>
+        ) : (
+          <span className="chatbox-empty-message">
+            Tap on a Chat to start Conversation...
+          </span>
+        )}
+      </div>
 
       {/* Chatbox messages */}
       <div className="chat-body">
         {messages.map((message, index) => (
           <div
-            key={index}
+            ref={scroll}
             className={
               message.senderId === currentUser ? "message own" : "message"
             }
@@ -289,7 +300,6 @@ const Chatbox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
             <span>{format(message.createdAt)}</span>
           </div>
         ))}
-        <div ref={scrollRef}></div>
       </div>
 
       {/* chat-sender */}

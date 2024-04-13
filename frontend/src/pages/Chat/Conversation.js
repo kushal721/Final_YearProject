@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { BiFontSize } from "react-icons/bi";
-// import "./Chat.css";
-const Conversation = ({ data, currentUserId }) => {
+import "./Conversation.css";
+const Conversation = ({ data, currentUserId, online }) => {
   const [userData, setUserData] = useState(null);
   console.log(currentUserId, "currenuser");
+  console.log(online, "online");
 
   useEffect(() => {
     const otherUserId = data.members.find((id) => id !== currentUserId);
@@ -32,7 +33,7 @@ const Conversation = ({ data, currentUserId }) => {
       <div className="conversation">
         {userData && (
           <div className="user-info">
-            <div className="online-dot"></div>
+            {online && <div className="online-dot"> </div>}
             {/* <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"> */}
             <svg
               className="absolute w-12 h-12 text-gray-400 -left-1"
@@ -49,7 +50,9 @@ const Conversation = ({ data, currentUserId }) => {
             <div className="username">
               <span>{userData.username}</span>
               <br />
-              <span style={{ fontSize: "0.5rem" }}>Online</span>
+              <span style={{ fontSize: "0.5rem" }}>
+                {online ? "Online" : "Ofline"}
+              </span>
             </div>
             <hr style={{ width: "85%", border: "0.1px solid #ececec" }} />
           </div>

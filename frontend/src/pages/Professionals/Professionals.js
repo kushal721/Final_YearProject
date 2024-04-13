@@ -177,10 +177,8 @@ import { Pagination } from "@mui/material";
 
 const Professionals = () => {
   const [professionals, setProfessionals] = useState([]);
-  const [sortedProfessionals, setSortedProfessionals] = useState([]);
-  const [sortByOption, setSortByOption] = useState("name");
-  const [searchTerm, setSearchTerm] = useState("");
   const [filteredProfessionals, setFilteredProfessionals] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [professionalsPerPage] = useState(6);
 
@@ -193,6 +191,7 @@ const Professionals = () => {
         if (response.ok) {
           const data = await response.json();
           setProfessionals(data);
+          setFilteredProfessionals(data); // Set filtered professionals initially to all professionals
         } else {
           console.error("Failed to fetch professionals");
         }
@@ -204,20 +203,12 @@ const Professionals = () => {
   }, []);
 
   useEffect(() => {
-    const sorted = professionals.slice().sort((a, b) => {
-      if (a[sortByOption] < b[sortByOption]) return -1;
-      if (a[sortByOption] > b[sortByOption]) return 1;
-      return 0;
-    });
-    setSortedProfessionals(sorted);
-  }, [professionals, sortByOption]);
-
-  useEffect(() => {
-    const filtered = sortedProfessionals.filter((professional) =>
-      professional.designName?.toLowerCase().includes(searchTerm.toLowerCase())
+    // Filter professionals based on search term
+    const filtered = professionals.filter((professional) =>
+      professional.username?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredProfessionals(filtered);
-  }, [sortedProfessionals, searchTerm]);
+  }, [professionals, searchTerm]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -233,15 +224,12 @@ const Professionals = () => {
 
   return (
     <div>
-      <div>
-        <NavbarComp />
-      </div>
-
+      <NavbarComp />
       <div className="container">
         <div className="left">
           <h2>Filter Search</h2>
           <div className="filter-search">
-            <div className="dropdown">
+            {/* <div className="dropdown">
               <label htmlFor="designType">Location:</label>
               <select name="designType" id="designType">
                 <option value="">Select Location</option>
@@ -249,29 +237,25 @@ const Professionals = () => {
                 <option value="farmHouse">Kathmandu</option>
                 <option value="normal">Hetauda</option>
               </select>
-            </div>
-            <div className="dropdown">
-              <label htmlFor="area">Rating:</label>
-              <select name="area" id="area">
-                <option value="">Select rating</option>
-                <option value="0-50">0-3</option>
-                <option value="50-100">3-5</option>
-              </select>
+            </div> */}
+            <div className="mb-4">
+              <input
+                type="text"
+                className="form-control p-2 border rounded"
+                placeholder="Search professionals"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
           </div>
         </div>
         <div className="right">
           <div className="designs">
-            {/* <ProfessionalCard /> */}
-            {professionals.map((professional) => (
-              <div key={professional._id}>
-                <ProfessionalCard professional={professional} />
-              </div>
-
-              // <ProfessionalCard
-              //   key={professional._id}
-              //   professional={professional}
-              // />
+            {currentProfessionals.map((professional) => (
+              <ProfessionalCard
+                key={professional._id}
+                professional={professional}
+              />
             ))}
           </div>
           <div className="flex justify-center mt-4">

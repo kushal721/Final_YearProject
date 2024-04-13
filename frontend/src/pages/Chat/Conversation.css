@@ -1,0 +1,16 @@
+.conversation {
+  display: flex;
+  align-items: center;
+  background-color: #dadfee;
+  margin-bottom: 10px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  margin-left: 4rem;
+  font-size: 1rem;
+}

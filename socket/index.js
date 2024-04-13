@@ -46,6 +46,7 @@ io.on("connection", (socket) => {
       console.log("New User Connected", activeUsers);
     }
     // Send all active users to new user
+    console.log("connected users", activeUsers);
     io.emit("get-users", activeUsers);
   });
 
