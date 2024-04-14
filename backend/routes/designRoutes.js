@@ -59,6 +59,12 @@ import {
   getProfessionalDesigns,
   addRating,
 } from "../controllers/designController.js";
+import {
+  addComment,
+  updateComment,
+  deleteComment,
+  getComments,
+} from "../controllers/commentsController.js";
 import requireAuth from "../middlewares/requireAuth.js";
 import checkUserAuth from "../middlewares/auth-middleware.js";
 
@@ -83,6 +89,9 @@ router.post("/addrating", requireAuth, addRatingToDesign);
 //  UPDATE a design uploaded by the logged-in user
 router.patch("/mydesigns/:designId", updateMyDesign);
 
+// GET all comments for a design
+router.get("/:designId/comments", getComments);
+
 // Private routes (require authentication)
 router.use(requireAuth);
 // router.use(checkUserAuth);
@@ -97,5 +106,14 @@ router.get("/profe/getDesigns", getMyDesigns);
 
 // // DELETE a design uploaded by the logged-in user
 router.delete("/mydesigns/:id", deleteMyDesign);
+
+// POST a new comment for a design
+router.post("/:designId/comments", addComment);
+
+// UPDATE a comment for a design
+router.patch("/:designId/comments/:commentId", updateComment);
+
+// DELETE a comment for a design
+router.delete("/:designId/comments/:commentId", deleteComment);
 
 export default router;

@@ -1,0 +1,87 @@
+import User from "../models/User.js";
+import Design from "../models/Design.js";
+import Comment from "../models/Design.js";
+import mongoose from "mongoose";
+
+// Controller to add a new comment to a design
+export const addComment = async (req, res) => {
+  const { designId } = req.params;
+  const { content, createdBy } = req.body;
+  console.log(req.body, "request body ");
+
+  try {
+    const design = await Design.findById(designId);
+    if (!design) {
+      return res.status(404).json({ message: "Design not found" });
+    }
+
+    design.comments.push({ content, createdBy });
+    await design.save();
+
+    res.status(201).json(design.comments);
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Controller to update a comment for a design
+export const updateComment = async (req, res) => {
+  const { designId, commentId } = req.params;
+  const { content } = req.body;
+
+  try {
+    const design = await Design.findById(designId);
+    if (!design) {
+      return res.status(404).json({ message: "Design not found" });
+    }
+
+    const comment = design.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    comment.content = content;
+    await design.save();
+
+    res.status(200).json(design.comments);
+  } catch (error) {
+    console.error("Error updating comment:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteComment = async (req, res) => {
+  try {
+    const { designId, commentId } = req.params;
+    const design = await Design.findByIdAndUpdate(
+      designId,
+      { $pull: { comments: { _id: commentId } } },
+      { new: true }
+    );
+    if (!design) {
+      return res.status(404).json({ message: "Design not found" });
+    }
+    res.status(200).json({ message: "Comment deleted successfully", design });
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Controller to get all comments for a design
+export const getComments = async (req, res) => {
+  const { designId } = req.params;
+
+  try {
+    const design = await Design.findById(designId);
+    if (!design) {
+      return res.status(404).json({ message: "Design not found" });
+    }
+
+    res.status(200).json(design.comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

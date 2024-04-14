@@ -181,6 +181,7 @@ class UserController {
         success: true,
         token: await userExists.generateToken(),
         userId: userExists._id.toString(),
+        username: userExists.username,
         email: userExists.email,
         role: userExists.role,
       });

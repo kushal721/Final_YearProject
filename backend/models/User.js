@@ -33,6 +33,7 @@ userSchema.methods.generateToken = async function () {
         //payload
         // userId: this._id.toString(),
         userId: this._id,
+        username: this.username,
         email: this.email,
         role: this.role,
       },

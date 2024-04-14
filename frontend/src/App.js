@@ -5,7 +5,7 @@ import Home from "./pages/Home/Home";
 import Designs from "./pages/Designs/Designs";
 import Login from "./pages/Login/Login";
 import Favorite from "./pages/Favorite/Favorite";
-import JoinAsPro from "./pages/JoinAsPro/JoinAsPro";
+
 import Registeration from "./pages/Registration/Registeration";
 import Landing from "./pages/Landing";
 import Contact from "./pages/Contact/Contact";
@@ -36,6 +36,7 @@ import AddInformation from "./pages/ProfessionalSide/ProfeProfile/AddInformation
 import EditProfile from "./pages/ProfessionalSide/ProfeProfile/EditProfile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import MyDesignDesc from "./pages/ProfessionalSide/MyDesigns/MyDesignsDesc";
+import Dashboard from "./pages/Admin SIde/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
-          <Route path="/join-as-pro" element={<JoinAsPro />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registeration />} />
           <Route path="/reset-password" element={<ForgotPassword />} />
@@ -81,6 +82,8 @@ function App() {
 
           {/* routes for chat */}
           <Route path="/chat" element={<Chat />} />
+
+          <Route path="/admin-dash" element={<Dashboard />} />
         </Routes>
       </Router>
     </div>

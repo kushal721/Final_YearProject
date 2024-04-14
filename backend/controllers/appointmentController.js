@@ -57,39 +57,6 @@ const getAppointmentsByProfessional = async (req, res) => {
   }
 };
 
-// Get all appointments for a professional
-// const getAppointmentsByProfessional = async (req, res) => {
-//   try {
-//     const professionalId = "65d9713e9128c8ca87615b15"; // Hardcoded professional ID for testing
-//     const appointments = await Appointment.find({
-//       professional: professionalId,
-//     });
-//     res.json(appointments);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-// Controller to retrieve a specific appointment by ID
-// const getAppointmentById = async (req, res) => {
-//   try {
-//     if (!req.user || !req.user._id) {
-//       return res.status(401).json({ error: "User not authenticated" });
-//     }
-
-//     console.log("Professional ID:", req.user._id);
-
-//     const appointment = await Appointment.findById({
-//       professional: req.user._id,
-//     });
-//     if (!appointment) {
-//       return res.status(404).json({ message: "Appointment not found" });
-//     }
-//     res.status(200).json(appointment);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
 // Controller to retrieve all appointments created by the current user
 const getAppointmentById = async (req, res) => {
   try {
@@ -112,61 +79,6 @@ const getAppointmentById = async (req, res) => {
   }
 };
 
-//get booking requests by professional
-// const getBookingRequestsByProfessional = async (req, res) => {
-//   const { professionalId } = req.params;
-//   try {
-//     // Find booking requests where the professional field matches the provided professional ID
-//     // and the status is 'pending', and populate the 'client' field to get client details
-//     const bookingRequests = await Booking.find({
-//       professional: professionalId,
-//       status: "pending",
-//     }).populate("client", "username email"); // Include specific client fields
-//     res.status(200).json(bookingRequests);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
-// const getBookingRequestsByProfessional = async (req, res) => {
-//   try {
-//     if (!req.user || !req.user._id) {
-//       return res.status(401).json({ error: "User not authenticated" });
-//     }
-//     const professional = req.user;
-//     console.log("Professional ID:", professional); // Log professional ID
-
-//     // Get booking requests for the professional
-//     const bookingRequests = await Booking.find({ professional });
-
-//     // Retrieve client details for each booking request
-//     const bookingRequestsDetails = await Promise.all(
-//       bookingRequests.map(async (request) => {
-//         // Assuming client ID is stored in the booking request
-//         const client = await User.findById(request.client).select(
-//           "username email"
-//         );
-//         const appointmentDetails = await Appointment.findById(
-//           request.appointment
-//         ).select("date location");
-//         return {
-//           bookingRequest: request,
-//           appointmentDetails: appointmentDetails,
-//           clientDetails: client,
-//         };
-//       })
-//     );
-
-//     console.log("Booking Requests:", bookingRequests); // Log booking requests
-
-//     res.json({
-//       bookingRequests: bookingRequestsDetails,
-//     });
-//   } catch (error) {
-//     console.error("Error:", error); // Log any errors
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 const getBookingRequestsByProfessional = async (req, res) => {
   try {
     if (!req.user || !req.user._id) {
@@ -420,74 +332,6 @@ const bookAppointment = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-// const bookAppointment = async (req, res) => {
-//   try {
-//     const {
-//       appointment,
-//       professional,
-//       client,
-//       appointmentTime,
-//       remark,
-//     } = req.body;
-
-//     const newBooking = new Booking({
-//       appointment,
-//       professional,
-//       client,
-
-//       appointmentTime,
-//       remark,
-//     });
-//     const savedBooking = await newBooking.save();
-//     res.status(201).json(savedBooking);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// };
-
-// // Controller to book an appointment by a client
-// const bookAppointment = async (req, res) => {
-//   try {
-//     const { appointmentId, time, details, client } = req.body;
-//     const appointment = await Appointment.findById(appointmentId);
-//     if (!appointment) {
-//       return res.status(404).json({ message: "Appointment not found" });
-//     }
-
-//     // Convert start time and end time to milliseconds
-//     const startTime = new Date(appointment.startTime).getTime();
-//     const endTime = new Date(appointment.endTime).getTime();
-//     const requestedTime = new Date(time).getTime();
-
-//     // Check if the requested time is within the appointment time range
-//     if (requestedTime < startTime || requestedTime > endTime) {
-//       return res.status(400).json({ message: "Invalid appointment time" });
-//     }
-
-//     // Check if the requested time slot is available
-//     const isSlotAvailable = appointment.bookings.every(
-//       (booking) => booking.time.getTime() !== requestedTime
-//     );
-//     if (!isSlotAvailable) {
-//       return res
-//         .status(400)
-//         .json({ message: "The requested time slot is not available" });
-//     }
-
-//     // Create a new booking
-//     appointment.bookings.push({
-//       client, // Assuming the authenticated user is the client
-//       time,
-//       status: "Pending", // Initially set to pending until approved by professional
-//       details,
-//     });
-//     await appointment.save();
-//     res.status(200).json({ message: "Appointment booked successfully" });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
 
 // Controller to retrieve appointments booked by a client
 const getClientAppointments = async (req, res) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiFontSize } from "react-icons/bi";
 import "./Conversation.css";
+
 const Conversation = ({ data, currentUserId, online }) => {
   const [userData, setUserData] = useState(null);
   console.log(currentUserId, "currenuser");
@@ -36,7 +37,7 @@ const Conversation = ({ data, currentUserId, online }) => {
             {online && <div className="online-dot"> </div>}
             {/* <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"> */}
             <svg
-              className="absolute w-12 h-12 text-gray-400 -left-1"
+              className="relative w-15 h-12 text-gray-400 -left-2"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -47,10 +48,13 @@ const Conversation = ({ data, currentUserId, online }) => {
                 clipRule="evenodd"
               ></path>
             </svg>
+
             <div className="username">
-              <span>{userData.username}</span>
               <br />
-              <span style={{ fontSize: "0.5rem" }}>
+              <span>{userData.username}</span>
+
+              <br />
+              <span style={{ fontSize: "0.8rem" }}>
                 {online ? "Online" : "Ofline"}
               </span>
             </div>
