@@ -1,6 +1,8 @@
-.my-appointments-container {
+.addAppointment-container {
   display: flex;
+  padding: 2%;
   gap: 3%;
+  width: 60%;
 }
 
 .content {
@@ -15,8 +17,6 @@
 }
 
 .add-appointment-form {
-  max-width: 800px;
-  position: relative; /* Position relative for absolute positioning */
   margin-top: 50px;
 }
 

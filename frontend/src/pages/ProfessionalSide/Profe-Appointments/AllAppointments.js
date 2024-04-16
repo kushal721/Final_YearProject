@@ -202,123 +202,127 @@ const AllAppointments = () => {
   };
 
   return (
-    <div className="my-designs-container">
-      <Sidebar />
-      <div className="content">
-        <div className="page-name">
-          <h1 className="page-title">Confirmed Appointments</h1>
-          <table className="appointment-table">
-            <thead>
-              <tr>
-                <th className="table-heading">Date</th>
-                <th className="table-heading">Start Time</th>
-                <th className="table-heading">End Time</th>
-                <th className="table-heading">Location</th>
-                <th className="table-heading">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.map((appointment) => (
-                <tr key={appointment._id} className="table-row">
-                  <td className="table-data">
-                    {editAppointment &&
-                    editAppointment._id === appointment._id ? (
-                      <input
-                        type="date"
-                        value={editAppointment.date}
-                        onChange={(e) => handleInputChange(e, "date")}
-                      />
-                    ) : (
-                      appointment.date
-                    )}
-                  </td>
-                  <td className="table-data">
-                    {editAppointment &&
-                    editAppointment._id === appointment._id ? (
-                      <input
-                        type="time"
-                        value={editAppointment.startTime}
-                        onChange={(e) => handleInputChange(e, "startTime")}
-                      />
-                    ) : (
-                      appointment.startTime
-                    )}
-                  </td>
-                  <td className="table-data">
-                    {editAppointment &&
-                    editAppointment._id === appointment._id ? (
-                      <input
-                        type="time"
-                        value={editAppointment.endTime}
-                        onChange={(e) => handleInputChange(e, "endTime")}
-                      />
-                    ) : (
-                      appointment.endTime
-                    )}
-                  </td>
-                  <td className="table-data">
-                    {editAppointment &&
-                    editAppointment._id === appointment._id ? (
-                      <input
-                        type="text"
-                        value={editAppointment.location}
-                        onChange={(e) => handleInputChange(e, "location")}
-                      />
-                    ) : (
-                      appointment.location
-                    )}
-                  </td>
-                  <td className="table-data">
-                    {editAppointment &&
-                    editAppointment._id === appointment._id ? (
-                      <>
-                        <button className="btn-save" onClick={handleSave}>
-                          Save
-                        </button>
-                        <button
-                          className="btn-cancel"
-                          onClick={handleCancelEdit}
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          className="btn-edit"
-                          onClick={() => handleEdit(appointment)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="btn-delete"
-                          onClick={() => handleRemoveAppointment(appointment)}
-                        >
-                          Delete
-                        </button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <div className="maindiv">
+      <div className="sidebar">
+        <Sidebar />
       </div>
-      {/* Confirmation popup */}
-      {showConfirmationPopup && (
-        <div className="confirmation-popup">
-          <h3>Are you sure you want to delete?</h3>
-          <div className="popup-buttons">
-            <button className="popup-button" onClick={handleConfirmDelete}>
-              Yes
-            </button>
-            <button className="popup-button" onClick={handleCancelDelete}>
-              No
-            </button>
+      <div className="appointments-container">
+        <div className="content">
+          <div className="page-name">
+            <h1 className="page-title">Confirmed Appointments</h1>
+            <table className="appointment-table">
+              <thead>
+                <tr>
+                  <th className="table-heading">Date</th>
+                  <th className="table-heading">Start Time</th>
+                  <th className="table-heading">End Time</th>
+                  <th className="table-heading">Location</th>
+                  <th className="table-heading">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointments.map((appointment) => (
+                  <tr key={appointment._id} className="table-row">
+                    <td className="table-data">
+                      {editAppointment &&
+                      editAppointment._id === appointment._id ? (
+                        <input
+                          type="date"
+                          value={editAppointment.date}
+                          onChange={(e) => handleInputChange(e, "date")}
+                        />
+                      ) : (
+                        appointment.date
+                      )}
+                    </td>
+                    <td className="table-data">
+                      {editAppointment &&
+                      editAppointment._id === appointment._id ? (
+                        <input
+                          type="time"
+                          value={editAppointment.startTime}
+                          onChange={(e) => handleInputChange(e, "startTime")}
+                        />
+                      ) : (
+                        appointment.startTime
+                      )}
+                    </td>
+                    <td className="table-data">
+                      {editAppointment &&
+                      editAppointment._id === appointment._id ? (
+                        <input
+                          type="time"
+                          value={editAppointment.endTime}
+                          onChange={(e) => handleInputChange(e, "endTime")}
+                        />
+                      ) : (
+                        appointment.endTime
+                      )}
+                    </td>
+                    <td className="table-data">
+                      {editAppointment &&
+                      editAppointment._id === appointment._id ? (
+                        <input
+                          type="text"
+                          value={editAppointment.location}
+                          onChange={(e) => handleInputChange(e, "location")}
+                        />
+                      ) : (
+                        appointment.location
+                      )}
+                    </td>
+                    <td className="table-data">
+                      {editAppointment &&
+                      editAppointment._id === appointment._id ? (
+                        <>
+                          <button className="btn-save" onClick={handleSave}>
+                            Save
+                          </button>
+                          <button
+                            className="btn-cancel"
+                            onClick={handleCancelEdit}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="btn-edit"
+                            onClick={() => handleEdit(appointment)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleRemoveAppointment(appointment)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-      )}
+        {/* Confirmation popup */}
+        {showConfirmationPopup && (
+          <div className="confirmation-popup">
+            <h3>Are you sure you want to delete?</h3>
+            <div className="popup-buttons">
+              <button className="popup-button" onClick={handleConfirmDelete}>
+                Yes
+              </button>
+              <button className="popup-button" onClick={handleCancelDelete}>
+                No
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

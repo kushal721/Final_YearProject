@@ -313,7 +313,7 @@ const Chat = () => {
 
   return (
     <div className="container-fluid chat-container">
-      {user?.role === "client" ? (
+      {/* {user?.role === "client" ? (
         <div>
           <NavbarComp />
         </div>
@@ -321,7 +321,7 @@ const Chat = () => {
         <div className="navbar">
           <button onClick={handleBackButton}>Back</button>
         </div>
-      )}
+      )} */}
       <div className="row">
         <div className="chat-l col-md-3">
           {" "}

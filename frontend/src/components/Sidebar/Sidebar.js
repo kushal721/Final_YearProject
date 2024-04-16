@@ -95,15 +95,17 @@
 // };
 
 // export default Sidebar;
-
 import styled from "styled-components";
-import { NavLink as RouterNavLink, Outlet } from "react-router-dom";
+import { NavLink as RouterNavLink } from "react-router-dom";
 import {
   FaBook,
   FaComments,
   FaStore,
   FaTachometerAlt,
   FaUsers,
+  FaClipboardList,
+  FaUserCog,
+  FaFileAlt,
 } from "react-icons/fa";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
@@ -116,43 +118,54 @@ const Sidebar = () => {
     logout();
   };
 
+  const isAdmin = () => {
+    return user && user.role === "admin";
+  };
+  const isProfessional = () => {
+    return user && user.role === "professional";
+  };
+
   return (
     <StyledDashboard>
       <SideNav>
-        <SidebarHeader>
-          <h1>Construction Professional's Nepal</h1>
-          <h3>
-            Welcome, {user?.username} :{user?.role}
-          </h3>
-        </SidebarHeader>
-        <NavLink to="/my-designs">
-          <FaBook /> My Designs
-        </NavLink>
-        <NavLink to="/profe-appointments">
-          <FaStore /> Appointments
-        </NavLink>
-        <NavLink to="/allappointments">
-          <FaStore /> All Appointments
-        </NavLink>
-        <NavLink to="/add-designs">
-          <FaStore /> Add Designs
-        </NavLink>
-        <NavLink to="/addAppointment">
-          <FaStore /> Add Appointment
-        </NavLink>
-        <NavLink to="/profe-profile">
-          <FaStore /> Profile
-        </NavLink>
-        <NavLink to="/chat">
-          <FaComments /> Chat
-        </NavLink>
-        <LogoutContainer>
-          {user && (
-            <div>
-              <LogoutButton onClick={handleClick}>Logout</LogoutButton>
-            </div>
-          )}
-        </LogoutContainer>
+        {isProfessional() && (
+          <>
+            <NavLink to="/dashboard/my-designs">
+              <FaBook /> My Designs
+            </NavLink>
+            <NavLink to="/dashboard/profe-appointments">
+              <FaStore /> Appointments
+            </NavLink>
+            <NavLink to="/dashboard/allappointments">
+              <FaStore /> All Appointments
+            </NavLink>
+            <NavLink to="/dashboard/add-designs">
+              <FaStore /> Add Designs
+            </NavLink>
+            <NavLink to="/dashboard/addAppointment">
+              <FaStore /> Add Appointment
+            </NavLink>
+            <NavLink to="/dashboard/profe-profile">
+              <FaStore /> Profile
+            </NavLink>
+            <NavLink to="/dashboard/professionalsummary">
+              <FaClipboardList /> Summary
+            </NavLink>
+          </>
+        )}
+        {isAdmin() && (
+          <>
+            <NavLink to="/dashboard/summary">
+              <FaClipboardList /> Summary
+            </NavLink>
+            <NavLink to="/dashboard/admin">
+              <FaUserCog /> Manage Users
+            </NavLink>
+            <NavLink to="/dashboard/adminreport">
+              <FaFileAlt /> Report
+            </NavLink>
+          </>
+        )}
       </SideNav>
     </StyledDashboard>
   );
@@ -162,7 +175,7 @@ export default Sidebar;
 
 const StyledDashboard = styled.div`
   display: flex;
-  height: 100vh;
+  height: 88vh;
 `;
 
 const SideNav = styled.nav`
@@ -220,11 +233,6 @@ const NavLink = styled(RouterNavLink)`
   svg {
     margin-right: 0.5rem;
   }
-`;
-
-const Content = styled.div`
-  flex: 1;
-  padding: 2rem;
 `;
 
 const LogoutContainer = styled.div`

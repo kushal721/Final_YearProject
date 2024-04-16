@@ -63,13 +63,11 @@
 // }
 
 // export default NavbarComp;
-
 import { useNavigate, NavLink } from "react-router-dom";
 import { Button, Navbar } from "flowbite-react";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { IoChatbubbleEllipsesOutline } from "react-icons/io5"; // Import chat icon
-// import "./NavbarComp.css"; // Import custom CSS for Navbar styling
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 function NavbarComp() {
   const { logout } = useLogout();
@@ -78,6 +76,10 @@ function NavbarComp() {
   const handleClick = () => {
     logout();
     Navigate("/");
+  };
+
+  const isClient = () => {
+    return user && user.role === "client";
   };
 
   return (
@@ -115,21 +117,19 @@ function NavbarComp() {
         <Navbar.Link as={NavLink} to="/professionals">
           <span className="text-lg">Professionals</span>
         </Navbar.Link>
-        {!user && (
-          <Navbar.Link as={NavLink} to="/contact">
-            <span className="text-lg">Contact Us</span>
+        {isClient() && (
+          <Navbar.Link as={NavLink} to="/favorite">
+            <span className="text-lg">Favorite</span>
+          </Navbar.Link>
+        )}
+        {isClient() && (
+          <Navbar.Link as={NavLink} to="/appointment">
+            <span className="text-lg">Appointments</span>
           </Navbar.Link>
         )}
         {user && (
           <>
-            <Navbar.Link as={NavLink} to="/favorite">
-              <span className="text-lg">Favorite</span>
-            </Navbar.Link>
-            <Navbar.Link as={NavLink} to="/appointment">
-              <span className="text-lg">Appointments</span>
-            </Navbar.Link>
             <NavLink to="/chat">
-              {/* Use IoChatbubbleEllipsesOutline icon with custom styling */}
               <IoChatbubbleEllipsesOutline
                 style={{
                   fontSize: "24px",
@@ -139,6 +139,21 @@ function NavbarComp() {
                 }}
               />
             </NavLink>
+            {!isClient() && (
+              <>
+                {user.role === "admin" && (
+                  <NavLink to="/dashboard/summary">
+                    <span className="text-lg">Dashboard</span>
+                  </NavLink>
+                )}
+
+                {user.role === "professional" && (
+                  <NavLink to="/dashboard/my-designs">
+                    <span className="text-lg">Dashboard</span>
+                  </NavLink>
+                )}
+              </>
+            )}
           </>
         )}
       </Navbar.Collapse>

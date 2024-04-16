@@ -3,11 +3,31 @@ import Design from "../models/Design.js";
 import Comment from "../models/Design.js";
 import mongoose from "mongoose";
 
-// Controller to add a new comment to a design
+// // Controller to add a new comment to a design
+// export const addComment = async (req, res) => {
+//   const { designId } = req.params;
+//   const { content, createdBy } = req.body;
+//   console.log(req.body, "request body ");
+
+//   try {
+//     const design = await Design.findById(designId);
+//     if (!design) {
+//       return res.status(404).json({ message: "Design not found" });
+//     }
+
+//     design.comments.push({ content, createdBy });
+//     await design.save();
+
+//     res.status(201).json(design.comments);
+//   } catch (error) {
+//     console.error("Error adding comment:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+
 export const addComment = async (req, res) => {
   const { designId } = req.params;
   const { content, createdBy } = req.body;
-  console.log(req.body, "request body ");
 
   try {
     const design = await Design.findById(designId);
@@ -15,10 +35,23 @@ export const addComment = async (req, res) => {
       return res.status(404).json({ message: "Design not found" });
     }
 
-    design.comments.push({ content, createdBy });
+    // Fetch the commenter's details
+    const commenter = await User.findById(createdBy);
+    if (!commenter) {
+      return res.status(404).json({ message: "Commenter not found" });
+    }
+
+    // Add commenter's name to the comment
+    const comment = {
+      content,
+      createdBy,
+      commenterName: commenter.username, // Add commenter's name here
+    };
+
+    design.comments.push(comment);
     await design.save();
 
-    res.status(201).json(design.comments);
+    res.status(201).json(comment); // Return the newly created comment
   } catch (error) {
     console.error("Error adding comment:", error);
     res.status(500).json({ message: "Internal server error" });

@@ -1,11 +1,12 @@
 /* ProfeProfile.css */
-.my-designs-container {
+.profile-container {
   display: flex;
   justify-content: center;
+  padding: 1%;
 }
 
-.content {
-  width: 80%;
+.profile-content {
+  width: 100%;
   padding: 10px;
   margin-top: 50px;
   border-left: 3px solid #333;

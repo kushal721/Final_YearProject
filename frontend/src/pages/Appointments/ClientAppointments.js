@@ -56,7 +56,7 @@ const ClientAppointments = () => {
 
   return (
     <div>
-      <NavbarComp />
+      
       <div className="client-appointments-container">
         <div className="appointment-section">
           <h1 className="page-title">Your Appointments</h1>

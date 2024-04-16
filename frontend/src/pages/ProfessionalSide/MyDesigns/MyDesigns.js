@@ -3,10 +3,12 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import "./MyDesigns.css"; // Import the CSS for MyDesigns
 import MyDesignCard from "../../../components/Cards/MyDesignsCard";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import styled from "styled-components";
 
 const MyDesigns = () => {
   const [my_designs, setMy_Designs] = useState([]);
   const { user } = useAuthContext();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDesigns = async () => {
@@ -24,7 +26,7 @@ const MyDesigns = () => {
           "http://localhost:4000/api/designs/profe/getDesigns",
           {
             headers: {
-              Authorization: `Bearer ${user.token}`, // Include the token in the Authorization header
+              Authorization: `Bearer ${user?.token}`, // Include the token in the Authorization header
             },
           }
         );
@@ -32,6 +34,7 @@ const MyDesigns = () => {
           const data = await response.json();
           setMy_Designs(data); // Set designs with fetched data
           // console.log(data);
+          setLoading(false);
         } else {
           console.error("Failed to fetch designs");
         }
@@ -39,8 +42,14 @@ const MyDesigns = () => {
         console.error("Error fetching desagns:", error);
       }
     };
-    fetchDesigns();
+    if (user?.token) {
+      fetchDesigns();
+    }
   }, [user]); // Include user in the dependency array to re-fetch designs when user changes
+
+  if (loading) {
+    return <Loading>Loading...</Loading>;
+  }
 
   console.log("my designs: ", my_designs);
 
@@ -50,7 +59,6 @@ const MyDesigns = () => {
         <div className="sidebar">
           <Sidebar />
         </div>
-
         <div className="my-designs-container">
           <div className="content">
             <div className="search-box">
@@ -82,5 +90,11 @@ const MyDesigns = () => {
     </>
   );
 };
+
+const Loading = styled.div`
+  margin-top: 50px;
+  text-align: center;
+  font-size: 100px;
+`;
 
 export default MyDesigns;

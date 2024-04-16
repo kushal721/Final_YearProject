@@ -66,6 +66,7 @@ import chatRoutes from "./routes/chatRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import favoriteRoutes from "./routes/favoriteRoutes.js";
 import { updateAppointmentStatus } from "./controllers/appointmentController.js";
+import reportRoutes from "./routes/reportRoutes.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -96,6 +97,7 @@ app.use("/api/appointments", appointmentRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/favorites", favoriteRoutes);
+app.use("/api/report", reportRoutes);
 
 // Route to update appointment status
 // app.put("/api/appointments/:id/:action", updateAppointmentStatus);

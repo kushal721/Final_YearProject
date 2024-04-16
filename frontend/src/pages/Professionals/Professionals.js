@@ -224,7 +224,6 @@ const Professionals = () => {
 
   return (
     <div>
-      <NavbarComp />
       <div className="container">
         <div className="left">
           <h2>Filter Search</h2>

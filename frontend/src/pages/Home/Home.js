@@ -36,7 +36,7 @@ const Home = () => {
     <div className="App">
       <div>
         <div className="white-gradient" />
-        <NavbarComp />
+
         <Hero />
       </div>
       <PopularDesigns />

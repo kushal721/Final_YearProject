@@ -42,8 +42,10 @@ export const useLogin = () => {
         navigate("/my-designs");
       } else if (res.role === "client") {
         navigate("/");
+      } else if (res.role === "admin") {
+        navigate("/admin");
       }
-      alert("login successful "); 
+      alert("login successful ");
 
       // Update loading state
       setIsLoading(false);

@@ -111,7 +111,7 @@ const Favorite = () => {
 
   return (
     <div>
-      <NavbarComp />
+      
       <div className="favorite-container">
         <h1 className="favorite-heading">Favorite Designs</h1>
         <ul className="favorite-list">

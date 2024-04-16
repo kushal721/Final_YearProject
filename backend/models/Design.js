@@ -150,6 +150,7 @@ const commentSchema = new Schema(
       type: String,
       required: true,
     },
+    commenterName: { type: String, required: true },
   },
   { timestamps: true }
 );

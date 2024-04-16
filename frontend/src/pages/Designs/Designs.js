@@ -305,7 +305,7 @@ const Designs = () => {
 
   return (
     <div>
-      <NavbarComp />
+     
       <div className="flex">
         <nav className="w-1000 md:w-1/4 bg-light p-4 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-4 text-dark">Explore</h2>

@@ -44,7 +44,6 @@ const Registration = () => {
 
   return (
     <>
-      <NavbarComp />
       <section className="login-signup-section">
         <div className="form_data">
           <div className="form_heading">

@@ -2,22 +2,7 @@ import UserModel from "../models/User.js";
 
 import ProfessionalModel from "../models/Professional.js";
 
-//client side
 
-// const getAllProfessionals = async (req, res) => {
-//   try {
-//     // Find all users with the role "professional" and populate their professional details
-//     const professionals = await User.find({
-//       role: "professional",
-//     }).populate("professionalId");
-
-//     // Send the professionals as a response
-//     res.status(200).json({ professionals });
-//   } catch (error) {
-//     // If an error occurs, send an error response
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 // Controller function to get all users
 const getAllProfessionals = async (req, res) => {
   try {

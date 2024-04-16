@@ -119,7 +119,7 @@ const Booking = () => {
 
   return (
     <div>
-      <NavbarComp />
+      
       <div className="booking-container">
         <h1>Book appointments</h1>
         {professionalDetails && (

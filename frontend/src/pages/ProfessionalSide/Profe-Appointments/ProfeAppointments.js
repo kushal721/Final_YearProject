@@ -277,132 +277,142 @@ const ProfeAppointments = () => {
   };
 
   return (
-    <div className="my-designs-container">
-      <Sidebar />
-      <div className="content">
-        <div className="page-name">
-          <h1 className="page-title">Confirmed Appointments</h1>
-          <table className="appointment-table">
-            <thead>
-              <tr>
-                <th className="table-heading">Client Name</th>
-                <th className="table-heading">Time</th>
-                <th className="table-heading">Location</th>
-                <th className="table-heading">Date</th>
-                <th className="table-heading">Remark</th>
-                <th className="table-heading">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointmentRequests
-                .filter(
-                  (appointment) =>
-                    appointment.bookingRequest.status === "confirmed"
-                )
-                .map((appointment) => (
-                  <tr
-                    key={appointment.bookingRequest._id}
-                    className="table-row"
-                  >
-                    <td className="table-data">
-                      {appointment.clientDetails.username}
-                    </td>
-                    <td className="table-data">
-                      {appointment.bookingRequest.appointmentTime}
-                    </td>
-                    <td className="table-data">
-                      {appointment.appointmentDetails.location}
-                    </td>
-                    <td className="table-data">
-                      {appointment.appointmentDetails.date}
-                    </td>
-                    <td className="table-data">
-                      {appointment.bookingRequest.remark}
-                    </td>
-                    <td className="table-data">
-                      <button
-                        className="reject-button"
-                        onClick={() =>
-                          handleAction(appointment.bookingRequest._id, "cancel")
-                        }
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
+    <div className="maindiv">
+      <div className="sidebar">
+        <Sidebar />
+      </div>
+      <div className="appointments-container">
+        <div className="content">
+          <div className="page-name">
+            <h1 className="page-title">Confirmed Appointments</h1>
+            <table className="appointment-table">
+              <thead>
+                <tr>
+                  <th className="table-heading">Client Name</th>
+                  <th className="table-heading">Time</th>
+                  <th className="table-heading">Location</th>
+                  <th className="table-heading">Date</th>
+                  <th className="table-heading">Remark</th>
+                  <th className="table-heading">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointmentRequests
+                  .filter(
+                    (appointment) =>
+                      appointment.bookingRequest.status === "confirmed"
+                  )
+                  .map((appointment) => (
+                    <tr
+                      key={appointment.bookingRequest._id}
+                      className="table-row"
+                    >
+                      <td className="table-data">
+                        {appointment.clientDetails.username}
+                      </td>
+                      <td className="table-data">
+                        {appointment.bookingRequest.appointmentTime}
+                      </td>
+                      <td className="table-data">
+                        {appointment.appointmentDetails.location}
+                      </td>
+                      <td className="table-data">
+                        {appointment.appointmentDetails.date}
+                      </td>
+                      <td className="table-data">
+                        {appointment.bookingRequest.remark}
+                      </td>
+                      <td className="table-data">
+                        <button
+                          className="reject-button"
+                          onClick={() =>
+                            handleAction(
+                              appointment.bookingRequest._id,
+                              "cancel"
+                            )
+                          }
+                        >
+                          Cancel
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
 
-        <div className="appointment-requests">
-          <h2 className="table-title">Appointment Requests</h2>
-          <table className="appointment-table">
-            <thead>
-              <tr>
-                <th className="table-heading">Client Name</th>
-                <th className="table-heading">Time</th>
-                <th className="table-heading">Location</th>
-                <th className="table-heading">Date</th>
-                <th className="table-heading">Status</th>
-                <th className="table-heading">Remark</th>
-                <th className="table-heading">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointmentRequests
-                .filter(
-                  (appointment) =>
-                    appointment.bookingRequest.status !== "confirmed"
-                )
-                .map((appointment) => (
-                  <tr
-                    key={appointment.bookingRequest._id}
-                    className="table-row"
-                  >
-                    <td className="table-data">
-                      {appointment.clientDetails.username}
-                    </td>
-                    <td className="table-data">
-                      {appointment.bookingRequest.appointmentTime}
-                    </td>
-                    <td className="table-data">
-                      {appointment.appointmentDetails.location}
-                    </td>
-                    <td className="table-data">
-                      {appointment.appointmentDetails.date}
-                    </td>
-                    <td className="table-data">
-                      {appointment.bookingRequest.status}
-                    </td>
-                    <td className="table-data">
-                      {appointment.bookingRequest.remark}
-                    </td>
-                    <td className="table-data">
-                      <button
-                        className="accept-button"
-                        onClick={() =>
-                          handleAction(
-                            appointment.bookingRequest._id,
-                            "confirm"
-                          )
-                        }
-                      >
-                        Accept
-                      </button>
-                      <button
-                        className="reject-button"
-                        onClick={() =>
-                          handleAction(appointment.bookingRequest._id, "cancel")
-                        }
-                      >
-                        Reject
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <div className="appointment-requests">
+            <h2 className="table-title">Appointment Requests</h2>
+            <table className="appointment-table">
+              <thead>
+                <tr>
+                  <th className="table-heading">Client Name</th>
+                  <th className="table-heading">Time</th>
+                  <th className="table-heading">Location</th>
+                  <th className="table-heading">Date</th>
+                  <th className="table-heading">Status</th>
+                  <th className="table-heading">Remark</th>
+                  <th className="table-heading">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointmentRequests
+                  .filter(
+                    (appointment) =>
+                      appointment.bookingRequest.status !== "confirmed"
+                  )
+                  .map((appointment) => (
+                    <tr
+                      key={appointment.bookingRequest._id}
+                      className="table-row"
+                    >
+                      <td className="table-data">
+                        {appointment.clientDetails.username}
+                      </td>
+                      <td className="table-data">
+                        {appointment.bookingRequest.appointmentTime}
+                      </td>
+                      <td className="table-data">
+                        {appointment.appointmentDetails.location}
+                      </td>
+                      <td className="table-data">
+                        {appointment.appointmentDetails.date}
+                      </td>
+                      <td className="table-data">
+                        {appointment.bookingRequest.status}
+                      </td>
+                      <td className="table-data">
+                        {appointment.bookingRequest.remark}
+                      </td>
+                      <td className="table-data">
+                        <button
+                          className="accept-button"
+                          onClick={() =>
+                            handleAction(
+                              appointment.bookingRequest._id,
+                              "confirm"
+                            )
+                          }
+                        >
+                          Accept
+                        </button>
+                        <button
+                          className="reject-button"
+                          onClick={() =>
+                            handleAction(
+                              appointment.bookingRequest._id,
+                              "cancel"
+                            )
+                          }
+                        >
+                          Reject
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

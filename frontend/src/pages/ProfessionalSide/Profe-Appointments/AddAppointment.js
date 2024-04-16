@@ -85,62 +85,66 @@ const AddAppointment = () => {
   };
 
   return (
-    <div className="my-appointments-container">
-      <Sidebar />
-      <div className="content">
-        <div className="page-name">
-          <h1 className="page-title">Add New Appointment</h1>
-        </div>
-        <form className="add-appointment-form" onSubmit={handleSubmit}>
-          <h1 className="appointment-details-title">Appointment Details</h1>
+    <div className="maindiv">
+      <div className="sidebar">
+        <Sidebar />
+      </div>
+      <div className="addAppointment-container">
+        <div className="content">
+          <div className="page-name">
+            <h1 className="page-title">Add New Appointment</h1>
+          </div>
+          <form className="add-appointment-form" onSubmit={handleSubmit}>
+            <h1 className="appointment-details-title">Appointment Details</h1>
 
-          <div className="form-group">
-            <label htmlFor="date">Date:</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={appointmentData.date}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="startTime">Start Time:</label>
-            <input
-              type="time"
-              id="startTime"
-              name="startTime"
-              value={appointmentData.startTime}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="endTime">End Time:</label>
-            <input
-              type="time"
-              id="endTime"
-              name="endTime"
-              value={appointmentData.endTime}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="location">Location:</label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              value={appointmentData.location}
-              onChange={handleInputChange}
-              placeholder="Enter location"
-            />
-          </div>
-          <div className="btn-create">
-            <button className="create-button" type="submit">
-              Create Appointment
-            </button>
-          </div>
-        </form>
+            <div className="form-group">
+              <label htmlFor="date">Date:</label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={appointmentData.date}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="startTime">Start Time:</label>
+              <input
+                type="time"
+                id="startTime"
+                name="startTime"
+                value={appointmentData.startTime}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="endTime">End Time:</label>
+              <input
+                type="time"
+                id="endTime"
+                name="endTime"
+                value={appointmentData.endTime}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="location">Location:</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={appointmentData.location}
+                onChange={handleInputChange}
+                placeholder="Enter location"
+              />
+            </div>
+            <div className="btn-create">
+              <button className="create-button" type="submit">
+                Create Appointment
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

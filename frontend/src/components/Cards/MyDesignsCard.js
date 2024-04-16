@@ -8,7 +8,7 @@ const MyDesignCard = ({ my_design }) => {
   return (
     <div>
       {/* Render design details */}
-      <Link to={`/mydesign-desc/${my_design._id}`} className="card">
+      <Link to={`/dashboard/mydesign-desc/${my_design._id}`} className="card">
         <img src="/r1.png" alt="Design photo" />
         <span className="design-name">{my_design.designName}</span> <br />
       </Link>
@@ -19,19 +19,7 @@ const MyDesignCard = ({ my_design }) => {
     </div>
   );
 };
-// {/* <Link to={`/design-desc/${design._id}`} className="card">
-//         <div className="img-container">
-//           <img src="/r1.png" alt="Design photo" className="card-img" />
-//         </div>
-//         <div className="card-content">
-//           <div className="header">
-//             <h5 className="title">{design.designName}</h5>
-//             <p className="rating">★ {design.averageRating}</p>
-//           </div>
-//           <p className="short-description">{design.designDescription}</p>
-//           <p className="designer">Designed by {design._id}</p>
-//         </div>
-//       </Link> */}
+
 export default MyDesignCard;
 // import React, { useState } from "react";
 // import { Modal, Button } from "react-bootstrap";

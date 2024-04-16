@@ -64,22 +64,13 @@
 }
 
 /* //for my design description */
-.maindiv {
-  display: flex;
-}
 
-.button-container {
-  position: absolute;
-  top: 20px;
-  margin-bottom: 50px;
-  right: 20px;
-}
 .btn-black {
   background-color: black;
   color: white;
 }
 .btn-danger {
-  background-color: rgb(144, 54, 54);
+  background-color: rgb(239, 32, 32);
   color: white;
 }
 
@@ -107,8 +98,6 @@
 
   transition: color 0.3s ease;
 }
-
-/* CSS  */
 
 .confirmation-popup {
   position: fixed;
@@ -146,4 +135,13 @@
 
 .popup-button:hover {
   background-color: #ff5f52;
+}
+
+/* comment header */
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
