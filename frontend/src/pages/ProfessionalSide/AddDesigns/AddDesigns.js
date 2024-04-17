@@ -1,181 +1,3 @@
-// import React, { useCallback, useState } from "react";
-// import Sidebar from "../../../components/Sidebar/Sidebar";
-// import "./AddDesigns.css";
-// import toast from "react-hot-toast";
-// import { useAuthContext } from "../../../hooks/useAuthContext";
-// import { Navigate } from "react-router-dom";
-
-// const AddDesigns = () => {
-//   const { user } = useAuthContext(); // Access the user authentication state
-//   const [designData, setDesignData] = useState({
-//     designName: "",
-//     area: "",
-//     estimateCost: "",
-//     designDescription: "",
-//     photos: [], // Initialize photos array
-//   });
-//   console.log("des", designData);
-
-//   const [error, setError] = useState(""); // State variable to hold error message
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     try {
-//       const formData = { ...designData };
-
-//       const response = await fetch(
-//         "http://localhost:4000/api/designs/adddesign",
-//         {
-//           method: "POST",
-//           body: JSON.stringify(formData),
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${user?.token}`, // Include the authentication token in the request headers
-//           },
-//         }
-//       );
-//       // Check if the user is authenticated before rendering the component
-//       if (!user) {
-//         return <Navigate to="/login" />; // Redirect to login page if user is not authenticated
-//       }
-
-//       if (response.ok) {
-//         alert("Designs uploaded successfully!");
-//         console.log("Designs uploaded successfully!");
-//       } else {
-//         const errorData = await response.json(); // Get error message from response body
-//         setError(errorData.message); // Set error message state
-//         console.log("Failed to upload design");
-//       }
-//     } catch (error) {
-//       console.error("Error uploading designs:", error);
-//       setError("Failed to upload designs. Please try again."); // Generic error message
-//     }
-//   };
-//   const handleInputChange = useCallback((e) => {
-//     const { name, value, files } = e.target;
-//     if (name === "photos") {
-//       setDesignData((prevFormData) => ({
-//         ...prevFormData,
-//         photos: [...prevFormData.photos, ...Array.from(files)],
-//       }));
-//     } else {
-//       setDesignData((prevFormData) => ({
-//         ...prevFormData,
-//         [name]: value,
-//       }));
-//     }
-//   }, []);
-
-//   const handleRemovePhoto = useCallback((index) => {
-//     setDesignData((prevFormData) => {
-//       const updatedPhotos = [...prevFormData.photos];
-//       updatedPhotos.splice(index, 1);
-//       return {
-//         ...prevFormData,
-//         photos: updatedPhotos,
-//       };
-//     });
-//   }, []);
-
-//   return (
-//     <div className="my-designs-container">
-//       <div>
-//         <Sidebar />
-//       </div>
-
-//       <div className="content">
-//         <div className="page-name">
-//           <h1 className="page-title">Add New Designs</h1>
-//         </div>
-//         <form className="add-design-form" onSubmit={handleSubmit}>
-//           <h1 className="design-details-title">Design Details</h1>
-//           <div className="left-column">
-//             <div className="form-group">
-//               <label htmlFor="designName">Design Name:</label>
-//               <input
-//                 type="text"
-//                 id="designName"
-//                 name="designName"
-//                 value={designData.designName}
-//                 onChange={handleInputChange}
-//                 placeholder="Enter design name"
-//               />
-//             </div>
-//             <div className="form-group">
-//               <label htmlFor="designDescription">Design Description:</label>
-//               <textarea
-//                 id="designDescription"
-//                 name="designDescription"
-//                 value={designData.designDescription}
-//                 onChange={handleInputChange}
-//                 placeholder="Enter design description"
-//               ></textarea>
-//             </div>
-//           </div>
-//           <div className="right-column">
-//             <div className="form-group">
-//               <label htmlFor="area">Area:</label>
-//               <input
-//                 type="text"
-//                 id="area"
-//                 name="area"
-//                 value={designData.area}
-//                 onChange={handleInputChange}
-//                 placeholder="Enter area"
-//               />
-//             </div>
-//             <div className="form-group">
-//               <label htmlFor="estimateCost">Estimate Cost:</label>
-//               <input
-//                 type="text"
-//                 id="estimateCost"
-//                 name="estimateCost"
-//                 value={designData.estimateCost}
-//                 onChange={handleInputChange}
-//                 placeholder="Enter estimate cost"
-//               />
-//             </div>
-//           </div>
-//           <div className="form-group">
-//             <label>Upload Photos:</label>
-//             <input
-//               type="file"
-//               className="form-control-file"
-//               name="photos"
-//               multiple
-//               onChange={handleInputChange}
-//             />
-//           </div>
-//           <div className="uploaded-photos">
-//             {designData.photos &&
-//               designData.photos.map((photo, index) => (
-//                 <div key={index} className="uploaded-photo">
-//                   <img
-//                     src={URL.createObjectURL(photo)}
-//                     alt={`Photo ${index}`}
-//                   />
-//                   <button
-//                     type="button"
-//                     className="btn btn-danger"
-//                     onClick={() => handleRemovePhoto(index)}
-//                   >
-//                     Remove
-//                   </button>
-//                 </div>
-//               ))}
-//           </div>
-//           <div className="btn-upload">
-//             <button className="upload-button">Upload Design</button>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AddDesigns;
-
 import React, { useCallback, useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import "./AddDesigns.css";
@@ -184,94 +6,84 @@ import { useAuthContext } from "../../../hooks/useAuthContext";
 import { Navigate } from "react-router-dom";
 
 const AddDesigns = () => {
-  const { user } = useAuthContext(); // Access the user authentication state
+  const { user } = useAuthContext();
   const [designData, setDesignData] = useState({
     designName: "",
     area: "",
     estimateCost: "",
     designDescription: "",
-    designImages: [], // Initialize photos array
+    designCategory: "",
+    designImages: [], // Initialize the array to store uploaded images
   });
-  const [error, setError] = useState(""); // State variable to hold error message
+  const [error, setError] = useState("");
+
+  const handleInputChange = (event) => {
+    if (event.target.name === "designImages") {
+      // Store the selected files in the state
+      setDesignData((prevFormData) => ({
+        ...prevFormData,
+        designImages: event.target.files,
+      }));
+    } else {
+      setDesignData((prevFormData) => ({
+        ...prevFormData,
+        [event.target.name]: event.target.value,
+      }));
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Check if the user is authenticated before rendering the component
       if (!user) {
-        return <Navigate to="/login" />; // Redirect to login page if user is not authenticated
+        return <Navigate to="/login" />;
       }
 
-      const formData = {
-        designName: designData.designName,
-        area: designData.area,
-        estimateCost: designData.estimateCost,
-        designDescription: designData.designDescription,
-        designImages: designData.designImages,
-      };
-      console.log("formData: ", formData);
+      const formData = new FormData();
+      formData.append("designName", designData.designName);
+      formData.append("area", designData.area);
+      formData.append("estimateCost", designData.estimateCost);
+      formData.append("designDescription", designData.designDescription);
+      formData.append("designCategory", designData.designCategory);
+
+      // Append each image individually with the same key name
+      for (let i = 0; i < designData.designImages.length; i++) {
+        formData.append("designImages", designData.designImages[i]);
+      }
 
       const response = await fetch(
         "http://localhost:4000/api/designs/adddesign",
         {
           method: "POST",
-          body: JSON.stringify(formData),
+          body: formData,
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`, // Include the authentication token in the request headers
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
 
       if (response.ok) {
-        toast.success("Designs uploaded successfully!");
-        console.log("Designs uploaded successfully!");
+        alert("Design uploaded successfully");
+        toast.success("Design uploaded successfully!");
+        console.log("Design uploaded successfully!");
       } else {
-        const errorData = await response.json(); // Get error message from response body
+        const errorData = await response.json();
         setError(errorData.error || "Failed to upload design");
         console.log("Failed to upload design");
       }
     } catch (error) {
       console.error("Error uploading designs:", error);
-      setError("Failed to upload designs. Please try again."); // Generic error message
+      setError("Failed to upload designs. Please try again.");
     }
   };
 
-  const handleInputChange = useCallback((e) => {
-    const { name, value, files } = e.target;
-    if (name === "photos") {
-      // Convert selected files to Base64
-      const fileArray = Array.from(files);
-      Promise.all(
-        fileArray.map((file) => {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-          });
-        })
-      ).then((base64Array) => {
-        setDesignData((prevFormData) => ({
-          ...prevFormData,
-          designImages: [...prevFormData.designImages, ...base64Array],
-        }));
-      });
-    } else {
-      setDesignData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-    }
-  }, []);
-
   const handleRemovePhoto = useCallback((index) => {
     setDesignData((prevFormData) => {
-      const updatedPhotos = [...prevFormData.designImages];
-      updatedPhotos.splice(index, 1);
+      const updateddesignImages = [...prevFormData.designImages];
+      updateddesignImages.splice(index, 1);
       return {
         ...prevFormData,
-        designImages: updatedPhotos,
+        designImages: updateddesignImages,
       };
     });
   }, []);
@@ -287,70 +99,86 @@ const AddDesigns = () => {
             <h1 className="page-title">Add New Designs</h1>
           </div>
           <form className="add-design-form" onSubmit={handleSubmit}>
-            <h1 className="design-details-title">Design Details</h1>
-            <div className="left-column">
-              <div className="form-group">
-                <label htmlFor="designName">Design Name:</label>
-                <input
-                  type="text"
-                  id="designName"
-                  name="designName"
-                  value={designData.designName}
-                  onChange={handleInputChange}
-                  placeholder="Enter design name"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="designDescription">Design Description:</label>
-                <textarea
-                  id="designDescription"
-                  name="designDescription"
-                  value={designData.designDescription}
-                  onChange={handleInputChange}
-                  placeholder="Enter design description"
-                ></textarea>
-              </div>
-            </div>
-            <div className="right-column">
-              <div className="form-group">
-                <label htmlFor="area">Area:</label>
-                <input
-                  type="text"
-                  id="area"
-                  name="area"
-                  value={designData.area}
-                  onChange={handleInputChange}
-                  placeholder="Enter area"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="estimateCost">Estimate Cost:</label>
-                <input
-                  type="text"
-                  id="estimateCost"
-                  name="estimateCost"
-                  value={designData.estimateCost}
-                  onChange={handleInputChange}
-                  placeholder="Enter estimate cost"
-                />
-              </div>
+            {/* Design details */}
+            <div className="form-group">
+              <label htmlFor="designName">Design Name:</label>
+              <input
+                type="text"
+                id="designName"
+                name="designName"
+                value={designData.designName}
+                onChange={handleInputChange}
+                placeholder="Enter design name"
+              />
             </div>
             <div className="form-group">
-              <label>Upload Photos:</label>
+              <label htmlFor="area">Area:</label>
+              <input
+                type="text"
+                id="area"
+                name="area"
+                value={designData.area}
+                onChange={handleInputChange}
+                placeholder="Enter area"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="estimateCost">Estimate Cost:</label>
+              <input
+                type="text"
+                id="estimateCost"
+                name="estimateCost"
+                value={designData.estimateCost}
+                onChange={handleInputChange}
+                placeholder="Enter estimate cost"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="designDescription">Design Description:</label>
+              <textarea
+                id="designDescription"
+                name="designDescription"
+                value={designData.designDescription}
+                onChange={handleInputChange}
+                placeholder="Enter design description"
+              ></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="designCategory">Design Category:</label>
+              <select
+                id="designCategory"
+                name="designCategory"
+                value={designData.designCategory}
+                onChange={handleInputChange}
+              >
+                <option value="">Select category</option>
+                <option value="Bungalow">Bungalow</option>
+                <option value="Duplex">Duplex</option>
+                <option value="Single Floor">Single Floor</option>
+                <option value="Multiplex">Multiplex</option>
+                <option value="Mansion">Mansion</option>
+                <option value="Apartment">Apartment</option>
+              </select>
+            </div>
+            {/* Upload designImages */}
+            <div className="form-group">
+              <label>Upload designImages:</label>
               <input
                 type="file"
                 className="form-control-file"
-                name="photos"
+                name="designImages"
+                accept="image/*"
                 multiple
                 onChange={handleInputChange}
               />
             </div>
-            <div className="uploaded-photos">
+            {/* Display uploaded designImages */}
+            <div className="uploaded-designImages">
               {designData.designImages &&
-                designData.designImages.map((designImage, index) => (
+                Array.from(designData.designImages).map((file, index) => (
                   <div key={index} className="uploaded-photo">
                     <img
-                      src={URL.createObjectURL(designImage)}
+                      src={URL.createObjectURL(file)}
                       alt={`Photo ${index}`}
                     />
                     <button
@@ -363,12 +191,14 @@ const AddDesigns = () => {
                   </div>
                 ))}
             </div>
+            {/* Submit button */}
             <div className="btn-upload">
               <button type="submit" className="upload-button">
                 Upload Design
               </button>
             </div>
           </form>
+          {/* Error message */}
           {error && <div className="error-message">{error}</div>}
         </div>
       </div>

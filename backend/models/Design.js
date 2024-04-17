@@ -162,6 +162,7 @@ const designSchema = new Schema(
       type: String,
       required: true,
     },
+    designCategory: { type: String, required: true },
     area: {
       type: Number,
       required: true,
@@ -175,6 +176,12 @@ const designSchema = new Schema(
       required: true,
     },
     user_id: {
+      // type: String,
+      // required: true,
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    designer_name: {
       type: String,
       required: true,
     },
@@ -187,9 +194,11 @@ const designSchema = new Schema(
       type: Number,
       default: 0,
     },
+    // designImage: {
+    //   type: String,
+    // },
     designImages: {
       type: [String], // Array of image URLs
-      required: true,
     },
     comments: [commentSchema], // Add comments field to store multiple comments
   },

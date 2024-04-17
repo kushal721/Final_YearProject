@@ -129,7 +129,9 @@ const requireAuth = async (req, res, next) => {
     console.log("User ID Object:", userIdObject);
 
     // Fetch user from database
-    req.user = await UserModel.findOne({ _id: userIdObject }).select("_id");
+    req.user = await UserModel.findOne({ _id: userIdObject }).select(
+      "_id username"
+    );
     console.log("User:", req.user); // Log the user object
 
     if (!req.user) {

@@ -217,42 +217,34 @@ import Design from "../models/Design.js"; // Ensure correct path for Design mode
 import mongoose from "mongoose";
 import cloudinary from "../utills/cloudinary.js";
 
+// Modify the controller to handle multiple image uploads
 const addDesigns = async (req, res) => {
   try {
-    const { designName, area, estimateCost, designDescription, designImages } =
-      req.body;
-
-    console.log("reques body", req.body);
-
-    if (
-      !designName ||
-      !area ||
-      !estimateCost ||
-      !designDescription ||
-      !designImages ||
-      !Array.isArray(designImages)
-    ) {
-      return res.status(400).json({
-        error: "Please fill in all the fields and provide images as an array",
-      });
-    }
-
-    // Upload images to Cloudinary
-    const uploadedImages = await Promise.all(
-      designImages.map(async (image) => {
-        const result = await cloudinary.uploader.upload(image.path);
-        return result.secure_url;
-      })
-    );
-
-    // Save design data to the database
-    const design = await Design.create({
+    const {
       designName,
       area,
       estimateCost,
       designDescription,
+      designCategory,
+    } = req.body;
+
+    // Check if files were uploaded
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        error: "Please upload at least one image",
+      });
+    }
+
+    // Save design data to the database
+    const design = await Design.create({
+      designName,
+      designCategory: designCategory,
+      area,
+      estimateCost,
+      designDescription,
       user_id: req.user._id,
-      designImages: uploadedImages, // Save the URLs of the uploaded images
+      designer_name: req.user.username,
+      designImages: req.files.map((file) => file.path), // Save the paths of uploaded images
     });
 
     res.status(200).json(design);

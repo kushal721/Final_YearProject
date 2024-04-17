@@ -28,6 +28,7 @@ router.get("/", getAllUsers);
 router.get("/:userId", getUserById);
 router.put("/:userId", updateUser);
 router.delete("/:userId", deleteUser);
+// router.post("/uploads", uploadProfile)
 
 //for professional only
 

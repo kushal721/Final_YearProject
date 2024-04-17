@@ -262,7 +262,7 @@ const Designs = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [designsPerPage] = useState(6);
   const [selectedCategory, setSelectedCategory] = useState("");
-
+  console.log(designs, "designs");
   useEffect(() => {
     const fetchDesigns = async () => {
       try {
@@ -305,7 +305,6 @@ const Designs = () => {
 
   return (
     <div>
-     
       <div className="flex">
         <nav className="w-1000 md:w-1/4 bg-light p-4 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-4 text-dark">Explore</h2>

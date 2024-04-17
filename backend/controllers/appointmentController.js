@@ -24,9 +24,9 @@ const createAppointment = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Appointment created successfully", appointment });
+      .json({ msg: "Appointment created successfully", appointment });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.msg });
   }
 };
 
@@ -41,7 +41,7 @@ const getAppointmentsByProfessional = async (req, res) => {
 
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ message: "Professional not found" });
+      return res.status(404).json({ msg: "Professional not found" });
     }
 
     // Get appointments for the professional
@@ -53,7 +53,7 @@ const getAppointmentsByProfessional = async (req, res) => {
     res.json({ appointments, professionalDetails: user });
   } catch (error) {
     console.error("Error:", error); // Log any errors
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ msg: error.msg });
   }
 };
 
@@ -69,12 +69,12 @@ const getAppointmentById = async (req, res) => {
 
     const appointments = await Appointment.find({ professional: userId });
     if (!appointments || appointments.length === 0) {
-      return res.status(404).json({ message: "Appointments not found" });
+      return res.status(404).json({ msg: "Appointments not found" });
     }
 
     res.status(200).json(appointments);
   } catch (error) {
-    console.error("Error fetching appointments:", error.message);
+    console.error("Error fetching appointments:", error.msg);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -82,7 +82,9 @@ const getAppointmentById = async (req, res) => {
 const getBookingRequestsByProfessional = async (req, res) => {
   try {
     if (!req.user || !req.user._id) {
-      return res.status(401).json({ error: "User not authenticated" });
+      return res
+        .status(401)
+        .json({ message: "User not authenticated", success: false });
     }
     const professional = req.user;
     console.log("Professional ID:", professional); // Log professional ID
@@ -130,7 +132,7 @@ const getBookingRequestsByProfessional = async (req, res) => {
     });
   } catch (error) {
     console.error("Error:", error); // Log any errors
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ msg: error.msg });
   }
 };
 
@@ -189,7 +191,7 @@ const getAppointmentsOfClient = async (req, res) => {
     });
   } catch (error) {
     console.error("Error:", error); // Log any errors
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ msg: error.msg });
   }
 };
 
@@ -200,7 +202,7 @@ const updateAppointmentStatus = async (req, res) => {
 
     // Check if the action is either 'confirm' or 'cancel'
     if (action !== "confirm" && action !== "cancel") {
-      return res.status(400).json({ error: "Invalid action" });
+      return res.status(400).json({ message: "Invalid action" });
     }
 
     let updatedAppointment;
@@ -246,13 +248,13 @@ const updateAppointment = async (req, res) => {
     );
 
     if (!updatedAppointment) {
-      return res.status(404).json({ message: "Appointment not found" });
+      return res.status(404).json({ msg: "Appointment not found" });
     }
 
     res.status(200).json(updatedAppointment);
   } catch (error) {
     console.error("Error updating appointment:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 
@@ -261,11 +263,11 @@ const deleteAppointment = async (req, res) => {
   try {
     const appointment = await Appointment.findByIdAndDelete(req.params.id);
     if (!appointment) {
-      return res.status(404).json({ message: "Appointment not found" });
+      return res.status(404).json({ msg: "Appointment not found" });
     }
-    res.status(200).json({ message: "Appointment deleted successfully" });
+    res.status(200).json({ msg: "Appointment deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.msg });
   }
 };
 
@@ -279,13 +281,13 @@ const bookAppointment = async (req, res) => {
     if (existingBooking) {
       return res
         .status(400)
-        .json({ message: "You have already booked this appointment" });
+        .json({ msg: "You have already booked this appointment" });
     }
 
     // Fetch startTime, endTime, and date from the Appointment model
     const appointmentDetails = await Appointment.findById(appointment);
     if (!appointmentDetails) {
-      return res.status(404).json({ message: "Appointment not found" });
+      return res.status(404).json({ msg: "Appointment not found" });
     }
 
     const { startTime, endTime, date } = appointmentDetails;
@@ -324,12 +326,10 @@ const bookAppointment = async (req, res) => {
       return res.status(201).json(savedBooking);
     } else {
       // Appointment time slot not available
-      return res
-        .status(400)
-        .json({ message: "Appointment slot not available" });
+      return res.status(400).json({ msg: "Appointment slot not available" });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ msg: error.msg });
   }
 };
 
@@ -348,7 +348,7 @@ const getClientAppointments = async (req, res) => {
     res.status(200).json(appointments);
     console.log("Appointments:", appointments);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.msg });
   }
 };
 
@@ -384,7 +384,7 @@ const getConfirmedBookings = async (req, res) => {
     res.status(200).json(confirmedBookings);
   } catch (error) {
     // Handle errors
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.msg });
   }
 };
 

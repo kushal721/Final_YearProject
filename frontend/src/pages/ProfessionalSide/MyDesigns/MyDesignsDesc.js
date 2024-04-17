@@ -367,12 +367,21 @@ const MyDesignDesc = ({ match }) => {
   return (
     <>
       <div className="maindiv">
+        <div className="sidebar">
+          <Sidebar />
+        </div>
+
         <div className="main-container">
           <div>
             {designDesc && (
               <div className="desc-container">
                 <div className="left-side">
-                  <img src="/r1.png" alt="Design" className="design-image" />
+                  {designDesc.designImages.length > 0 && (
+                    <img
+                      src={`http://localhost:4000/${designDesc.designImages[0]}`}
+                      alt={`Image 0`}
+                    />
+                  )}
                 </div>
                 <div className="right-side">
                   <div className="button-container">
@@ -386,13 +395,14 @@ const MyDesignDesc = ({ match }) => {
                       Remove Design
                     </button>
                   </div>
-                  <h2>{designDesc.designName}</h2>
-                  <p>{designDesc.designDescription}</p>
+                  <h2>Name: {designDesc.designName}</h2>
+                  <h2>Category: {designDesc.designCategory}</h2>
+                  <p>Description: {designDesc.designDescription}</p>
                   <p className="rating">
-                    ★ {designDesc.averageRating}
+                    Rating(★): {designDesc.averageRating}
                     <span>({designDesc.totalRatings})</span>
                   </p>
-                  <p>Designer: Designer Name</p>
+                  <p>Designer: {designDesc.designer_name}</p>
                 </div>
               </div>
             )}

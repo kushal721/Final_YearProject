@@ -203,13 +203,15 @@
 
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
+import useAlert from "../../../hooks/useAlert"; // Import the useAlert hook
 import "./ProfeAppointments.css";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
 const ProfeAppointments = () => {
   const [appointmentRequests, setAppointmentRequests] = useState([]);
   const { user } = useAuthContext();
-  console.log("appointmetreq", appointmentRequests);
+  const { showSuccess, showError } = useAlert(); // Use the useAlert hook
+  console.log("showSuccess", showSuccess);
 
   useEffect(() => {
     const fetchAppointmentRequests = async () => {
@@ -236,8 +238,9 @@ const ProfeAppointments = () => {
         console.error("Error fetching appointment requests:", error);
       }
     };
-
-    fetchAppointmentRequests();
+    if (user?.token) {
+      fetchAppointmentRequests();
+    }
   }, [user]);
 
   const handleAction = async (id, action) => {
@@ -268,11 +271,23 @@ const ProfeAppointments = () => {
           return appointment;
         });
         setAppointmentRequests(updatedAppointments);
+        // Display success toast
+        showSuccess(
+          `Appointment ${
+            action === "confirm" ? "confirmed" : "cancelled"
+          } successfully`
+        );
       } else {
         console.error(`Failed to update appointment status (${action})`);
+        // Display error toast
+        showError(`Failed to update appointment status (${action})`);
       }
     } catch (error) {
       console.error(`Error updating appointment status (${action}):`, error);
+      // Display error toast
+      showError(
+        `Error updating appointment status (${action}): ${error.message}`
+      );
     }
   };
 
@@ -289,6 +304,7 @@ const ProfeAppointments = () => {
               <thead>
                 <tr>
                   <th className="table-heading">Client Name</th>
+                  <th className="table-heading">Email</th>
                   <th className="table-heading">Time</th>
                   <th className="table-heading">Location</th>
                   <th className="table-heading">Date</th>
@@ -309,6 +325,9 @@ const ProfeAppointments = () => {
                     >
                       <td className="table-data">
                         {appointment.clientDetails.username}
+                      </td>
+                      <td className="table-data">
+                        {appointment.clientDetails.email}
                       </td>
                       <td className="table-data">
                         {appointment.bookingRequest.appointmentTime}
@@ -347,6 +366,7 @@ const ProfeAppointments = () => {
               <thead>
                 <tr>
                   <th className="table-heading">Client Name</th>
+                  <th className="table-heading">Email</th>
                   <th className="table-heading">Time</th>
                   <th className="table-heading">Location</th>
                   <th className="table-heading">Date</th>
@@ -368,6 +388,9 @@ const ProfeAppointments = () => {
                     >
                       <td className="table-data">
                         {appointment.clientDetails.username}
+                      </td>
+                      <td className="table-data">
+                        {appointment.clientDetails.email}
                       </td>
                       <td className="table-data">
                         {appointment.bookingRequest.appointmentTime}

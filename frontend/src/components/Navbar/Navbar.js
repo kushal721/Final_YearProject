@@ -63,16 +63,21 @@
 // }
 
 // export default NavbarComp;
-import { useNavigate, NavLink } from "react-router-dom";
-import { Button, Navbar } from "flowbite-react";
+import { useNavigate, NavLink, Link } from "react-router-dom";
+import { Button, Dropdown, Navbar } from "flowbite-react";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { BiReset } from "react-icons/bi";
+import { useState } from "react";
+import EditProfile from "../../pages/ProfessionalSide/ProfeProfile/EditProfile";
 
 function NavbarComp() {
   const { logout } = useLogout();
   const { user } = useAuthContext();
   const Navigate = useNavigate();
+  const [showEditProfilePopup, setShowEditProfilePopup] = useState(false);
+
   const handleClick = () => {
     logout();
     Navigate("/");
@@ -92,8 +97,32 @@ function NavbarComp() {
 
       <div className="flex md:order-2">
         {user && (
+          <>
+            <Dropdown label={user?.username}>
+              <Dropdown.Header>
+                <span className="block text-sm">{user?.username}</span>
+                <span className="block truncate text-sm font-medium">
+                  {user?.email}
+                </span>
+              </Dropdown.Header>
+
+              <button
+                className="action-button"
+                onClick={() => setShowEditProfilePopup(true)} // Show the Edit Profile popup when clicked
+              >
+                Edit Profile
+              </button>
+              <Dropdown.Divider />
+              <Link to="/changepassword" className="reset-password-link">
+                <BiReset className="reset-password-icon" />
+                Reset Password
+              </Link>
+            </Dropdown>
+          </>
+        )}
+        &nbsp;
+        {user && (
           <div>
-            <span>{user.email}</span>
             <Button style={{ backgroundColor: "blue" }} onClick={handleClick}>
               Logout
             </Button>
@@ -104,7 +133,6 @@ function NavbarComp() {
             <Button style={{ backgroundColor: "blue" }}>Login</Button>
           </NavLink>
         )}
-
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
@@ -155,6 +183,19 @@ function NavbarComp() {
               </>
             )}
           </>
+        )}
+
+        {/* Edit Profile Popup */}
+        {showEditProfilePopup && (
+          <div className="edit-profile-popup">
+            <EditProfile />
+            <button
+              className="close-popup-btn"
+              onClick={() => setShowEditProfilePopup(false)} // Hide the Edit Profile popup when clicked
+            >
+              ❌
+            </button>
+          </div>
         )}
       </Navbar.Collapse>
     </Navbar>

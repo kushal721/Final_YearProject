@@ -67,7 +67,8 @@ import {
 } from "../controllers/commentsController.js";
 import requireAuth from "../middlewares/requireAuth.js";
 import checkUserAuth from "../middlewares/auth-middleware.js";
-
+// Update the route to use multer to handle file uploads
+import upload from "../middlewares/upload.js";
 const router = express.Router();
 
 // Public routes
@@ -96,10 +97,10 @@ router.get("/:designId/comments", getComments);
 router.use(requireAuth);
 // router.use(checkUserAuth);
 
-// POST a new design
-router.post("/adddesign", addDesigns);
+// POST a new design with multer middleware for file uploads
+router.post("/adddesign", upload.array("designImages"), addDesigns);
 // // GET all designs uploaded by the logged-in user
-router.get("/profe/getDesigns", getMyDesigns);
+router.get("/profe/getDesigns", requireAuth, getMyDesigns);
 
 // // // GET a single design uploaded by the logged-in user
 // router.get("/mydesign/:id", getMyDesign);

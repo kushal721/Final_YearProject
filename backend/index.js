@@ -99,6 +99,7 @@ app.use("/api/message", messageRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/report", reportRoutes);
 
+app.use("/uploads", express.static("uploads"));
 // Route to update appointment status
 // app.put("/api/appointments/:id/:action", updateAppointmentStatus);
 

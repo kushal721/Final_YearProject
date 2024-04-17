@@ -124,25 +124,30 @@ const Description = ({ match }) => {
           {designDesc && ( // Conditionally render when designDesc is available
             <div className="desc-container">
               <div className="left-side">
-                <img src="/r1.png" alt="Design" className="design-image" />
+                {designDesc.designImages.length > 0 && (
+                  <img
+                    src={`http://localhost:4000/${designDesc.designImages[0]}`}
+                    alt={`Image 0`}
+                  />
+                )}
               </div>
               <div className="right-side">
-                <h2>{designDesc.designName}</h2>
-
-                <p>{designDesc.designDescription}</p>
+                <h2>Name: {designDesc.designName}</h2>
+                <h2>Category: {designDesc.designCategory}</h2>
+                <p>Description: {designDesc.designDescription}</p>
                 <p className="rating">
                   ★ {designDesc.averageRating}
                   <span>({designDesc.totalRatings})</span>
                 </p>
                 {/* Add logic to display designer name */}
-                <p>Designer: {designDesc.designerName}</p>
+                <p>Designer: {designDesc.designer_name}</p>
 
                 <div className="buttons-container">
                   <button className="fav-btn" onClick={addToFavorites}>
                     Add to Favorites
                   </button>
                   <button
-                    className="contact-btn"
+                    style={{ margin: "5px", background: "orange" }}
                     onClick={() => setShowRatingPopup(true)}
                   >
                     Rate Now

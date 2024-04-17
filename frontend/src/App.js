@@ -292,17 +292,26 @@ import Summary from "./pages/Admin SIde/Summary/Summary";
 import NavbarComp from "./components/Navbar/Navbar";
 import ProfessionalSummary from "./pages/ProfessionalSide/ProfessionalSummary/ProfessionalSummary";
 
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const { user } = useAuthContext();
   console.log(user?.role, "user role");
   const isClient = () => {
     return user && user.role === "client";
   };
+  const isAdmin = () => {
+    return user && user.role === "admin";
+  };
+  const isProfessional = () => {
+    return user && user.role === "professional";
+  };
 
   return (
     <div>
       <Router>
-        <div>
+        <div className="navbar-comp">
           <NavbarComp />
         </div>
 
@@ -368,20 +377,19 @@ function App() {
             element={<ProfessionalSummary />}
           />
 
-          <Route path="/dashboard/adminreport" element={<Report />} />
-          <Route path="/dashboard/summary" element={<Summary />} />
+          <Route
+            path="/dashboard/adminreport"
+            element={user && isAdmin ? <Report /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/dashboard/summary"
+            element={user && isAdmin ? <Summary /> : <Navigate to="/" />}
+          />
+
           <Route
             path="/dashboard/admin"
-            element={
-              user?.role === "admin" ? (
-                <UserList>
-                  <Sidebar />
-                </UserList>
-              ) : (
-                <Navigate to="/dashboard/admin" />
-              )
-            }
-          ></Route>
+            element={user && isAdmin ? <Report /> : <Navigate to="/" />}
+          />
         </Routes>
       </Router>
     </div>

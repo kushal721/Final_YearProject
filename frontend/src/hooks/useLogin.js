@@ -39,11 +39,11 @@ export const useLogin = () => {
 
       // Check user role and navigate accordingly
       if (res.role === "professional") {
-        navigate("/my-designs");
+        navigate("/dashboard/my-designs");
       } else if (res.role === "client") {
         navigate("/");
       } else if (res.role === "admin") {
-        navigate("/admin");
+        navigate("/dashboard/admin");
       }
       alert("login successful ");
 

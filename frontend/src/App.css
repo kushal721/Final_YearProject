@@ -19,3 +19,11 @@
 .maindiv {
   display: flex;
 }
+
+.navbar-comp {
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: rgba(255, 255);
+}

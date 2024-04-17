@@ -32,7 +32,7 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { username, email, password, role } = req.body;
+    const { username, email } = req.body;
 
     // Find the user by ID
     let user = await UserModel.findById(userId);
@@ -43,14 +43,6 @@ const updateUser = async (req, res) => {
     // Update user details
     user.username = username || user.username; // Keep existing username if not provided
     user.email = email || user.email; // Keep existing email if not provided
-    user.role = role || user.role; // Keep existing role if not provided
-
-    // Hash the new password if provided
-    if (password) {
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-      user.password = hashedPassword;
-    }
 
     // Save the updated user
     user = await user.save();
@@ -77,8 +69,15 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// const uploadProfile = async (req, res) => {
 
+//   const body = req.body;
+//   try {
+//     const profile = await User.create
+//   } catch (error) {
 
+//   }
+// };
 
 // Export the controller functions
 export { getAllUsers, getUserById, updateUser, deleteUser };

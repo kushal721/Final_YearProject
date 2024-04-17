@@ -115,8 +115,10 @@ const ProfeProfile = () => {
   const [showAddInfoPopup, setShowAddInfoPopup] = useState(false);
   const [showEditProfilePopup, setShowEditProfilePopup] = useState(false);
   const [showChangePasswordPopup, setShowChangePasswordPopup] = useState(false);
+
   const [professionalData, setProfessionalData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profileImage, setProfileImage] = useState({ myProfile: "" });
   const { user } = useAuthContext();
   const professionalId = user?.userId;
   console.log("user", professionalData);
@@ -152,6 +154,17 @@ const ProfeProfile = () => {
     }
   }, [user?.token]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    const base64 = await convertToBase64(file);
+    console.log(base64);
+  };
+
   if (loading) {
     return <Loading>Loading...</Loading>;
   }
@@ -176,7 +189,7 @@ const ProfeProfile = () => {
                   className="action-button"
                   onClick={() => setShowEditProfilePopup(true)} // Show the Edit Profile popup when clicked
                 >
-                  Edit Information
+                  Edit Profile
                 </button>
                 <button
                   className="action-button"
@@ -190,13 +203,30 @@ const ProfeProfile = () => {
             {/* Personal Information */}
             <div className="profile-section">
               <div className="profile-info">
-                <div className="profile-picture">
-                  <img
-                    src="/path/to/profile-picture.jpg"
+                {/* <div className="profile-picture"> */}
+                <form onSubmit={handleSubmit}>
+                  {/* <img
+                    src="/profile.png"
                     alt="Profile Picture"
                     className="profile-img"
+                  /> */}
+                  <label
+                    htmlFor="profile-upload"
+                    className="custom-profile-upload"
+                  >
+                    <img src="/profile.png" />
+                  </label>
+                  <input
+                    type="file"
+                    lable="Image"
+                    name="profile"
+                    id="profile-upload"
+                    accept=".jpeg, .png, .jpg"
+                    onChange={(e) => handleFileUpload(e)}
                   />
-                </div>
+                  <button type="submit" className="submit-button" />
+                </form>
+
                 <div className="info">
                   <span className="label">Full Name: {user.username} </span>
 
@@ -297,3 +327,16 @@ const Loading = styled.div`
 `;
 
 export default ProfeProfile;
+
+function convertToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+}

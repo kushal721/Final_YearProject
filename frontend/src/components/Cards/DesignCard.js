@@ -68,15 +68,21 @@ const DesignCard = ({ design }) => {
     <div>
       <Link to={`/design-desc/${design._id}`} className="card">
         <div className="img-container">
-          <img src="/r1.png" alt="Design photo" className="card-img" />
+          {design.designImages.length > 0 && (
+            <img
+              src={`http://localhost:4000/${design.designImages[0]}`}
+              alt={`Image 0`}
+            />
+          )}
         </div>
         <div className="card-content">
           <div className="header">
             <h5 className="title">{design.designName}</h5>
+            <h5 className="title">Category: {design.designCategory}</h5>
             <p className="rating">★ {design.averageRating}</p>
           </div>
-          <p className="short-description">{design.designDescription}</p>
-          <p className="designer">Designed by {design._id}</p>
+
+          <p className="designer">Designed by {design.designer_name}</p>
         </div>
       </Link>
       <button

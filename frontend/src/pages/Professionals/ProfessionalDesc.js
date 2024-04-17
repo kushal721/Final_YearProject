@@ -50,7 +50,7 @@ const ProfessionalDesc = () => {
   // Check if user object exists before logging userId
   useEffect(() => {
     if (user) {
-      console.log(user.userId, "suid");
+      console.log(user?.userId, "suid");
     }
   }, [user]);
 
@@ -92,8 +92,9 @@ const ProfessionalDesc = () => {
         console.error("Error fetching professional details:", error);
       }
     };
-
-    fetchProfessional();
+    if (user?.token) {
+      fetchProfessional();
+    }
   }, [id]);
 
   useEffect(() => {
@@ -133,24 +134,23 @@ const ProfessionalDesc = () => {
   // Render the professional description and designs once data is fetched
   return (
     <div>
-      <NavbarComp />
       <div className="profedesc-container">
         <div className="professional-details">
           {professionalPersonalDesc && (
             <div className="personal-info">
-              <h1>{professionalPersonalDesc.username}</h1>
+              <h1>{professionalPersonalDesc?.username}</h1>
             </div>
           )}
           {professionalDesc && (
             <div className="professional-info">
               <h1>Professional Details</h1>
               <div>
-                <h2>{professionalPersonalDesc.email}</h2>
-                <h2>Specialization: {professionalDesc.specialization}</h2>
-                <h3>Experience: {professionalDesc.experience}</h3>
-                <p>Skills: {professionalDesc.skills}</p>
-                <p>Education: {professionalDesc.education}</p>
-                <p>Contact: {professionalDesc.contact}</p>
+                <h2>{professionalPersonalDesc?.email}</h2>
+                <h2>Specialization: {professionalDesc?.specialization}</h2>
+                <h3>Experience: {professionalDesc?.experience}</h3>
+                <p>Skills: {professionalDesc?.skills}</p>
+                <p>Education: {professionalDesc?.education}</p>
+                <p>Contact: {professionalDesc?.contact}</p>
               </div>
             </div>
           )}
@@ -194,7 +194,6 @@ const ProfessionalDesc = () => {
                         <p className="short-description">
                           {design.designDescription}
                         </p>
-                        <p className="designer">Designed by {design._id}</p>
                       </div>
                     </Link>
                   </div>

@@ -13,6 +13,18 @@
   border-right: 3px solid #333;
 }
 
+/* input[type="file"] {
+  display: none;
+} */
+.custom-profile-upload {
+  margin: auto;
+  border: 1px solid #333;
+  display: inline-block;
+  width: 50px;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
 .page-title {
   font-size: 36px;
   color: #333;
@@ -60,13 +72,13 @@
   align-items: center;
 }
 
-.profile-picture {
+/* .profile-picture {
   width: 150px;
   height: 150px;
   border-radius: 50%;
   overflow: hidden;
   margin-right: 20px;
-}
+} */
 
 .profile-img {
   width: 100%;

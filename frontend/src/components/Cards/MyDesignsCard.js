@@ -1,26 +1,81 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./card.css";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
-const MyDesignCard = ({ my_design }) => {
-  console.log("My Design Data:", my_design); // Log the value of my_design
+const MyDesignCard = ({ my_design, onDelete }) => {
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
+
+  const handleRemoveDesign = async () => {
+    setShowConfirmationPopup(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/designs/mydesigns/${my_design._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        console.log("Design removed successfully");
+        setShowConfirmationPopup(false);
+        onDelete(my_design._id);
+      } else {
+        console.error("Failed to remove design");
+      }
+    } catch (error) {
+      console.error("Error removing design:", error);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirmationPopup(false);
+  };
 
   return (
     <div>
-      {/* Render design details */}
       <Link to={`/dashboard/mydesign-desc/${my_design._id}`} className="card">
-        <img src="/r1.png" alt="Design photo" />
+        {my_design.designImages.length > 0 && (
+          <img
+            src={`http://localhost:4000/${my_design.designImages[0]}`}
+            alt={`Image 0`}
+          />
+        )}
         <span className="design-name">{my_design.designName}</span> <br />
       </Link>
       <span className="design-actions">
         <button className="edit-button">Edit</button> <br />
-        <button className="delete-button">Delete</button>
+        <button className="btn-danger" onClick={handleRemoveDesign}>
+          Delete
+        </button>
       </span>
+
+      {showConfirmationPopup && (
+        <div className="confirmation-popup">
+          <h3>Are you sure you want to delete?</h3>
+          <div className="popup-buttons">
+            <button className="popup-button" onClick={handleConfirmDelete}>
+              Yes
+            </button>
+            <button className="popup-button" onClick={handleCancelDelete}>
+              No
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default MyDesignCard;
+
 // import React, { useState } from "react";
 // import { Modal, Button } from "react-bootstrap";
 // import "./card.css";

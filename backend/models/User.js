@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
     enum: ["client", "professional", "admin"],
     required: true,
   },
+  profileImg: {
+    type: String,
+  },
 });
 
 //json web token

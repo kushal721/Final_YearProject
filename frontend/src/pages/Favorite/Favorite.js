@@ -111,7 +111,6 @@ const Favorite = () => {
 
   return (
     <div>
-      
       <div className="favorite-container">
         <h1 className="favorite-heading">Favorite Designs</h1>
         <ul className="favorite-list">
@@ -123,6 +122,10 @@ const Favorite = () => {
               <div className="desc">
                 <h3 className="design-name">{favorite.design?.designName}</h3>
                 <p className="design-detail">Area: {favorite.design?.area}</p>
+                <p className="design-detail">
+                  Designer Name: {favorite.design?.designer_name}
+                </p>
+
                 <p className="design-detail">
                   Estimate Cost: {favorite.design?.estimateCost}
                 </p>
