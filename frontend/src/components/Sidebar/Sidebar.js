@@ -158,7 +158,7 @@ const Sidebar = () => {
             <NavLink to="/dashboard/summary">
               <FaClipboardList /> Summary
             </NavLink>
-            <NavLink to="/dashboard/admin">
+            <NavLink to="/dashboard/manageusers">
               <FaUserCog /> Manage Users
             </NavLink>
             <NavLink to="/dashboard/adminreport">

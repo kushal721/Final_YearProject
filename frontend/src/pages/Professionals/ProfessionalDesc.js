@@ -138,9 +138,23 @@ const ProfessionalDesc = () => {
         <div className="professional-details">
           {professionalPersonalDesc && (
             <div className="personal-info">
-              <h1>{professionalPersonalDesc?.username}</h1>
+              {professionalPersonalDesc?.profile ? (
+                <img
+                  src={`http://localhost:4000/${professionalPersonalDesc.profile}`}
+                  alt="Profile Picture"
+                  className="profile-image"
+                />
+              ) : (
+                <img
+                  src="./profile.png"
+                  alt="Profile Picture"
+                  className="profile-image"
+                />
+              )}
+              <h1>{professionalPersonalDesc.username}</h1>
             </div>
           )}
+
           {professionalDesc && (
             <div className="professional-info">
               <h1>Professional Details</h1>

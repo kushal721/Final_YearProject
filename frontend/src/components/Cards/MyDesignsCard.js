@@ -38,6 +38,7 @@ const MyDesignCard = ({ my_design, onDelete }) => {
   const handleCancelDelete = () => {
     setShowConfirmationPopup(false);
   };
+  console.log("my design", my_design.designImages[0]);
 
   return (
     <div>

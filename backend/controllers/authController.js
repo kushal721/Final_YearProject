@@ -62,52 +62,67 @@ class UserController {
 
   static userRegistration = async (req, res) => {
     try {
-      const { username, email, password, confirm_password, role } = req.body; //data from frontend
+      const {
+        username,
+        email,
+        contactNumber,
+        password,
+        confirm_password,
+        location,
+        role,
+      } = req.body; // Data from frontend
+
+      // Check if files were uploaded
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({
+          error: "Please upload at least one image",
+        });
+      }
+
       const userExists = await UserModel.findOne({ email: email });
       if (userExists) {
-        res.status(400).json({ msg: "email already exists" });
-      } else {
-        if (username && email && password && confirm_password) {
-          if (password === confirm_password) {
-            //hash the password
-            const salt = await bcrypt.genSalt(10);
-            const hasPassword = await bcrypt.hash(password, salt);
-
-            const userCreated = await UserModel.create({
-              username: username,
-              email: email,
-              password: hasPassword,
-              role,
-            });
-
-            // const saved_user = await userModel.findOne({ email: email });
-
-            // Generate JWT Token
-            // const token = jwt.sign(
-            //   { userID: saved_user._id },
-            //   process.env.JWT_SECRET_KEY,
-            //   { expiresIn: "5d" }
-            // );
-            // res.status(201).json({ status: 201, saved_user, token: token });
-            res.status(200).json({
-              msg: "registration successful",
-              userId: userCreated._id.toString(),
-              token: await userCreated.generateToken(),
-            });
-          } else {
-            res.status(400).json({
-              status: "failed",
-              msg: "Password and confirm password doesnot match",
-            });
-          }
-        } else {
-          res
-            .status(400)
-            .json({ status: "failed", msg: "All fields are required" });
-        }
+        return res.status(400).json({ msg: "Email already exists" });
       }
+
+      if (!username || !email || !password || !confirm_password) {
+        return res
+          .status(400)
+          .json({ status: "failed", msg: "All fields are required" });
+      }
+
+      if (password !== confirm_password) {
+        return res.status(400).json({
+          status: "failed",
+          msg: "Password and confirm password do not match",
+        });
+      }
+
+      // Hash the password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      // Create user
+      
+      const userCreated = await UserModel.create({
+        profile: req.files[0].path,
+        username: username,
+        email: email,
+        contactNumber: contactNumber,
+        password: hashedPassword,
+        location: location,
+        role: role,
+      });
+
+      console.log("Created user:", userCreated);
+
+      return res.status(200).json({
+        msg: "Registration successful",
+        userId: userCreated._id.toString(),
+        token: await userCreated.generateToken(),
+      });
     } catch (error) {
-      res.status(500).json("internal server error");
+      console.error("User Registration Error:", error);
+      return res.status(500).json("Internal server error");
     }
   };
 
@@ -183,6 +198,9 @@ class UserController {
         userId: userExists._id.toString(),
         username: userExists.username,
         email: userExists.email,
+        contactNumber: userExists.contactNumber,
+        location: userExists.location,
+        profile: userExists.profile,
         role: userExists.role,
       });
     } catch (error) {

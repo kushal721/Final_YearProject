@@ -18,12 +18,18 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  contactNumber: {
+    type: String,
+  },
+  location: {
+    type: String,
+  },
   role: {
     type: String,
     enum: ["client", "professional", "admin"],
     required: true,
   },
-  profileImg: {
+  profile: {
     type: String,
   },
 });
@@ -38,6 +44,9 @@ userSchema.methods.generateToken = async function () {
         userId: this._id,
         username: this.username,
         email: this.email,
+        location: this.location,
+        contactNumber: this.contactNumber,
+        profile: this.profile,
         role: this.role,
       },
       //signature

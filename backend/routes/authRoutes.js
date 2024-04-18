@@ -6,6 +6,7 @@ import checkUserAuth from "../middlewares/auth-middleware.js";
 import UserModel from "../models/User.js";
 
 import {} from "../controllers/professionalController.js";
+import upload from "../middlewares/upload.js";
 
 // Protected Routes
 // router.get("/protected-route", checkUserAuth, (req, res) => {
@@ -48,7 +49,11 @@ router.use("/loggedUser", checkUserAuth);
 router.use("/user-changePassword", checkUserAuth);
 
 // Public Routes
-router.post("/user-register", UserController.userRegistration);
+router.post(
+  "/user-register",
+  upload.array("profile"),
+  UserController.userRegistration
+);
 router.post("/user-login", UserController.userLogin);
 router.post(
   "/user-send-reset-password-email",

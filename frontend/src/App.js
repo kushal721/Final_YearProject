@@ -387,8 +387,8 @@ function App() {
           />
 
           <Route
-            path="/dashboard/admin"
-            element={user && isAdmin ? <Report /> : <Navigate to="/" />}
+            path="/dashboard/manageusers"
+            element={user && isAdmin ? <UserList /> : <Navigate to="/" />}
           />
         </Routes>
       </Router>

@@ -115,16 +115,38 @@ const ProfeProfile = () => {
   const [showAddInfoPopup, setShowAddInfoPopup] = useState(false);
   const [showEditProfilePopup, setShowEditProfilePopup] = useState(false);
   const [showChangePasswordPopup, setShowChangePasswordPopup] = useState(false);
-
+  const [userData, setUserData] = useState({});
   const [professionalData, setProfessionalData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState({ myProfile: "" });
   const { user } = useAuthContext();
   const professionalId = user?.userId;
-  console.log("user", professionalData);
+  const userId = user?.userId;
+  console.log("user data", userData);
+  console.log("p data", professionalData);
   console.log("pid", professionalId);
+  console.log("profile", user?.profile);
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (user) {
+          const response = await fetch(
+            `http://localhost:4000/api/userr/${user.userId}`
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data");
+          }
+          const data = await response.json();
+          setUserData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+      }
+    };
+
+    fetchUserData();
+
     const fetchProfessionalData = async () => {
       try {
         const response = await fetch(
@@ -156,13 +178,6 @@ const ProfeProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  };
-
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    const base64 = await convertToBase64(file);
-    console.log(base64);
   };
 
   if (loading) {
@@ -203,37 +218,37 @@ const ProfeProfile = () => {
             {/* Personal Information */}
             <div className="profile-section">
               <div className="profile-info">
-                {/* <div className="profile-picture"> */}
-                <form onSubmit={handleSubmit}>
-                  {/* <img
-                    src="/profile.png"
-                    alt="Profile Picture"
-                    className="profile-img"
-                  /> */}
-                  <label
-                    htmlFor="profile-upload"
-                    className="custom-profile-upload"
-                  >
-                    <img src="/profile.png" />
-                  </label>
-                  <input
+                <div className="profile-picture">
+                  {userData?.profile?.length > 0 ? (
+                    <img
+                      src={`http://localhost:4000/${userData?.profile}`}
+                      alt="Profile Picture"
+                      className="profile-img"
+                    />
+                  ) : (
+                    <img
+                      src="./profile.png"
+                      alt="Profile Picture"
+                      className="profile-img"
+                    />
+                  )}
+                </div>
+                {/* <input
+                    className="upload-input"
                     type="file"
                     lable="Image"
                     name="profile"
                     id="profile-upload"
                     accept=".jpeg, .png, .jpg"
-                    onChange={(e) => handleFileUpload(e)}
-                  />
-                  <button type="submit" className="submit-button" />
-                </form>
+                  /> */}
 
                 <div className="info">
-                  <span className="label">Full Name: {user.username} </span>
-
-                  <span className="label">Email:{user.email}</span>
                   <span className="label">
-                    Phone:{professionalData.contact}
+                    Full Name: {userData?.username}{" "}
                   </span>
+
+                  <span className="label">Email:{userData?.email}</span>
+                  <span className="label">Phone:{userData?.contact}</span>
                 </div>
               </div>
             </div>
@@ -243,13 +258,13 @@ const ProfeProfile = () => {
               <h2 className="section-title">Professional Experience</h2>
               <div className="experience-item">
                 <h3 className="experience-title">
-                  Specialization: {professionalData.specialization}
+                  Specialization: {professionalData?.specialization}
                 </h3>
                 <p className="experience-details">
-                  Experience: {professionalData.experience}
+                  Experience: {professionalData?.experience}
                 </p>
                 <p className="experience-description">
-                  {professionalData.description}
+                  {professionalData?.description}
                 </p>
               </div>
               {/* Add more experience items */}
@@ -258,7 +273,7 @@ const ProfeProfile = () => {
             {/* Skills */}
             <div className="profile-section">
               <h2 className="section-title">Skills</h2>
-              <p>{professionalData.skills}</p>
+              <p>{professionalData?.skills}</p>
             </div>
 
             {/* Education */}
@@ -266,7 +281,7 @@ const ProfeProfile = () => {
               <h2 className="section-title">Education</h2>
               <div className="education-item">
                 <p className="education-details">
-                  {professionalData.education}
+                  {professionalData?.education}
                 </p>
               </div>
               {/* Add more education items */}

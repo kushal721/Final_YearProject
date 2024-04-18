@@ -13,6 +13,7 @@ import {
   getProfessionalByProfessionalId,
 } from "../controllers/professionalController.js";
 import requireAuth from "../middlewares/requireAuth.js";
+import upload from "../middlewares/upload.js";
 
 // import authMiddleWare from "../middleware/AuthMiddleware.js";
 
@@ -26,7 +27,7 @@ router.get("/professionals/personal/:professionalId", getProfessionalById);
 
 router.get("/", getAllUsers);
 router.get("/:userId", getUserById);
-router.put("/:userId", updateUser);
+router.put("/:userId", upload.array("profile"), updateUser);
 router.delete("/:userId", deleteUser);
 // router.post("/uploads", uploadProfile)
 

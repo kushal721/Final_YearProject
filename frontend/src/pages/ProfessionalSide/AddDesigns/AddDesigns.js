@@ -15,6 +15,7 @@ const AddDesigns = () => {
     designCategory: "",
     designImages: [], // Initialize the array to store uploaded images
   });
+  console.log(designData, "designData");
   const [error, setError] = useState("");
 
   const handleInputChange = (event) => {

@@ -69,7 +69,7 @@ import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { BiReset } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditProfile from "../../pages/ProfessionalSide/ProfeProfile/EditProfile";
 
 function NavbarComp() {
@@ -77,6 +77,29 @@ function NavbarComp() {
   const { user } = useAuthContext();
   const Navigate = useNavigate();
   const [showEditProfilePopup, setShowEditProfilePopup] = useState(false);
+
+  const [userData, setUserData] = useState({});
+  console.log("fed", userData);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/api/userr/${user?.userId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+      }
+    };
+    if (user?.token) {
+      fetchUserData();
+    }
+  }, [user]);
 
   const handleClick = () => {
     logout();
@@ -98,7 +121,39 @@ function NavbarComp() {
       <div className="flex md:order-2">
         {user && (
           <>
-            <Dropdown label={user?.username}>
+            <Dropdown
+              label={
+                <>
+                  {userData?.profile?.length > 0 ? (
+                    <img
+                      src={`http://localhost:4000/${userData?.profile}`}
+                      alt="Profile Picture"
+                      className="profile-img"
+                      style={{
+                        width: "55px",
+                        // height: "10px",
+                        objectFit: "cover",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src="./profile.png"
+                      alt="Profile Picture"
+                      className="profile-img"
+                      style={{
+                        width: "55px",
+                        // height: "10px",
+                        objectFit: "cover",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  )}
+                  &nbsp;&nbsp;
+                  <span>{userData?.username}</span>
+                </>
+              }
+            >
               <Dropdown.Header>
                 <span className="block text-sm">{user?.username}</span>
                 <span className="block truncate text-sm font-medium">
@@ -114,20 +169,23 @@ function NavbarComp() {
               </button>
               <Dropdown.Divider />
               <Link to="/changepassword" className="reset-password-link">
-                <BiReset className="reset-password-icon" />
-                Reset Password
+                <button className="action-button">Change Password</button>
               </Link>
+              {user && (
+                <div>
+                  <Button
+                    style={{ backgroundColor: "blue", margin: "8px 0 0 10px" }}
+                    onClick={handleClick}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              )}
             </Dropdown>
+            &nbsp;&nbsp;&nbsp;&nbsp;
           </>
         )}
         &nbsp;
-        {user && (
-          <div>
-            <Button style={{ backgroundColor: "blue" }} onClick={handleClick}>
-              Logout
-            </Button>
-          </div>
-        )}
         {!user && (
           <NavLink to="/login">
             <Button style={{ backgroundColor: "blue" }}>Login</Button>

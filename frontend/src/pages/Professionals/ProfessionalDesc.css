@@ -21,6 +21,13 @@
   text-align: left;
   font-size: 30px;
 }
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 40%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
 
 .booking-links {
   display: flex;

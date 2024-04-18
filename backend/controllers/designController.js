@@ -228,12 +228,17 @@ const addDesigns = async (req, res) => {
       designCategory,
     } = req.body;
 
+    console.log("req body", req.body);
     // Check if files were uploaded
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         error: "Please upload at least one image",
       });
     }
+    console.log(
+      "img",
+      req.files.map((file) => file.path)
+    );
 
     // Save design data to the database
     const design = await Design.create({
