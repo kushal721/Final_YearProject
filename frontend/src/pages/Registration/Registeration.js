@@ -183,11 +183,13 @@
 // };
 
 // export default Registration;
-
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import NavbarComp from "../../components/Navbar/Navbar";
 import { useSignup } from "../../hooks/useSignup";
+import { ToastContainer, toast } from "react-toastify"; // Import toast and ToastContainer
+import "react-toastify/dist/ReactToastify.css";
+import "./Registration.css";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -219,76 +221,84 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newErrors = {};
+    // Reset previous errors
+    setErrors({});
 
     if (!inpval.username.trim()) {
-      newErrors.username = "Name is required";
+      // Use toast.error to show errors
+      toast.error("Name is required");
+      return;
     }
+
     if (!inpval.email.trim()) {
-      newErrors.email = "Email is required";
+      // Use toast.error to show errors
+      toast.error("Email is required");
+      return;
     } else if (!/^\S+@\S+\.\S+$/.test(inpval.email)) {
-      newErrors.email = "Email is invalid";
+      // Use toast.error to show errors
+      toast.error("Email is invalid");
+      return;
     }
+
     if (!inpval.contactNumber.trim()) {
-      newErrors.contactNumber = "Contact number is required";
+      // Use toast.error to show errors
+      toast.error("Contact number is required");
+      return;
     }
+
     if (!inpval.password.trim()) {
-      newErrors.password = "Password is required";
-    }
-    if (inpval.password !== inpval.confirm_password) {
-      newErrors.confirm_password = "Passwords do not match";
+      // Use toast.error to show errors
+      toast.error("Password is required");
+      return;
     }
 
-    setErrors(newErrors);
+    try {
+      await signup(
+        inpval.profile,
+        inpval.username,
+        inpval.email,
+        inpval.contactNumber,
+        inpval.password,
+        inpval.confirm_password,
+        inpval.location,
+        inpval.role
+      );
+    } catch (error) {
+      console.error("Signup Error:", error.message);
+      // Use toast.error to show errors
 
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        await signup(
-          inpval.profile,
-          inpval.username,
-          inpval.email,
-          inpval.contactNumber,
-          inpval.password,
-          inpval.confirm_password,
-          inpval.location,
-          inpval.role
-        );
-      } catch (error) {
-        console.error("Signup Error:", error.message);
-      }
+      toast.error(error.message);
     }
   };
 
   return (
     <>
+      <ToastContainer /> {/* ToastContainer added here */}
       <section className="login-signup-section">
         <div className="form_data">
           <div className="form_heading">
             <h1> Signup</h1>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            {/* Form fields */}
-            {/* Display validation errors */}
-            {errors.username && <div className="error">{errors.username}</div>}
-            {errors.email && <div className="error">{errors.email}</div>}
-            {errors.contactNumber && (
-              <div className="error">{errors.contactNumber}</div>
-            )}
-            {errors.password && <div className="error">{errors.password}</div>}
-            {errors.confirm_password && (
-              <div className="error">{errors.confirm_password}</div>
-            )}
+          <form onSubmit={handleSubmit} className="form-signup">
+            <div className="left-sec"></div>
             <div>
               <label
                 htmlFor="profile"
-                className="profile-picture"
+                className="profile-picture, form_input"
                 style={{ height: "30px" }}
               >
+                Upload your profile(optional)
                 <img
                   src="/profile.png"
                   alt="Profile Preview"
                   className="profile-image"
+                  style={{
+                    height: "50px",
+                    width: "50px",
+                    alignContent: "center",
+                    textAlign: "center",
+                  }}
                 />
               </label>
               <input
@@ -297,6 +307,7 @@ const Registration = () => {
                 id="profile"
                 accept=".jpeg, .png, .jpg"
                 onChange={handleInputChange}
+                // style={{ display: "none" }}
               />
             </div>
 
@@ -342,6 +353,7 @@ const Registration = () => {
                   name="password"
                   id="password"
                   placeholder="Enter Password"
+                  required
                 />
                 <div
                   className="showpass"
@@ -360,6 +372,7 @@ const Registration = () => {
                   name="confirm_password"
                   id="confirm_password"
                   placeholder="Confirm Password"
+                  required
                 />
                 <div
                   className="showpass"
@@ -401,7 +414,6 @@ const Registration = () => {
             <p>
               Already have an Account? <NavLink to="/login">Login</NavLink>
             </p>
-            {error && <div className="error">{error}</div>}
           </form>
         </div>
       </section>

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./BookingForm.css"; // Import CSS file
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css";
 
 const BookingForm = ({ appointmentId }) => {
   const { id } = useParams();
@@ -38,7 +40,7 @@ const BookingForm = ({ appointmentId }) => {
       );
 
       if (response.ok) {
-        alert("Appointment booked successfully!");
+        toast.success("Appointment booked successfully!"); // Success toast
         // Reset form data after successful booking
         setFormData({
           appointment: appointmentId,
@@ -49,11 +51,11 @@ const BookingForm = ({ appointmentId }) => {
         });
       } else {
         const errorMessage = await response.text();
-        alert(`Failed to book appointment: ${errorMessage}`);
+        toast.error(`Failed to book appointment: ${errorMessage}`); // Error toast
       }
     } catch (error) {
       console.error("Error booking appointment:", error);
-      alert("An error occurred while booking the appointment");
+      toast.error("An error occurred while booking the appointment"); // Error toast
     }
   };
 

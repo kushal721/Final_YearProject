@@ -3,6 +3,7 @@
 .my-designs-container {
   display: flex;
   gap: 3%;
+  width: 100%;
 }
 
 .content {
@@ -51,11 +52,6 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.edit-button {
-  background-color: #1e1e1ee1; /* Light blue color for edit button */
-  color: #ffffff;
 }
 
 .delete-button {

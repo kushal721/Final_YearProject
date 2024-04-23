@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import "./EditDesign.css";
+import { toast } from "react-toastify";
 
 const EditDesign = ({ designId }) => {
   const { user } = useAuthContext();
@@ -75,6 +76,7 @@ const EditDesign = ({ designId }) => {
         area: formData.area,
         estimateCost: formData.estimateCost,
         designDescription: formData.designDescription,
+        designCategory: formData.designCategory,
         // photos: formData.photos.map((photo) => photo.name), // Assuming you only need filenames
       };
 
@@ -89,8 +91,10 @@ const EditDesign = ({ designId }) => {
           body: JSON.stringify(formDataToSend),
         }
       );
+      const res = await response.json();
       if (response.ok) {
-        alert("Design updated successfully!");
+        toast.success(res.message);
+        console.log(res.message);
       } else {
         const errorMessage = await response.text();
         alert(`Failed to update design: ${errorMessage}`);
@@ -112,7 +116,7 @@ const EditDesign = ({ designId }) => {
               type="text"
               className="form-control"
               name="designName"
-              value={formData.designName}
+              value={formData?.designName}
               onChange={handleInputChange}
             />
           </div>
@@ -122,7 +126,7 @@ const EditDesign = ({ designId }) => {
               type="number"
               className="form-control"
               name="area"
-              value={formData.area}
+              value={formData?.area}
               onChange={handleInputChange}
             />
           </div>
@@ -133,7 +137,7 @@ const EditDesign = ({ designId }) => {
             <textarea
               className="form-control"
               name="designDescription"
-              value={formData.designDescription}
+              value={formData?.designDescription}
               onChange={handleInputChange}
             />
           </div>
@@ -143,12 +147,29 @@ const EditDesign = ({ designId }) => {
               type="number"
               className="form-control"
               name="estimateCost"
-              value={formData.estimateCost}
+              value={formData?.estimateCost}
               onChange={handleInputChange}
             />
           </div>
         </div>
         <div className="form-group">
+          <label htmlFor="designCategory">Design Category:</label>
+          <select
+            id="designCategory"
+            name="designCategory"
+            value={formData?.designCategory}
+            onChange={handleInputChange}
+          >
+            <option value="">Select category</option>
+            <option value="Bungalow">Bungalow</option>
+            <option value="Duplex">Duplex</option>
+            <option value="Single Floor">Single Floor</option>
+            <option value="Multiplex">Multiplex</option>
+            <option value="Mansion">Mansion</option>
+            <option value="Apartment">Apartment</option>
+          </select>
+        </div>
+        {/* <div className="form-group">
           <label>Upload Photos:</label>
           <input
             type="file"
@@ -157,7 +178,7 @@ const EditDesign = ({ designId }) => {
             multiple
             onChange={handleInputChange}
           />
-        </div>
+        </div> */}
         <div className="uploaded-photos">
           {formData.photos &&
             formData.photos.map((photo, index) => (

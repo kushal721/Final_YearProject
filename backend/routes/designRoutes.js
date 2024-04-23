@@ -55,7 +55,6 @@ import {
   getMyDesign,
   deleteMyDesign,
   updateMyDesign,
-  productReview,
   getProfessionalDesigns,
   addRating,
 } from "../controllers/designController.js";
@@ -77,13 +76,12 @@ const router = express.Router();
 router.get("/", getDesigns);
 
 // GET single design
-router.get("/:id", getDesign);
+router.get("/:id", getDesign);//
 
 // Route to fetch professional designs
-router.get("/:id/designs", getProfessionalDesigns);
+router.get("/:id/designs", getProfessionalDesigns);//
 
-// Review product
-router.patch("/design/:id/review", productReview);
+
 
 // POST a new design
 router.post("/addrating", requireAuth, addRatingToDesign);
@@ -91,22 +89,21 @@ router.post("/addrating", requireAuth, addRatingToDesign);
 router.patch("/mydesigns/:designId", updateMyDesign);
 
 // GET all comments for a design
-router.get("/:designId/comments", getComments);
+router.get("/:designId/comments", getComments);//
 
 // Private routes (require authentication)
 router.use(requireAuth);
 // router.use(checkUserAuth);
 
 // POST a new design with multer middleware for file uploads
-router.post("/adddesign", upload.array("designImages"), addDesigns);
+router.post("/adddesign", upload.array("designImages"), addDesigns);//
 // // GET all designs uploaded by the logged-in user
-router.get("/profe/getDesigns", requireAuth, getMyDesigns);
+router.get("/profe/getDesigns", requireAuth, getMyDesigns);//
 
-// // // GET a single design uploaded by the logged-in user
-// router.get("/mydesign/:id", getMyDesign);
+
 
 // // DELETE a design uploaded by the logged-in user
-router.delete("/mydesigns/:id", deleteMyDesign);
+router.delete("/mydesigns/:id", deleteMyDesign);//
 
 // POST a new comment for a design
 router.post("/:designId/comments", addComment);

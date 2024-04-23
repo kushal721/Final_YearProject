@@ -1,25 +1,29 @@
-
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ForgotPassword.css"; // Import your CSS file
-import axios from "axios";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
-
-  axios.defaults.withCredentials = true;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       // Make an API request to your backend to initiate the password reset process
-      const response = await axios.post("/forgot-password", { email });
+      const response = await fetch(
+        "http://localhost:4000/api/user/user-send-reset-password-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       // Check the response from the server and handle it accordingly
-      if (response.status === 200) {
+      if (response.ok) {
         // Password reset link sent successfully
         alert("Password reset link sent successfully. Check your email.");
         navigate("/login"); // Redirect to the login page or another appropriate page
@@ -41,8 +45,11 @@ const ForgotPassword = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-input">
-          <label htmlFor="email" className="f-label">Email</label>
-          <input className="f-input"
+          <label htmlFor="email" className="f-label">
+            Email
+          </label>
+          <input
+            className="f-input"
             type="email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}

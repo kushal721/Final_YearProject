@@ -16,28 +16,19 @@ const Hero = () => {
           </div>
           <div className="flexColStart hero-des">
             <span>
-              Find a variety of house designs of your choice and best
-              Professionals
+              Find a variety of house designs of your choice and the best
+              professionals.
             </span>
             <br />
             <span>
-              Find a variety of house designs of your choice and best
-              Professionals
+              Get access to a wide range of house designs and connect with top
+              professionals in the field.
             </span>
-          </div>
-          <div className="flexCenter search-bar">
-            <HiLocationMarker color="blue" size={25} />
-            <input type="text" />
-            <button className="button">Search</button>
           </div>
         </div>
 
         {/* Right side */}
-        <div className="flexCenter hero-right">
-          <div className="image-container">
-            <img src="./hero-image.png" alt="" />
-          </div>
-        </div>
+        <div className="flexCenter hero-right"></div>
       </div>
     </section>
   );

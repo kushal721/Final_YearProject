@@ -24,11 +24,12 @@
 // };
 
 // export default DesignCard;
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./card.css";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { toast } from "react-toastify"; // Import toast from react-toastify
+import "react-toastify/dist/ReactToastify.css";
 
 const DesignCard = ({ design }) => {
   const [isAddingToFavorites, setIsAddingToFavorites] = useState(false);
@@ -51,14 +52,14 @@ const DesignCard = ({ design }) => {
       );
 
       if (response.ok) {
-        alert("Design added to favorites!");
+        toast.success("Design added to favorites!");
       } else {
         const errorMessage = await response.text();
-        alert(`Failed to add design to favorites: ${errorMessage}`);
+        toast.error(`Failed to add design to favorites: ${errorMessage}`);
       }
     } catch (error) {
       console.error("Error adding design to favorites:", error);
-      alert("An error occurred while adding design to favorites");
+      toast.error("An error occurred while adding design to favorites");
     } finally {
       setIsAddingToFavorites(false);
     }
@@ -71,7 +72,7 @@ const DesignCard = ({ design }) => {
           {design.designImages.length > 0 && (
             <img
               src={`http://localhost:4000/${design.designImages[0]}`}
-              alt={`Image 0`}
+              alt={``}
             />
           )}
         </div>
@@ -79,7 +80,9 @@ const DesignCard = ({ design }) => {
           <div className="header">
             <h5 className="title">{design.designName}</h5>
             <h5 className="title">Category: {design.designCategory}</h5>
-            <p className="rating">★ {design.averageRating}</p>
+            <h5 className="title">Estimate Cost(Rs): {design.estimateCost}</h5>
+            <h5 className="title">Area(Sqm): {design.area}</h5>
+            <p className="rating">Rating(★) {design.averageRating}</p>
           </div>
 
           <p className="designer">Designed by {design.designer_name}</p>

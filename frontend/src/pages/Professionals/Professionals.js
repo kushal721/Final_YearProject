@@ -179,6 +179,7 @@ const Professionals = () => {
   const [professionals, setProfessionals] = useState([]);
   const [filteredProfessionals, setFilteredProfessionals] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [professionalsPerPage] = useState(6);
 
@@ -201,14 +202,22 @@ const Professionals = () => {
     };
     fetchProfessionals();
   }, []);
+  console.log("sdfa0", professionals);
+  console.log(searchLocation, "location");
 
   useEffect(() => {
-    // Filter professionals based on search term
-    const filtered = professionals.filter((professional) =>
-      professional.username?.toLowerCase().includes(searchTerm.toLowerCase())
+    // Filter professionals based on search term and location
+    const filtered = professionals.filter(
+      (professional) =>
+        professional.username
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase()) &&
+        professional.location
+          ?.toLowerCase()
+          .includes(searchLocation.toLowerCase())
     );
     setFilteredProfessionals(filtered);
-  }, [professionals, searchTerm]);
+  }, [professionals, searchTerm, searchLocation]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -228,15 +237,6 @@ const Professionals = () => {
         <div className="left">
           <h2>Filter Search</h2>
           <div className="filter-search">
-            {/* <div className="dropdown">
-              <label htmlFor="designType">Location:</label>
-              <select name="designType" id="designType">
-                <option value="">Select Location</option>
-                <option value="cottage">Nuwakot</option>
-                <option value="farmHouse">Kathmandu</option>
-                <option value="normal">Hetauda</option>
-              </select>
-            </div> */}
             <div className="mb-4">
               <input
                 type="text"
@@ -244,6 +244,15 @@ const Professionals = () => {
                 placeholder="Search professionals"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                type="text"
+                className="form-control p-2 border rounded"
+                placeholder="Search by Location"
+                value={searchLocation}
+                onChange={(e) => setSearchLocation(e.target.value)}
               />
             </div>
           </div>

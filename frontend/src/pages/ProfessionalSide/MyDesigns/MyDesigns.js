@@ -119,7 +119,7 @@ const MyDesigns = () => {
           "http://localhost:4000/api/designs/profe/getDesigns",
           {
             headers: {
-              Authorization: `Bearer ${user?.token}`, // Include the token in the Authorization header
+              Authorization: `Bearer ${user?.token}`,
             },
           }
         );
@@ -138,10 +138,9 @@ const MyDesigns = () => {
     if (user?.token) {
       fetchDesigns();
     }
-  }, [user]); // Include user in the dependency array to re-fetch designs when user changes
+  }, [user]); 
 
   const handleDelete = (deletedId) => {
-    // Remove the deleted design from the frontend
     setMy_Designs((prevDesigns) =>
       prevDesigns.filter((design) => design._id !== deletedId)
     );

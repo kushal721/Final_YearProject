@@ -247,8 +247,10 @@ const ProfeProfile = () => {
                     Full Name: {userData?.username}{" "}
                   </span>
 
-                  <span className="label">Email:{userData?.email}</span>
-                  <span className="label">Phone:{userData?.contact}</span>
+                  <span className="label">Email: {userData?.email}</span>
+                  <span className="label">
+                    Phone: {userData?.contactNumber}
+                  </span>
                 </div>
               </div>
             </div>

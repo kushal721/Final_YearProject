@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { toast } from "react-toastify"; // Import toast from react-toastify
+import "react-toastify/dist/ReactToastify.css";
 
 const RatingComp = ({ designId, onClose }) => {
   const [rating, setRating] = useState(0);
@@ -29,15 +31,15 @@ const RatingComp = ({ designId, onClose }) => {
       );
 
       if (response.ok) {
-        alert("Rating submitted successfully!");
+        toast.success("Rating submitted successfully!");
         onClose(); // Close the rating popup
       } else {
         const errorMessage = await response.text();
-        alert(`Failed to submit rating: ${errorMessage}`);
+        toast.error(`Failed to submit rating: ${errorMessage}`);
       }
     } catch (error) {
       console.error("Error submitting rating:", error);
-      alert("An error occurred while submitting rating");
+      toast.error("An error occurred while submitting rating");
     }
   };
 
@@ -64,7 +66,9 @@ const RatingComp = ({ designId, onClose }) => {
             );
           })}
         </div>
-        <button onClick={handleRatingSubmit}>Submit Rating</button>
+        <button onClick={handleRatingSubmit} className="btn-submit">
+          Submit Rating
+        </button>
       </div>
     </>
   );

@@ -161,6 +161,9 @@ const Sidebar = () => {
             <NavLink to="/dashboard/manageusers">
               <FaUserCog /> Manage Users
             </NavLink>
+            {/* <NavLink to="/dashboard/managedesigns">
+              <FaUserCog /> Manage Designs
+            </NavLink> */}
             <NavLink to="/dashboard/adminreport">
               <FaFileAlt /> Report
             </NavLink>

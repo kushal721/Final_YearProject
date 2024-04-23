@@ -50,13 +50,13 @@ const ClientAppointments = () => {
         console.error("Error fetching client appointments:", error);
       }
     };
-
-    fetchClientAppointments();
+    if (user?.token) {
+      fetchClientAppointments();
+    }
   }, [user]);
 
   return (
     <div>
-      
       <div className="client-appointments-container">
         <div className="appointment-section">
           <h1 className="page-title">Your Appointments</h1>
@@ -64,6 +64,8 @@ const ClientAppointments = () => {
             <thead>
               <tr>
                 <th className="table-heading">Professional Name</th>
+                <th className="table-heading">Email</th>
+                <th className="table-heading">Contact Number</th>
                 <th className="table-heading">Date</th>
                 <th className="table-heading">Time</th>
                 <th className="table-heading">Location</th>
@@ -77,6 +79,15 @@ const ClientAppointments = () => {
                     {appointment.professionalDetails &&
                       appointment.professionalDetails.username}
                   </td>
+                  <td className="table-data">
+                    {appointment.professionalDetails &&
+                      appointment.professionalDetails.email}
+                  </td>
+                  <td className="table-data">
+                    {appointment.professionalDetails &&
+                      appointment.professionalDetails.contactNumber}
+                  </td>
+
                   <td className="table-data">
                     {
                       new Date(appointment.appointmentDetails.date)
@@ -104,9 +115,12 @@ const ClientAppointments = () => {
             <thead>
               <tr>
                 <th className="table-heading">Professional Name</th>
+                <th className="table-heading">Email</th>
+                <th className="table-heading">Contact Number</th>
                 <th className="table-heading">Date</th>
                 <th className="table-heading">Time</th>
                 <th className="table-heading">Location</th>
+
                 <th className="table-heading">Remark</th>
               </tr>
             </thead>
@@ -117,6 +131,15 @@ const ClientAppointments = () => {
                     {appointment.professionalDetails &&
                       appointment.professionalDetails.username}
                   </td>
+                  <td className="table-data">
+                    {appointment.professionalDetails &&
+                      appointment.professionalDetails.email}
+                  </td>
+                  <td className="table-data">
+                    {appointment.professionalDetails &&
+                      appointment.professionalDetails.contactNumber}
+                  </td>
+
                   <td className="table-data">
                     {
                       new Date(appointment.appointmentDetails.date)
@@ -130,6 +153,7 @@ const ClientAppointments = () => {
                   <td className="table-data">
                     {appointment.appointmentDetails.location}
                   </td>
+
                   <td className="table-data">
                     {appointment.appointment.remark}
                   </td>

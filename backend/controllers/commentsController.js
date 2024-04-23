@@ -51,7 +51,7 @@ export const addComment = async (req, res) => {
     design.comments.push(comment);
     await design.save();
 
-    res.status(201).json(comment); // Return the newly created comment
+    res.status(201).json({ comment, message: "Commented successfully" }); // Return the newly created comment
   } catch (error) {
     console.error("Error adding comment:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -77,7 +77,7 @@ export const updateComment = async (req, res) => {
     comment.content = content;
     await design.save();
 
-    res.status(200).json(design.comments);
+    res.status(200).json({ message: "Comment updated successfully" });
   } catch (error) {
     console.error("Error updating comment:", error);
     res.status(500).json({ message: "Internal server error" });

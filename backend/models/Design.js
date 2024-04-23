@@ -122,7 +122,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-// Define a sub-schema for ratings
+//  sub-schema for ratings
 const ratingSchema = new Schema(
   {
     value: {
@@ -139,7 +139,7 @@ const ratingSchema = new Schema(
   { _id: false }
 );
 
-// Define a sub-schema for comments
+// sub-schema for comments
 const commentSchema = new Schema(
   {
     content: {
@@ -176,8 +176,6 @@ const designSchema = new Schema(
       required: true,
     },
     user_id: {
-      // type: String,
-      // required: true,
       type: Schema.Types.ObjectId,
       ref: "User",
     },
@@ -185,7 +183,7 @@ const designSchema = new Schema(
       type: String,
       required: true,
     },
-    ratings: [ratingSchema], // Add ratings field to store multiple ratings
+    ratings: [ratingSchema], 
     totalRatings: {
       type: Number,
       default: 0,
@@ -194,13 +192,11 @@ const designSchema = new Schema(
       type: Number,
       default: 0,
     },
-    // designImage: {
-    //   type: String,
-    // },
+   
     designImages: {
-      type: [String], // Array of image URLs
+      type: [String], 
     },
-    comments: [commentSchema], // Add comments field to store multiple comments
+    comments: [commentSchema], 
   },
   { timestamps: true }
 );

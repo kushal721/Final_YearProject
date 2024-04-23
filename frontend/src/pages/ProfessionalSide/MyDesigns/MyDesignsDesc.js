@@ -218,7 +218,6 @@
 // };
 
 // export default MyDesignDesc;
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar/Sidebar";
@@ -226,6 +225,8 @@ import { useAuthContext } from "../../../hooks/useAuthContext";
 import "./../../Designs/Description.css";
 import "./MyDesigns.css";
 import EditDesign from "../../../components/Edit/EditDesign";
+import { toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css";
 
 const MyDesignDesc = ({ match }) => {
   const navigate = useNavigate();
@@ -280,9 +281,12 @@ const MyDesignDesc = ({ match }) => {
           },
         }
       );
+      const res = await response.json();
       if (response.ok) {
-        console.log("Design removed successfully");
-        navigate("/my-designs");
+        toast.success(res.message);
+
+        console.log(res.message);
+        navigate("/dashboard/my-designs");
       } else {
         console.error("Failed to remove design");
       }
@@ -325,11 +329,12 @@ const MyDesignDesc = ({ match }) => {
       }
 
       const data = await response.json();
-      alert("Comment added successfully");
+      toast.success(data.message);
       console.log("Comment added:", data);
       // Optionally, you can redirect the user or show a success message
     } catch (error) {
       console.error("Error adding comment:", error);
+      toast.error("An error occurred while adding the comment"); // Display error message using toast
       // Optionally, you can show an error message to the user
     }
   };
@@ -345,7 +350,7 @@ const MyDesignDesc = ({ match }) => {
           },
         }
       );
-
+      const data = await response.json();
       if (response.ok) {
         // Remove the deleted comment from the designDesc state
         const updatedComments = designDesc.comments.filter(
@@ -355,12 +360,15 @@ const MyDesignDesc = ({ match }) => {
           ...prevDesignDesc,
           comments: updatedComments,
         }));
+        toast.success(data.message);
         console.log("Comment deleted successfully");
       } else {
+        toast.error(data.message);
         console.error("Failed to delete comment");
       }
     } catch (error) {
       console.error("Error deleting comment:", error);
+      toast.error("An error occurred while deleting the comment"); // Display error message using toast
     }
   };
 
@@ -395,14 +403,16 @@ const MyDesignDesc = ({ match }) => {
                       Remove Design
                     </button>
                   </div>
-                  <h2>Name: {designDesc.designName}</h2>
-                  <h2>Category: {designDesc.designCategory}</h2>
-                  <p>Description: {designDesc.designDescription}</p>
+                  <h2>Name: {designDesc?.designName}</h2>
+                  <h2>Category: {designDesc?.designCategory}</h2>
+                  <p>Description: {designDesc?.designDescription}</p>
+                  <p>Description: {designDesc?.area}</p>
+                  <p>Description: {designDesc?.estimateCost}</p>
                   <p className="rating">
-                    Rating(★): {designDesc.averageRating}
-                    <span>({designDesc.totalRatings})</span>
+                    Rating(★): {designDesc?.averageRating}
+                    <span>({designDesc?.totalRatings})</span>
                   </p>
-                  <p>Designer: {designDesc.designer_name}</p>
+                  <p>Designer: {designDesc?.designer_name}</p>
                 </div>
               </div>
             )}
@@ -439,7 +449,7 @@ const MyDesignDesc = ({ match }) => {
                       ❌
                     </button>
                   </div>
-                  <p>{comment.content}</p>
+                  <p className="review-content">{comment.content}</p>
                 </div>
               ))}
           </div>

@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import "./AddAppointment.css"; // Import the CSS file for styling
-
-import { Navigate } from "react-router-dom"; // Change Navigate to navigate for redirect
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddAppointment = () => {
-  //   const { user } = useAuthContext(); // Access the user authentication state
-  //   console.log("puser", user);
-  //   //   const profeId = user.userId;
-  //   //   console.log("profeid", profeId);
-
-  //   const [appointmentData, setAppointmentData] = useState({
-  //     professional: user ? user.userId : "", // Check if user is not null before accessing userId
-  //     date: "",
-  //     startTime: "",
-  //     endTime: "",
-  //     location: "",
-  //   });
   const { user } = useAuthContext();
 
   const [appointmentData, setAppointmentData] = useState({
@@ -27,7 +15,6 @@ const AddAppointment = () => {
     endTime: "",
     location: "",
   });
-  console.log(appointmentData);
 
   useEffect(() => {
     if (user) {
@@ -37,8 +24,6 @@ const AddAppointment = () => {
       }));
     }
   }, [user]);
-
-  const [error, setError] = useState("");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -60,27 +45,21 @@ const AddAppointment = () => {
           body: JSON.stringify(formData),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`, // Include the authentication token in the request headers
+            Authorization: `Bearer ${user?.token}`,
           },
         }
       );
-      // Check if the user is authenticated before rendering the component
-      if (!user) {
-        Navigate("/login"); // Redirect to login page if user is not authenticated
-        return;
-      }
+      const res = await response.json();
 
       if (response.ok) {
-        alert("Appointment created successfully!");
-        console.log("Appointment created successfully!");
+        toast.success(res.message);
       } else {
-        const errorData = await response.json(); // Get error message from response body
-        setError(errorData.error); // Set error message state
-        console.log("Failed to create appointment");
+        // const errorData = await response.json(); // Get error message from response body
+        toast.error(res.message || "Failed to create appointment");
       }
     } catch (error) {
       console.error("Error creating appointment:", error);
-      setError("Failed to create appointment. Please try again."); // Generic error message
+      toast.error("Failed to create appointment. Please try again.");
     }
   };
 
@@ -96,6 +75,7 @@ const AddAppointment = () => {
           </div>
           <form className="add-appointment-form" onSubmit={handleSubmit}>
             <h1 className="appointment-details-title">Appointment Details</h1>
+            
 
             <div className="form-group">
               <label htmlFor="date">Date:</label>

@@ -200,18 +200,17 @@
 // };
 
 // export default ProfeAppointments;
-
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
-import useAlert from "../../../hooks/useAlert"; // Import the useAlert hook
+import useAlert from "../../../components/errorAlert"; // Import the useAlert hook
 import "./ProfeAppointments.css";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import { toast } from "react-toastify"; // Import toast for notifications
 
 const ProfeAppointments = () => {
   const [appointmentRequests, setAppointmentRequests] = useState([]);
   const { user } = useAuthContext();
   const { showSuccess, showError } = useAlert(); // Use the useAlert hook
-  console.log("showSuccess", showSuccess);
 
   useEffect(() => {
     const fetchAppointmentRequests = async () => {
@@ -272,7 +271,7 @@ const ProfeAppointments = () => {
         });
         setAppointmentRequests(updatedAppointments);
         // Display success toast
-        showSuccess(
+        toast.success(
           `Appointment ${
             action === "confirm" ? "confirmed" : "cancelled"
           } successfully`
@@ -280,12 +279,12 @@ const ProfeAppointments = () => {
       } else {
         console.error(`Failed to update appointment status (${action})`);
         // Display error toast
-        showError(`Failed to update appointment status (${action})`);
+        toast.error(`Failed to update appointment status (${action})`);
       }
     } catch (error) {
       console.error(`Error updating appointment status (${action}):`, error);
       // Display error toast
-      showError(
+      toast.error(
         `Error updating appointment status (${action}): ${error.message}`
       );
     }
@@ -330,13 +329,13 @@ const ProfeAppointments = () => {
                         {appointment.clientDetails.email}
                       </td>
                       <td className="table-data">
-                        {appointment.bookingRequest.appointmentTime}
+                        {appointment.bookingRequest?.appointmentTime}
                       </td>
                       <td className="table-data">
-                        {appointment.appointmentDetails.location}
+                        {appointment.appointmentDetails?.location}
                       </td>
                       <td className="table-data">
-                        {appointment.appointmentDetails.date}
+                        {appointment.appointmentDetails?.date}
                       </td>
                       <td className="table-data">
                         {appointment.bookingRequest.remark}

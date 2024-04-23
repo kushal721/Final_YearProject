@@ -3,63 +3,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import transporter from "../config/emailConfig.js";
 
+const strongPasswordRegex =
+  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{"':;?/>.<,]).{8,}$/;
+
 class UserController {
-  // static userRegistration = async (req, res) => {
-  //   try {
-  //     const { username, email, password, confirm_password } = req.body; //data from frontend
-  //     const userExists = await UserModel.findOne({ email: email });
-  //     if (userExists) {
-  //       res.status(400).json({ msg: "email already exists" });
-  //     } else {
-  //       if (username && email && password && confirm_password) {
-  //         if (password === confirm_password) {
-  //           try {
-  //             const salt = await bcrypt.genSalt(10);
-  //             const hasPassword = await bcrypt.hash(password, salt);
-  //             const doc = new UserModel({
-  //               username: username,
-  //               email: email,
-  //               password: hasPassword,
-  //             });
-  //             await doc.save();
-  //             const saved_user = await UserModel.findOne({ email: email });
-
-  //             // Generate JWT Token
-  //             const token = jwt.sign(
-  //               { userID: saved_user._id },
-  //               process.env.JWT_SECRET_KEY,
-  //               { expiresIn: "5d" }
-  //             );
-  //             // res.status(201).json({ status: 201, saved_user, token: token });
-  //             res.status(200).json({
-  //               status: "success",
-  //               message: "Registration successful",
-  //               saved_user,
-  //               token: token,
-  //             });
-  //           } catch (error) {
-  //             console.log(error);
-  //             res
-  //               .status(400)
-  //               .json({ status: "failed", message: "Unable to register" });
-  //           }
-  //         } else {
-  //           res.status(400).json({
-  //             status: "failed",
-  //             message: "Password and confirm password doesnot match",
-  //           });
-  //         }
-  //       } else {
-  //         res
-  //           .status(400)
-  //           .json({ status: "failed", message: "All fields are required" });
-  //       }
-  //     }
-  //   } catch (error) {
-  //     res.status(500).json("internal server error");
-  //   }
-  // };
-
   static userRegistration = async (req, res) => {
     try {
       const {
@@ -71,13 +18,6 @@ class UserController {
         location,
         role,
       } = req.body; // Data from frontend
-
-      // Check if files were uploaded
-      if (!req.files || req.files.length === 0) {
-        return res.status(400).json({
-          error: "Please upload at least one image",
-        });
-      }
 
       const userExists = await UserModel.findOne({ email: email });
       if (userExists) {
@@ -97,14 +37,21 @@ class UserController {
         });
       }
 
+      // Check if password meets strong password criteria
+      if (!strongPasswordRegex.test(password)) {
+        return res.status(400).json({
+          status: "failed",
+          msg: "Password must be strong. It should contain at least 8 characters including one uppercase letter, one lowercase letter, one number, and one special character.",
+        });
+      }
+
       // Hash the password
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
       // Create user
-      
       const userCreated = await UserModel.create({
-        profile: req.files[0].path,
+        profile: req?.files[0]?.path,
         username: username,
         email: email,
         contactNumber: contactNumber,
@@ -168,31 +115,34 @@ class UserController {
   //   }
   // };
 
+  //controller for login users
   static userLogin = async (req, res) => {
     try {
+      //takes input from frontend in req.body
       const { email, password } = req.body;
       if (!email || !password) {
         return res
           .status(400)
           .json({ message: "All fields are required", success: false });
       }
-
+      // check if user already exists
       const userExists = await UserModel.findOne({ email: email });
       if (!userExists) {
-        return res
-          .status(404)
-          .json({ message: "No user found", success: false });
+        return res.status(400).json({
+          message: "No user found. Please register first to login",
+          success: false,
+        });
       }
-
+      //check if password match or not
       const isMatch = await bcrypt.compare(password, userExists.password);
       if (!isMatch) {
         return res
-          .status(401)
+          .status(400)
           .json({ message: "Email or password is not valid", success: false });
       }
 
       res.status(200).json({
-        msg: "Login successful",
+        message: "Login successful",
         success: true,
         token: await userExists.generateToken(),
         userId: userExists._id.toString(),
@@ -262,9 +212,9 @@ class UserController {
       if (user) {
         const secret = user._id + process.env.JWT_SECRET_KEY;
         const token = jwt.sign({ userID: user._id }, secret, {
-          expiresIn: "15m",
+          expiresIn: "59m",
         });
-        const link = `http://127.0.0.1:3000/api/user/reset/${user._id}/${token}`;
+        const link = `http://127.0.0.1:4000/api/user/forgotPassword/${user._id}/${token}`;
         console.log(link);
 
         //Send Email
@@ -293,37 +243,70 @@ class UserController {
   };
 
   static userPasswordReset = async (req, res) => {
-    const { password, confirm_password } = req.body;
+    console.log("asdfasd");
+    const { email, password } = req.body;
+    console.log("password", email);
     const { id, token } = req.params;
+    console.log("id", id);
+    console.log("token", token);
     const user = await UserModel.findById(id);
     const new_secret = user._id + process.env.JWT_SECRET_KEY;
     try {
-      jwt.verify(token, new_secret);
-      if (password && confirm_password) {
-        if (password !== confirm_password) {
-          res.status(400).send({
-            status: "failed",
-            message: "New password and confirm password doesnot match",
-          });
-        } else {
-          const salt = await bcrypt.genSalt(10);
-          const newHashPassword = await bcrypt.hash(password, salt);
-          await UserModel.findByIdAndUpdate(user._id, {
-            $set: { password: newHashPassword },
-          });
-          res.status(200).send({
-            status: "success",
-            message: "Password reset successfully",
-          });
-        }
+      const verifyToken = jwt.verify(token, new_secret);
+      if (password) {
+        const salt = await bcrypt.genSalt(10);
+        const newhashPassword = await bcrypt.hash(password, salt);
+
+        await UserModel.findByIdAndUpdate(user._id, {
+          $set: { password: newhashPassword },
+        });
+        res.send({
+          status: "success",
+          message: "password changed successfully",
+        });
+        console.log("password changed successfully");
       } else {
         res
           .status(400)
-          .send({ status: "failed", message: "all fields are required" });
+          .send({ status: "failed", message: "password required" });
       }
     } catch (error) {
-      res.status(401).send({ status: "failed", message: "Invalid token" });
+      if (error.name === "TokenExpiredError") {
+        res.status(401).send({ status: "failed", message: "Token expired" });
+      } else {
+        console.log(error);
+        res
+          .status(500)
+          .send({ status: "failed", message: "failed to change pw" });
+      }
     }
+    //   const { id, token } = req.params;
+    //   const { password } = req.body;
+
+    //   const oldUser = await User.findOne({ _id: id });
+    //   if (!oldUser) {
+    //     return res.json({ status: "User Not Exists!!" });
+    //   }
+    //   const secret = JWT_SECRET + oldUser.password;
+    //   try {
+    //     const verify = jwt.verify(token, secret);
+    //     const encryptedPassword = await bcrypt.hash(password, 10);
+    //     await User.updateOne(
+    //       {
+    //         _id: id,
+    //       },
+    //       {
+    //         $set: {
+    //           password: encryptedPassword,
+    //         },
+    //       }
+    //     );
+
+    //     res.render("index", { email: verify.email, status: "verified" });
+    //   } catch (error) {
+    //     console.log(error);
+    //     res.json({ status: "Something Went Wrong" });
+    //   }
   };
 }
 

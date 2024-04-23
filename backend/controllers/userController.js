@@ -62,8 +62,10 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { username, email } = req.body;
+    const { username, email, contactNumber, location } = req.body;
+    console.log("Files uploaded:", req.files);
     console.log("req file", req?.files[0]?.path);
+
     // Find the user by ID
     let user = await UserModel.findById(userId);
     if (!user) {
@@ -73,13 +75,18 @@ const updateUser = async (req, res) => {
     // Update user details
     user.username = username || user.username; // Keep existing username if not provided
     user.email = email || user.email; // Keep existing email if not provided
+    user.contactNumber = contactNumber || user.contactNumber;
+    user.location = location || user.location;
 
-    // Check if req.file exists
-    if (req.files[0]?.path) {
+    // // Check if req.file exists
+    // if (req.files[0]?.path) {
+    //   user.profile = req?.files[0]?.path; // Update profile image
+    //   console.log("update file", user.profile);
+    // }
+    if (req?.files && req?.files.length > 0 && req?.files[0]?.path) {
       user.profile = req?.files[0]?.path; // Update profile image
-      console.log("update file", user.profile);
+      console.log("Updated profile image:", user.profile);
     }
-
     // Save the updated user
     user = await user.save();
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import "./EditProfile.css";
+import { toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css";
 
 const EditProfile = () => {
   const { user } = useAuthContext();
@@ -40,6 +42,7 @@ const EditProfile = () => {
     formData.append("profile", userData.profile); // Append profile photo
     formData.append("username", userData.username);
     formData.append("email", userData.email);
+    formData.append("contactNumber", userData.contactNumber);
 
     fetch(`http://localhost:4000/api/userr/${user?.userId}`, {
       method: "PUT",
@@ -51,10 +54,11 @@ const EditProfile = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("User data updated successfully: ", data);
-        alert("User data updated successfully");
+        toast.success("User data updated successfully");
       })
       .catch((error) => {
         console.error("Error updating user data: ", error);
+        toast.error("An error occurred while updating user data");
       });
   };
 
@@ -72,10 +76,11 @@ const EditProfile = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Professionals data updated successfully: ", data);
-        alert("Professionals data updated successfully");
+        toast.success("Professionals data updated successfully");
       })
       .catch((error) => {
         console.error("Error updating professionals data: ", error);
+        toast.error("An error occurred while updating professionals data");
       });
   };
 
@@ -95,13 +100,6 @@ const EditProfile = () => {
                 alt="Profile Picture"
                 className="profile-img"
               />
-              // ) : (
-              //   <img
-              //     src="./profile.png"
-              //     alt="Profile Picture"
-              //     className="profile-img"
-              //   />
-              //
             )}
           </label>
           <input
@@ -144,12 +142,27 @@ const EditProfile = () => {
             }
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="email" className="form-label">
+            Phone:
+          </label>
+          <input
+            type="number"
+            id="contactNumber"
+            name="contactNumber"
+            value={userData.contactNumber || ""}
+            className="form-control"
+            onChange={(event) =>
+              setUserData({ ...userData, contactNumber: event.target.value })
+            }
+          />
+        </div>
         <button type="submit" className="btn btn-primary save-btn">
           Save Changes
         </button>
       </form>
 
-      {isProfessional && (
+      {isProfessional() && (
         <div className="professionals-section mt-4">
           <button
             className="btn btn-secondary toggle-btn"
@@ -243,24 +256,7 @@ const EditProfile = () => {
                         }
                       />
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="contact" className="form-label">
-                        Contact:
-                      </label>
-                      <input
-                        type="text"
-                        id="contact"
-                        name="contact"
-                        className="form-control"
-                        value={professionalsData.contact || ""}
-                        onChange={(event) =>
-                          setProfessionalsData({
-                            ...professionalsData,
-                            contact: event.target.value,
-                          })
-                        }
-                      />
-                    </div>
+
                     <div className="form-group">
                       <label htmlFor="description" className="form-label">
                         Description:

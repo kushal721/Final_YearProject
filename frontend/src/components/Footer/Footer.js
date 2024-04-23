@@ -17,14 +17,11 @@ const FooterComp = () => {
             <Footer.Link href="#" className="text-color">
               Professionals
             </Footer.Link>
-            <Footer.Link href="#" className="text-color">
+            <Footer.Link href="/designs" className="text-color">
               Designs
             </Footer.Link>
-            <Footer.Link href="#" className="text-color">
+            <Footer.Link href="/contact" className="text-color">
               Contact
-            </Footer.Link>
-            <Footer.Link href="#" className="text-color">
-              About
             </Footer.Link>
           </Footer.LinkGroup>
         </div>

@@ -5,6 +5,8 @@ import FooterComp from "../../components/Footer/Footer";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import "./Description.css";
 import RatingComp from "../../components/Rating/RatingComp";
+import { toast } from "react-toastify"; // Import toast from react-toastify
+import "react-toastify/dist/ReactToastify.css";
 
 const Description = ({ match }) => {
   const { user } = useAuthContext();
@@ -37,26 +39,6 @@ const Description = ({ match }) => {
     fetchDesign();
   }, [id]);
 
-  // useEffect(() => {
-  //   const fetchComment = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `http://localhost:4000/api/designs/${id}/comments`
-  //       );
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setComments(data);
-  //       } else {
-  //         console.error("Failed to fetch comments");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching design:", error);
-  //     }
-  //   };
-
-  //   fetchComment();
-  // }, [id]);
-
   const addToFavorites = async () => {
     try {
       const response = await fetch(
@@ -70,16 +52,17 @@ const Description = ({ match }) => {
           body: JSON.stringify({ userId: user?.userId, designId: id }),
         }
       );
+      const res = await response.json();
 
       if (response.ok) {
-        alert("Design added to favorites!");
+        toast.success("Design added to favorites!");
       } else {
         const errorMessage = await response.text();
-        alert(`Failed to add design to favorites: ${errorMessage}`);
+        toast.error(`Failed to add design to favorites: ${errorMessage}`);
       }
     } catch (error) {
       console.error("Error adding design to favorites:", error);
-      alert("An error occurred while adding design to favorites");
+      toast.error("An error occurred while adding design to favorites");
     }
   };
 
@@ -108,11 +91,12 @@ const Description = ({ match }) => {
       }
 
       const data = await response.json();
-      alert("Comment added successfully");
+      toast.success("Comment added successfully");
       console.log("Comment added:", data);
       // Optionally, you can redirect the user or show a success message
     } catch (error) {
       console.error("Error adding comment:", error);
+      toast.error("An error occurred while adding comment");
       // Optionally, you can show an error message to the user
     }
   };
@@ -135,8 +119,10 @@ const Description = ({ match }) => {
                 <h2>Name: {designDesc.designName}</h2>
                 <h2>Category: {designDesc.designCategory}</h2>
                 <p>Description: {designDesc.designDescription}</p>
+                <p>Area(Sqm): {designDesc.area}</p>
+                <p>Estimate Cost(Rs): {designDesc.estimateCost}</p>
                 <p className="rating">
-                  ★ {designDesc.averageRating}
+                  Rating(★): {designDesc.averageRating}
                   <span>({designDesc.totalRatings})</span>
                 </p>
                 {/* Add logic to display designer name */}

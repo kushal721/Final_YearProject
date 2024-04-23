@@ -10,21 +10,17 @@ const professionalSchema = new mongoose.Schema({
     type: String,
   },
   experience: {
-    type: String, // Storing experience as a string
+    type: String, 
   },
 
   description: {
-    type: String, // Professional description
+    type: String, 
   },
   skills: {
     type: String,
   },
   education: {
-    type: String, // Education details
-  },
-
-  contact: {
-    type: String,
+    type: String, 
   },
 });
 

@@ -111,9 +111,17 @@ function NavbarComp() {
   };
 
   return (
-    <Navbar fluid rounded className="navbar-container">
+    <Navbar
+      fluid
+      rounded
+      className="navbar-container"
+      style={{ backgroundColor: "#313438" }}
+    >
       <Navbar.Brand as={NavLink} to="/" className="text-center">
-        <span className="self-center text-2xl font-semibold dark:text-white">
+        <span
+          className="self-center text-2xl font-semibold "
+          style={{ color: "white" }}
+        >
           Construction Professionals Nepal
         </span>
       </Navbar.Brand>
@@ -122,6 +130,7 @@ function NavbarComp() {
         {user && (
           <>
             <Dropdown
+              style={{ height: "60px", width: "13rem" }}
               label={
                 <>
                   {userData?.profile?.length > 0 ? (
@@ -130,7 +139,7 @@ function NavbarComp() {
                       alt="Profile Picture"
                       className="profile-img"
                       style={{
-                        width: "55px",
+                        height: "55px",
                         // height: "10px",
                         objectFit: "cover",
                         borderRadius: "50%",
@@ -155,9 +164,9 @@ function NavbarComp() {
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">{user?.username}</span>
+                <span className="block text-sm">{userData?.username}</span>
                 <span className="block truncate text-sm font-medium">
-                  {user?.email}
+                  {userData?.email}
                 </span>
               </Dropdown.Header>
 
@@ -195,22 +204,37 @@ function NavbarComp() {
       </div>
       <Navbar.Collapse>
         <Navbar.Link as={NavLink} to="/" exact="true">
-          <span className="text-lg">Home</span>
+          <span className="text-lg " style={{ color: "white" }}>
+            Home
+          </span>
         </Navbar.Link>
         <Navbar.Link as={NavLink} to="/designs">
-          <span className="text-lg">Designs</span>
+          <span className="text-lg" style={{ color: "white" }}>
+            Designs
+          </span>
         </Navbar.Link>
         <Navbar.Link as={NavLink} to="/professionals">
-          <span className="text-lg">Professionals</span>
+          <span className="text-lg" style={{ color: "white" }}>
+            Professionals
+          </span>
+        </Navbar.Link>
+        <Navbar.Link as={NavLink} to="/contact">
+          <span className="text-lg" style={{ color: "white" }}>
+            Contact Us
+          </span>
         </Navbar.Link>
         {isClient() && (
           <Navbar.Link as={NavLink} to="/favorite">
-            <span className="text-lg">Favorite</span>
+            <span className="text-lg" style={{ color: "white" }}>
+              Favorite
+            </span>
           </Navbar.Link>
         )}
         {isClient() && (
           <Navbar.Link as={NavLink} to="/appointment">
-            <span className="text-lg">Appointments</span>
+            <span className="text-lg" style={{ color: "white" }}>
+              Appointments
+            </span>
           </Navbar.Link>
         )}
         {user && (
@@ -220,7 +244,7 @@ function NavbarComp() {
                 style={{
                   fontSize: "24px",
                   fontWeight: "bold",
-                  color: "#333",
+                  color: "white",
                   marginLeft: "8px",
                 }}
               />
@@ -229,13 +253,17 @@ function NavbarComp() {
               <>
                 {user.role === "admin" && (
                   <NavLink to="/dashboard/summary">
-                    <span className="text-lg">Dashboard</span>
+                    <span className="text-lg" style={{ color: "white" }}>
+                      Dashboard
+                    </span>
                   </NavLink>
                 )}
 
                 {user.role === "professional" && (
                   <NavLink to="/dashboard/my-designs">
-                    <span className="text-lg">Dashboard</span>
+                    <span className="text-lg" style={{ color: "white" }}>
+                      Dashboard
+                    </span>
                   </NavLink>
                 )}
               </>

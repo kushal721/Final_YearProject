@@ -112,11 +112,23 @@ button {
 
 .edit-button {
   color: white;
-  background: orange;
+  background: rgb(217, 170, 1);
 }
 .fav-btn {
   color: white;
   background: green;
+}
+.cancel-btn {
+  color: white;
+  background-color: #fe5b5b;
+}
+.save-btn {
+  color: white;
+  background-color: #00ae3d;
+}
+.btn-submit {
+  color: white;
+  background-color: #8d9c92;
 }
 
 .button:hover {

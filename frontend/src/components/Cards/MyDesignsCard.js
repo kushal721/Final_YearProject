@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./card.css";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css";
 
 const MyDesignCard = ({ my_design, onDelete }) => {
   const navigate = useNavigate();
@@ -27,11 +29,14 @@ const MyDesignCard = ({ my_design, onDelete }) => {
         console.log("Design removed successfully");
         setShowConfirmationPopup(false);
         onDelete(my_design._id);
+        toast.success("Design removed successfully"); // Display success message using toast
       } else {
         console.error("Failed to remove design");
+        toast.error("Failed to remove design"); // Display error message using toast
       }
     } catch (error) {
       console.error("Error removing design:", error);
+      toast.error("An error occurred while removing the design"); // Display error message using toast
     }
   };
 
@@ -52,7 +57,6 @@ const MyDesignCard = ({ my_design, onDelete }) => {
         <span className="design-name">{my_design.designName}</span> <br />
       </Link>
       <span className="design-actions">
-        <button className="edit-button">Edit</button> <br />
         <button className="btn-danger" onClick={handleRemoveDesign}>
           Delete
         </button>

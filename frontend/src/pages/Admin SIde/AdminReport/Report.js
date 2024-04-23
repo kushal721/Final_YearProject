@@ -46,7 +46,7 @@ const Report = () => {
         return;
       }
 
-      let report = "Design Report:\n\n";
+      let report = "Professional Report:\n\n";
 
       professionals.forEach((item, index) => {
         report += `${index + 1}. Professional Name: ${
@@ -74,7 +74,7 @@ const Report = () => {
   const exportReport = () => {
     const doc = new jsPDF();
     doc.text(reportText, 10, 10);
-    doc.save("Design_Report.pdf");
+    doc.save("Professional_Report.pdf");
   };
 
   return (
@@ -83,7 +83,7 @@ const Report = () => {
         <Sidebar />
       </div>
       <div className="report-container">
-        <h3 className="report-heading">Design Report</h3>
+        <h3 className="report-heading">Professional Report</h3>
         {loading && <p>Loading...</p>}
         {error && <p className="error-message">{error}</p>}
         {!loading && !error && (

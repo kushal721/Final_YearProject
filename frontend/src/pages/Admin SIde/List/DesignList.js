@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
 
-
 export default function DesignList() {
   const [items, setItems] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
@@ -111,7 +110,7 @@ export default function DesignList() {
 
   const deleteResource = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/resources/${id}`, {
+      await fetch(`http://localhost:5000/api/design/${id}`, {
         method: "DELETE",
       });
 

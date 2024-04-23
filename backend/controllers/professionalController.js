@@ -2,7 +2,6 @@ import UserModel from "../models/User.js";
 
 import ProfessionalModel from "../models/Professional.js";
 
-
 // Controller function to get all users
 const getAllProfessionals = async (req, res) => {
   try {
@@ -62,29 +61,44 @@ const getProfessionalById = async (req, res) => {
 //   }
 // };
 
-//update professionals profile
-const updateProfileController = async (req, res) => {
-  try {
-    const professional = await professionalModel.findOneAndUpdate(
-      { userId: req.body.userId },
-      req.body
-    );
-    res.status(201).send({
-      success: true,
-      message: "Doctor Profile Updated",
-      data: doctor,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      success: false,
-      message: "Doctor Profile Update issue",
-      error,
-    });
-  }
-};
-
 //for professional only
+
+// // Controller to create a new professional
+// const addProfessionalInfo = async (req, res) => {
+//   try {
+//     // Get the user ID from the authenticated user object or token
+//     const userId = req.user._id; // Adjust this according to your authentication setup
+//     console.log("user user", userId);
+
+//     const {
+//       specialization,
+//       experience,
+//       description,
+//       skills,
+//       education,
+
+//     } = req.body;
+
+//     // Create a new professional instance
+//     const newProfessional = new ProfessionalModel({
+//       professionalId: userId,
+//       specialization,
+//       experience,
+//       description,
+//       skills,
+//       education,
+
+//     });
+
+//     // Save the professional to the database
+//     const savedProfessional = await newProfessional.save();
+
+//     res.status(201).json(savedProfessional); // Respond with the saved professional
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 
 // Controller to create a new professional
 const addProfessionalInfo = async (req, res) => {
@@ -93,14 +107,19 @@ const addProfessionalInfo = async (req, res) => {
     const userId = req.user._id; // Adjust this according to your authentication setup
     console.log("user user", userId);
 
-    const {
-      specialization,
-      experience,
-      description,
-      skills,
-      education,
-      contact,
-    } = req.body;
+    // Check if professional information already exists for the user
+    const existingProfessional = await ProfessionalModel.findOne({
+      professionalId: userId,
+    });
+
+    if (existingProfessional) {
+      return res
+        .status(400)
+        .json({ message: "Professional information already added" });
+    }
+
+    const { specialization, experience, description, skills, education } =
+      req.body;
 
     // Create a new professional instance
     const newProfessional = new ProfessionalModel({
@@ -110,13 +129,14 @@ const addProfessionalInfo = async (req, res) => {
       description,
       skills,
       education,
-      contact,
     });
 
     // Save the professional to the database
     const savedProfessional = await newProfessional.save();
 
-    res.status(201).json(savedProfessional); // Respond with the saved professional
+    res
+      .status(200)
+      .json({ message: "Information added successfully", savedProfessional }); // Respond with the saved professional
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -147,8 +167,6 @@ const addProfessionalInfo = async (req, res) => {
 //   }
 // };
 
-
-
 // Controller function to get a professional by professionalId
 const getProfessionalByProfessionalId = async (req, res) => {
   const { professionalId } = req.params; // Get the professionalId from the request parameters
@@ -171,14 +189,8 @@ const getProfessionalByProfessionalId = async (req, res) => {
 
 const updateProfessionalInfo = async (req, res) => {
   const { professionalId } = req.params;
-  const {
-    specialization,
-    experience,
-    description,
-    skills,
-    education,
-    contact,
-  } = req.body;
+  const { specialization, experience, description, skills, education } =
+    req.body;
 
   try {
     // Find the professional by professionalId and update their information
@@ -190,7 +202,6 @@ const updateProfessionalInfo = async (req, res) => {
         description,
         skills,
         education,
-        contact,
       },
       { new: true }
     );
@@ -199,7 +210,10 @@ const updateProfessionalInfo = async (req, res) => {
       return res.status(404).json({ message: "Professional not found" });
     }
 
-    res.status(200).json(updatedProfessional);
+    res.status(200).json({
+      message: "Professional Details update successfully",
+      updatedProfessional,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

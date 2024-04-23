@@ -213,11 +213,10 @@
 //   productReview,
 // };
 
-import Design from "../models/Design.js"; // Ensure correct path for Design model
+import Design from "../models/Design.js";
 import mongoose from "mongoose";
-import cloudinary from "../utills/cloudinary.js";
 
-// Modify the controller to handle multiple image uploads
+// add design controller
 const addDesigns = async (req, res) => {
   try {
     const {
@@ -228,17 +227,25 @@ const addDesigns = async (req, res) => {
       designCategory,
     } = req.body;
 
-    console.log("req body", req.body);
+    // Check if required fields are empty
+    if (
+      !designName ||
+      !area ||
+      !estimateCost ||
+      !designDescription ||
+      !designCategory
+    ) {
+      return res.status(400).json({
+        message: "Please fill all the required fields",
+      });
+    }
+
     // Check if files were uploaded
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
-        error: "Please upload at least one image",
+        message: "Please upload at least one image",
       });
     }
-    console.log(
-      "img",
-      req.files.map((file) => file.path)
-    );
 
     // Save design data to the database
     const design = await Design.create({
@@ -252,9 +259,12 @@ const addDesigns = async (req, res) => {
       designImages: req.files.map((file) => file.path), // Save the paths of uploaded images
     });
 
-    res.status(200).json(design);
+    res.status(200).json({
+      message: "Design added successfully",
+      design,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -302,20 +312,20 @@ const getProfessionalDesigns = async (req, res) => {
   }
 };
 
-// Delete a design
-const deleteDesign = async (req, res) => {
-  const { id } = req.params;
+// // Delete a design
+// const deleteDesign = async (req, res) => {
+//   const { id } = req.params;
 
-  try {
-    const design = await Design.findOneAndDelete({ _id: id });
-    if (!design) {
-      return res.status(404).json({ error: "Design not found" });
-    }
-    res.status(200).json(design);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+//   try {
+//     const design = await Design.findOneAndDelete({ _id: id });
+//     if (!design) {
+//       return res.status(404).json({ error: "Design not found" });
+//     }
+//     res.status(200).json({ message: "Design deleted successfully" });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 // Get all designs (for the logged-in user)
 const getMyDesigns = async (req, res) => {
@@ -385,7 +395,7 @@ const deleteMyDesign = async (req, res) => {
     if (!design) {
       return res.status(404).json({ error: "Design not found" });
     }
-    res.status(200).json(design);
+    res.status(200).json({ message: "Design deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -404,7 +414,7 @@ const updateMyDesign = async (req, res) => {
     if (!design) {
       return res.status(404).json({ error: "Design not found" });
     }
-    res.status(200).json(design);
+    res.status(200).json({ design, message: "Design updated successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -484,50 +494,50 @@ const addRating = async (req, res) => {
 //   }
 // };
 
-// Add product review
-const productReview = async (req, res) => {
-  try {
-    const { comment, rating } = req.body;
+// // Add product review
+// const productReview = async (req, res) => {
+//   try {
+//     const { comment, rating } = req.body;
 
-    if (!req.user) {
-      return res
-        .status(401)
-        .json({ success: false, message: "User is not authenticated" });
-    }
+//     if (!req.user) {
+//       return res
+//         .status(401)
+//         .json({ success: false, message: "User is not authenticated" });
+//     }
 
-    const design = await Design.findById(req.params.id);
-    if (!design) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Design not found" });
-    }
+//     const design = await Design.findById(req.params.id);
+//     if (!design) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Design not found" });
+//     }
 
-    const review = {
-      name: req.user.userName,
-      rating: Number(rating),
-      comment: comment,
-      user: req.user._id,
-    };
+//     const review = {
+//       name: req.user.userName,
+//       rating: Number(rating),
+//       comment: comment,
+//       user: req.user._id,
+//     };
 
-    design.reviews.push(review);
-    design.numReviews = design.reviews.length;
+//     design.reviews.push(review);
+//     design.numReviews = design.reviews.length;
 
-    const totalRating = design.reviews.reduce(
-      (acc, item) => acc + item.rating,
-      0
-    );
-    design.rating = totalRating / design.reviews.length;
+//     const totalRating = design.reviews.reduce(
+//       (acc, item) => acc + item.rating,
+//       0
+//     );
+//     design.rating = totalRating / design.reviews.length;
 
-    await design.save();
+//     await design.save();
 
-    res
-      .status(200)
-      .json({ success: true, message: "Review added successfully", design });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
-  }
-};
+//     res
+//       .status(200)
+//       .json({ success: true, message: "Review added successfully", design });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// };
 
 const addRatingToDesign = async (req, res) => {
   const { designId, userId, ratingValue } = req.body;
@@ -588,7 +598,6 @@ export {
   getMyDesign,
   deleteMyDesign,
   updateMyDesign,
-  productReview,
   getProfessionalDesigns,
   addRating,
 };

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+//message schema
 const MessageSchema = new mongoose.Schema(
   {
     chatId: {
@@ -19,4 +19,4 @@ const MessageSchema = new mongoose.Schema(
 
 const MessageModel = mongoose.model("Message", MessageSchema);
 
-export default MessageModel; // Export the Message model as default
+export default MessageModel; 

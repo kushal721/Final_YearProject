@@ -307,21 +307,8 @@ const Chat = () => {
     return online ? true : false;
   };
 
-  const handleBackButton = () => {
-    navigate("/my-designs"); // Corrected navigate function call
-  };
-
   return (
     <div className="container-fluid chat-container">
-      {/* {user?.role === "client" ? (
-        <div>
-          <NavbarComp />
-        </div>
-      ) : (
-        <div className="navbar">
-          <button onClick={handleBackButton}>Back</button>
-        </div>
-      )} */}
       <div className="row">
         <div className="chat-l col-md-3">
           {" "}

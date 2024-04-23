@@ -41,29 +41,38 @@ const UserSummaryReport = () => {
   const adminUsers = userData
     ? userData.filter((user) => user.role === "admin").length
     : 0;
-  const regularUsers = totalUsers - adminUsers;
+  const professionalUsers = userData
+    ? userData.filter((user) => user.role === "professional").length
+    : 0;
+  const totalProfessionalUsers = professionalUsers
+    ? professionalUsers.length
+    : 0;
+  const clientUsers = userData
+    ? userData.filter((user) => user.role === "client").length
+    : 0;
+  const totalClientUsers = clientUsers ? clientUsers.length : 0;
 
   // Generate data for the pie chart
   const pieChartData = {
-    labels: ["Admin Users", "Regular Users"],
+    labels: ["Admin Users", "Professionals User", "Client Users"],
     datasets: [
       {
         label: "User Roles",
-        data: [adminUsers, regularUsers],
-        backgroundColor: ["purple", "orange"],
+        data: [adminUsers, professionalUsers, clientUsers],
+        backgroundColor: ["green", "blue", "orange"],
       },
     ],
   };
 
   // Generate data for the bar chart
   const barChartData = {
-    labels: ["Admin Users", "Regular Users"],
+    labels: ["Admin Users", "Professional Users", "Client Users"],
     datasets: [
       {
         label: "User Roles",
-        data: [adminUsers, regularUsers],
-        backgroundColor: ["purple", "orange"],
-        borderColor: ["purple", "orange"],
+        data: [adminUsers, professionalUsers, clientUsers],
+        backgroundColor: ["green", "blue", "orange"],
+        borderColor: ["green", "blue", "orange"],
         borderWidth: 1,
       },
     ],
@@ -142,16 +151,24 @@ const UserSummaryReport = () => {
           icon: <FaUserTie />,
           digits: adminUsers,
           title: "Admin Users",
-          color: "purple",
+          color: "green",
           bgColor: "lavender",
         }}
       />
       {/* Regular Users */}
       <Widget
         data={{
-          digits: regularUsers,
-          title: "Regular Users",
-          color: "orange",
+          digits: clientUsers,
+          title: "Client Users",
+          color: "blue",
+          bgColor: "lightyellow",
+        }}
+      />
+      <Widget
+        data={{
+          digits: professionalUsers,
+          title: "Professional Users",
+          color: "skyblue",
           bgColor: "lightyellow",
         }}
       />

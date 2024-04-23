@@ -76,6 +76,8 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import "./ProfeAppointments.css";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AllAppointments = () => {
   const { id } = useParams();
@@ -143,13 +145,15 @@ const AllAppointments = () => {
             : appointment
         );
         setAppointments(updatedAppointments);
-        alert("Appointment updated successfully");
+        toast.success("Appointment updated successfully");
         setEditAppointment(null);
       } else {
-        console.error("Failed to update appointment");
+        const errorMessage = await response.text();
+        toast.error(`Failed to update appointment: ${errorMessage}`);
       }
     } catch (error) {
       console.error("Error updating appointment:", error);
+      toast.error("An error occurred while updating appointment");
     }
   };
 
@@ -187,13 +191,15 @@ const AllAppointments = () => {
           (appointment) => appointment._id !== editAppointment._id
         );
         setAppointments(updatedAppointments);
-        alert("Appointment removed successfully");
+        toast.success("Appointment removed successfully");
         setShowConfirmationPopup(false);
       } else {
-        console.error("Failed to remove appointment");
+        const errorMessage = await response.text();
+        toast.error(`Failed to remove appointment: ${errorMessage}`);
       }
     } catch (error) {
       console.error("Error removing appointment:", error);
+      toast.error("An error occurred while removing appointment");
     }
   };
 
@@ -209,7 +215,7 @@ const AllAppointments = () => {
       <div className="appointments-container">
         <div className="content">
           <div className="page-name">
-            <h1 className="page-title">Confirmed Appointments</h1>
+            <h1 className="page-title">Created Appointments</h1>
             <table className="appointment-table">
               <thead>
                 <tr>
@@ -275,11 +281,11 @@ const AllAppointments = () => {
                       {editAppointment &&
                       editAppointment._id === appointment._id ? (
                         <>
-                          <button className="btn-save" onClick={handleSave}>
+                          <button className="save-btn" onClick={handleSave}>
                             Save
                           </button>
                           <button
-                            className="btn-cancel"
+                            className="cancel-btn"
                             onClick={handleCancelEdit}
                           >
                             Cancel
@@ -288,13 +294,13 @@ const AllAppointments = () => {
                       ) : (
                         <>
                           <button
-                            className="btn-edit"
+                            className="edit-button"
                             onClick={() => handleEdit(appointment)}
                           >
                             Edit
                           </button>
                           <button
-                            className="btn-delete"
+                            className="btn-danger"
                             onClick={() => handleRemoveAppointment(appointment)}
                           >
                             Delete

@@ -31,7 +31,7 @@ const Conversation = ({ data, currentUserId, online }) => {
 
   return (
     <>
-      <div className="conversation">
+      <div className="conversation" style={{ width: "100vh" }}>
         {userData && (
           <div className="user-info">
             {online && <div className="online-dot"> </div>}

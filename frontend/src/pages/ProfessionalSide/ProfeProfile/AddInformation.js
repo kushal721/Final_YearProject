@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import "./AddInformation.css"; // Create a CSS file for styling
+import { toast } from "react-toastify"; // Import toast for notifications
 
 const AddInformation = () => {
   const { user } = useAuthContext();
@@ -11,7 +12,6 @@ const AddInformation = () => {
     description: "",
     skills: "",
     education: "",
-    contact: "",
   });
   console.log("user u", user);
 
@@ -41,17 +41,18 @@ const AddInformation = () => {
           body: JSON.stringify(formData),
         }
       );
-
+      const res = await response.json();
       if (!response.ok) {
-        throw new Error("Failed to add professional information");
+        console.log(res.message);
+        toast.error(res.message);
       }
 
-      const data = await response.json();
-      alert("Professional information added");
-      console.log("Professional information added:", data);
+      toast.success(res.message); // Display success toast
+      console.log(res.message);
       // Optionally, you can redirect the user or show a success message
     } catch (error) {
       console.error("Error adding professional information:", error);
+      // toast.error("Failed to add professional information"); // Display error toast
       // Optionally, you can show an error message to the user
     }
   };
@@ -116,19 +117,7 @@ const AddInformation = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="contact" className="label">
-              Contact:
-            </label>
-            <input
-              type="text"
-              id="contact"
-              name="contact"
-              className="input-field"
-              value={formData.contact}
-              onChange={handleInputChange}
-            />
-          </div>
+
           <div className="form-group">
             <label htmlFor="description" className="label">
               Description:

@@ -1,7 +1,7 @@
-// Import Mongoose
+
 import mongoose from "mongoose";
 
-// Define the favorites schema
+// favorites schema
 const favoritesSchema = new mongoose.Schema(
   {
     userId: {
@@ -18,7 +18,7 @@ const favoritesSchema = new mongoose.Schema(
   }
 );
 
-// Create the Favorites model
+
 const Favorite = mongoose.model("Favorites", favoritesSchema);
 
 export default Favorite;

@@ -13,15 +13,11 @@ const ProfessionalCard = ({ professional }) => {
             {professional?.profile?.length > 0 ? (
               <img
                 src={`http://localhost:4000/${professional?.profile}`}
-                alt="Profile Picture"
+                alt=""
                 className="profile-image"
               />
             ) : (
-              <img
-                src="./profile.png"
-                alt="Profile Picture"
-                className="profile-image"
-              />
+              <img src="./profile.png" alt="" className="profile-image" />
             )}
           </div>
           <div className="card-content">
@@ -29,10 +25,7 @@ const ProfessionalCard = ({ professional }) => {
               <h5 className="title">{professional?.username}</h5>
               <p className="">Location: {professional?.location}</p>
             </div>
-            {/* <p className="short-description">
-          Enter a freshly updated and thoughtfully furnished peaceful home
-          surrounded by ancient trees, stone walls, and open meadows.
-        </p> */}
+           
           </div>
         </Link>
       </div>

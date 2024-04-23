@@ -221,8 +221,8 @@ const Chatbox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     setNewMessage(newMessage);
   };
 
-  const handleSend = async (e) => {
-    e.preventDefault();
+  const handleSend = async () => {
+    if (!newMessage.trim()) return;
 
     // Check if chat exists before accessing its properties
     if (!chat) {
@@ -256,6 +256,13 @@ const Chatbox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
 
     const receiverId = chat?.members?.find((id) => id !== currentUser);
     setSendMessage({ ...message, receiverId });
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
   //always scorll to last message
@@ -304,8 +311,12 @@ const Chatbox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
 
       {/* chat-sender */}
       <div className="chat-sender">
-        <div>+</div>
-        <InputEmoji value={newMessage} onChange={handleChange} />
+        <div></div>
+        <InputEmoji
+          value={newMessage}
+          onChange={handleChange}
+          onKeyPress={handleKeyPress} // Add this line to handle key press
+        />
         <div className="send-button button" onClick={handleSend}>
           Send
         </div>

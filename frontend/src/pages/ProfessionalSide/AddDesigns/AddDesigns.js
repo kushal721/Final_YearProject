@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import "./AddDesigns.css";
-import toast from "react-hot-toast";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css";
 
 const AddDesigns = () => {
   const { user } = useAuthContext();
@@ -58,19 +59,22 @@ const AddDesigns = () => {
           method: "POST",
           body: formData,
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user?.token}`,
           },
         }
       );
+      const res = await response.json();
+      console.log("this is res", res);
 
       if (response.ok) {
-        alert("Design uploaded successfully");
-        toast.success("Design uploaded successfully!");
+        toast.success(res.message);
+
+        // toast.success("Design uploaded successfully!");
         console.log("Design uploaded successfully!");
       } else {
-        const errorData = await response.json();
-        setError(errorData.error || "Failed to upload design");
-        console.log("Failed to upload design");
+        console.log(res.message);
+
+        toast.error(res.message || "Failed to upload design");
       }
     } catch (error) {
       console.error("Error uploading designs:", error);
@@ -101,96 +105,100 @@ const AddDesigns = () => {
           </div>
           <form className="add-design-form" onSubmit={handleSubmit}>
             {/* Design details */}
-            <div className="form-group">
-              <label htmlFor="designName">Design Name:</label>
-              <input
-                type="text"
-                id="designName"
-                name="designName"
-                value={designData.designName}
-                onChange={handleInputChange}
-                placeholder="Enter design name"
-              />
+            <div className="left-column">
+              <div className="form-group">
+                <label htmlFor="designName">Design Name:</label>
+                <input
+                  type="text"
+                  id="designName"
+                  name="designName"
+                  value={designData.designName}
+                  onChange={handleInputChange}
+                  placeholder="Enter design name"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="area">Area(sqm):</label>
+                <input
+                  type="text"
+                  id="area"
+                  name="area"
+                  value={designData.area}
+                  onChange={handleInputChange}
+                  placeholder="Enter area"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="estimateCost">Estimate Cost(Rs):</label>
+                <input
+                  type="text"
+                  id="estimateCost"
+                  name="estimateCost"
+                  value={designData.estimateCost}
+                  onChange={handleInputChange}
+                  placeholder="Enter estimate cost"
+                />
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="area">Area:</label>
-              <input
-                type="text"
-                id="area"
-                name="area"
-                value={designData.area}
-                onChange={handleInputChange}
-                placeholder="Enter area"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="estimateCost">Estimate Cost:</label>
-              <input
-                type="text"
-                id="estimateCost"
-                name="estimateCost"
-                value={designData.estimateCost}
-                onChange={handleInputChange}
-                placeholder="Enter estimate cost"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="designDescription">Design Description:</label>
-              <textarea
-                id="designDescription"
-                name="designDescription"
-                value={designData.designDescription}
-                onChange={handleInputChange}
-                placeholder="Enter design description"
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label htmlFor="designCategory">Design Category:</label>
-              <select
-                id="designCategory"
-                name="designCategory"
-                value={designData.designCategory}
-                onChange={handleInputChange}
-              >
-                <option value="">Select category</option>
-                <option value="Bungalow">Bungalow</option>
-                <option value="Duplex">Duplex</option>
-                <option value="Single Floor">Single Floor</option>
-                <option value="Multiplex">Multiplex</option>
-                <option value="Mansion">Mansion</option>
-                <option value="Apartment">Apartment</option>
-              </select>
-            </div>
-            {/* Upload designImages */}
-            <div className="form-group">
-              <label>Upload designImages:</label>
-              <input
-                type="file"
-                className="form-control-file"
-                name="designImages"
-                accept="image/*"
-                multiple
-                onChange={handleInputChange}
-              />
-            </div>
-            {/* Display uploaded designImages */}
-            <div className="uploaded-designImages">
-              {designData.designImages &&
-                Array.from(designData.designImages).map((file, index) => (
-                  <div key={index} className="uploaded-photo">
-                    <img
-                      src={URL.createObjectURL(file)}
-                      alt={`Photo ${index}`}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={() => handleRemovePhoto(index)}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
+            <div className="right-column">
+              <div className="form-group">
+                <label htmlFor="designDescription">Design Description:</label>
+                <textarea
+                  id="designDescription"
+                  name="designDescription"
+                  value={designData.designDescription}
+                  onChange={handleInputChange}
+                  placeholder="Enter design description"
+                ></textarea>
+              </div>
+              <div className="form-group">
+                <label htmlFor="designCategory">Design Category:</label>
+                <select
+                  id="designCategory"
+                  name="designCategory"
+                  value={designData.designCategory}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select category</option>
+                  <option value="Bungalow">Bungalow</option>
+                  <option value="Duplex">Duplex</option>
+                  <option value="Single Floor">Single Floor</option>
+                  <option value="Multiplex">Multiplex</option>
+                  <option value="Mansion">Mansion</option>
+                  <option value="Apartment">Apartment</option>
+                </select>
+              </div>
+              {/* Upload designImages */}
+              <div className="form-group">
+                <label>Upload designImages:</label>
+                <input
+                  type="file"
+                  className="form-control-file"
+                  name="designImages"
+                  accept="image/*"
+                  multiple
+                  onChange={handleInputChange}
+                />
+              </div>
+              {/* Display uploaded designImages */}
+              <div className="uploaded-designImages">
+                {designData.designImages &&
+                  Array.from(designData.designImages).map((file, index) => (
+                    <div key={index} className="uploaded-photo">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={`${index}`}
+                      />
+                      <button
+                        type="button"
+                        className="remove-button"
+                        onClick={() => handleRemovePhoto(index)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+              </div>
             </div>
             {/* Submit button */}
             <div className="btn-upload">
@@ -200,7 +208,6 @@ const AddDesigns = () => {
             </div>
           </form>
           {/* Error message */}
-          {error && <div className="error-message">{error}</div>}
         </div>
       </div>
     </div>

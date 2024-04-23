@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import NavbarComp from "../../components/Navbar/Navbar";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { toast } from "react-toastify"; // Import toast from react-toastify
+import "react-toastify/dist/ReactToastify.css";
 import "./Favorite.css"; // Import CSS file for styling
 
 const Favorite = () => {
   const { user } = useAuthContext();
   const [favorites, setFavorites] = useState([]);
-  console.log("favorite", favorites);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -37,45 +38,6 @@ const Favorite = () => {
     fetchFavorites();
   }, [user]); // Fetch favorites when user object changes
 
-  // useEffect(() => {
-  //   const fetchFavorites = async () => {
-  //     try {
-  //       if (!user?.token) {
-  //         console.error("User token is missing.");
-  //         return;
-  //       }
-
-  //       const response = await fetch(
-  //         "http://localhost:4000/api/favorites/getAllFavorites",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${user.token}`,
-  //           },
-  //         }
-  //       );
-
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         console.log("Favorites data:", data);
-  //         setFavorites(data);
-  //       } else {
-  //         console.error(
-  //           "Failed to fetch favorites:",
-  //           response.status,
-  //           response.statusText
-  //         );
-  //         // Optionally, you can handle specific error cases here
-  //         // For example, if response.status === 401, user might be unauthorized
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching favorites:", error);
-  //       // You can handle errors here, such as setting a state variable to display an error message
-  //     }
-  //   };
-
-  //   fetchFavorites();
-  // }, [user]);
-
   const removeFromFavorites = async (userId, designId) => {
     try {
       const response = await fetch(
@@ -89,6 +51,7 @@ const Favorite = () => {
           body: JSON.stringify({ userId, designId }), // Send both userId and designId in the request body
         }
       );
+      const res = await response.json();
 
       if (response.ok) {
         // Filter out the removed favorite from the state
@@ -99,10 +62,12 @@ const Favorite = () => {
           )
         );
         console.log("Favorite removed successfully");
-        alert("Favorite removed successfully");
+        // Use toast.success for success messages
+        toast.success(res.message);
       } else {
         console.error("Failed to remove favorite");
-        alert("Failed to remove favorite");
+        // Use toast.error to show errors
+        toast.error("Failed to remove favorite");
       }
     } catch (error) {
       console.error("Error removing favorite:", error);
@@ -117,7 +82,12 @@ const Favorite = () => {
           {favorites.map((favorite) => (
             <li key={favorite._id} className="favorite-item">
               <div className="profe-img-container">
-                <img src="/r1.png" alt="Design photo" />
+                {favorite.design?.designImages.length > 0 && (
+                  <img
+                    src={`http://localhost:4000/${favorite.design?.designImages[0]}`}
+                    alt={`Image 0`}
+                  />
+                )}
               </div>
               <div className="desc">
                 <h3 className="design-name">{favorite.design?.designName}</h3>

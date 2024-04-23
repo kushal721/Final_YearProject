@@ -243,6 +243,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
+import "react-toastify/dist/ReactToastify.css";
 
 import Professionals from "./pages/Professionals/Professionals";
 import Home from "./pages/Home/Home";
@@ -292,9 +294,6 @@ import Summary from "./pages/Admin SIde/Summary/Summary";
 import NavbarComp from "./components/Navbar/Navbar";
 import ProfessionalSummary from "./pages/ProfessionalSide/ProfessionalSummary/ProfessionalSummary";
 
-import { Slide, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 function App() {
   const { user } = useAuthContext();
   console.log(user?.role, "user role");
@@ -314,7 +313,7 @@ function App() {
         <div className="navbar-comp">
           <NavbarComp />
         </div>
-
+        <ToastContainer /> {/* ToastContainer added here */}
         <Routes>
           <Route path="*" element={<Error />} />
           <Route path="/" element={<Home />} />
@@ -328,7 +327,7 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registeration />} />
-          <Route path="/reset-password" element={<ForgotPassword />} />
+          <Route path="/forogt-password" element={<ForgotPassword />} />
           <Route path="/changepassword" element={<ChangePassword />} />
 
           <Route path="/design-card" element={<DesignCard />}></Route>
@@ -390,6 +389,10 @@ function App() {
             path="/dashboard/manageusers"
             element={user && isAdmin ? <UserList /> : <Navigate to="/" />}
           />
+          {/* <Route
+            path="/dashboard/managedesigns"
+            element={user && isAdmin ? <Design /> : <Navigate to="/" />}
+          /> */}
         </Routes>
       </Router>
     </div>
